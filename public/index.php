@@ -1,5 +1,11 @@
 <?php
 
+// --- INICIO CÓDIGO TEMPORAL DE DEBUG ---
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+// --- FIN CÓDIGO TEMPORAL ---
+
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
