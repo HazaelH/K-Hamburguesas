@@ -1,0 +1,20 @@
+<?php
+return [
+    'title' => 'Create Account',
+    'club_title' => 'Join the<br>Club.',
+    'club_desc' => 'Earn points, get discounts and order faster.',
+    'happy_foodies' => '+2k Happy Foodies',
+    'form_title' => 'Create Account',
+    'form_desc' => 'Fill in your details to get started.',
+    'fullname' => 'Full Name',
+    'fullname_placeholder' => 'Your name',
+    'email' => 'Email Address',
+    'email_placeholder' => 'you@email.com',
+    'password' => 'Password',
+    'password_placeholder' => '••••••',
+    'confirm_password' => 'Confirm',
+    'password_help' => 'Minimum 8 characters, must include letters, numbers and symbols.',
+    'btn_register' => 'Create my account',
+    'already_member' => 'Already a member?',
+    'login_here' => 'Log in here',
+];

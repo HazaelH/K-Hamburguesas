@@ -1,0 +1,20 @@
+<?php
+return [
+    'title' => 'Tu Pedido',
+    'your_order' => 'Tu Orden',
+    'items' => 'ítems',
+    'each' => 'c/u',
+    'total' => 'Total',
+    'delete' => 'Eliminar',
+    'add_more_food' => 'Agregar más comida',
+    'purchase_summary' => 'Resumen de Compra',
+    'subtotal' => 'Subtotal',
+    'tax' => 'IVA (16%)',
+    'final_total' => 'Total Final',
+    'taxes_included' => 'Con impuestos incluidos',
+    'proceed_to_checkout' => 'Proceder al Pago',
+    'secure_encrypted' => 'Pago seguro y encriptado',
+    'empty_cart' => 'Tu carrito está vacío',
+    'empty_cart_desc' => '¿No sabes qué elegir? Tenemos hamburguesas que te harán agua la boca.',
+    'explore_menu' => 'Explorar el Menú',
+];

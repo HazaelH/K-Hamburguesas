@@ -1,0 +1,42 @@
+/* resources/css/scanner.css */
+
+/* --- Personalización de la librería html5-qrcode --- */
+
+/* Quitar fondo al cuadro de escaneo */
+#reader__scan_region { 
+    background: transparent !important; 
+}
+
+/* Textos de la librería en blanco */
+#reader__dashboard_section_csr span { 
+    color: white !important; 
+}
+
+/* Enlaces (como "Escanear archivo") en naranja */
+#reader__dashboard_section_swaplink { 
+    text-decoration: none !important; 
+    color: #f97316 !important; /* orange-500 */
+    font-weight: bold; 
+}
+
+/* Botones (Iniciar/Detener cámara) */
+#reader button { 
+    background-color: #f97316; /* orange-500 */
+    color: white; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 6px; 
+    margin-top: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+#reader button:hover {
+    background-color: #ea580c; /* orange-600 */
+}
+
+/* Ocultar bordes feos predeterminados */
+#reader {
+    border: none !important;
+}

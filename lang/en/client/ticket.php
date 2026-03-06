@@ -1,0 +1,25 @@
+<?php
+return [
+    'title' => 'Purchase Ticket',
+    'k_hamburguesas' => 'K-Hamburguesas',
+    'slogan' => 'The taste that rules',
+    'order' => 'Order',
+    'date' => 'Date',
+    'scan_to_receive' => 'Scan to receive',
+    'show_code_driver' => 'Show this code to the driver/cashier',
+    'qty' => 'QTY',
+    'description' => 'DESCRIPTION',
+    'total' => 'TOTAL',
+    'subtotal' => 'Subtotal',
+    'shipping' => 'Shipping',
+    'payment_method' => 'Payment Method',
+    'status' => 'Status',
+    'thanks' => 'Thanks for your purchase!',
+    'menu' => 'Menu',
+    'print' => 'Print',
+    // Live Tracker
+    'on_the_way' => 'Your order is on the way!',
+    'on_the_way_desc' => 'The driver is heading to your address right now.',
+    'outside' => 'The driver is outside!',
+    'outside_desc' => 'Please come out to receive your order and have your QR code or payment ready.',
+];

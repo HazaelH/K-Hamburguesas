@@ -1,0 +1,26 @@
+<?php
+return [
+    'title' => 'Nuestro Menú',
+    'subtitle' => 'Encuentra tus platillos favoritos rápidamente',
+    'search_placeholder' => 'Buscar platillos, ingredientes...',
+    'sort_recommended' => 'Recomendados',
+    'sort_price_low' => 'Precio: Menor',
+    'sort_price_high' => 'Precio: Mayor',
+    'sort_az' => 'A - Z',
+    'view_grid' => 'Vista Mosaico',
+    'view_list' => 'Vista Lista',
+    'all_catalog' => 'Catálogo Completo (Todo)',
+    'all_menu' => 'Todo el Menú',
+    'no_results' => 'No hay coincidencias',
+    'no_results_desc' => 'Prueba buscando otra palabra o revisa las categorías.',
+    'sale_badge' => '¡OFERTA!',
+    'sold_out' => 'AGOTADO',
+    'add_btn' => 'Agregar',
+    'not_available' => 'No disponible',
+    // Textos del Modal
+    'customize_dish' => 'Personaliza tu platillo',
+    'quantity' => 'Cantidad',
+    'additional_notes' => 'Notas adicionales',
+    'placeholder_notes' => 'Alergias, aclaraciones...',
+    'add_to_my_order' => 'Agregar a mi orden',
+];

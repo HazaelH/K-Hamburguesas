@@ -1,0 +1,26 @@
+<?php
+return [
+    'title' => 'Our Menu',
+    'subtitle' => 'Find your favorite dishes quickly',
+    'search_placeholder' => 'Search dishes, ingredients...',
+    'sort_recommended' => 'Recommended',
+    'sort_price_low' => 'Price: Low to High',
+    'sort_price_high' => 'Price: High to Low',
+    'sort_az' => 'A - Z',
+    'view_grid' => 'Grid View',
+    'view_list' => 'List View',
+    'all_catalog' => 'Full Catalog (All)',
+    'all_menu' => 'All Menu',
+    'no_results' => 'No matches found',
+    'no_results_desc' => 'Try searching another word or check the categories.',
+    'sale_badge' => 'SALE!',
+    'sold_out' => 'SOLD OUT',
+    'add_btn' => 'Add',
+    'not_available' => 'Not available',
+    // Modal
+    'customize_dish' => 'Customize your dish',
+    'quantity' => 'Quantity',
+    'additional_notes' => 'Additional notes',
+    'placeholder_notes' => 'Allergies, clarifications...',
+    'add_to_my_order' => 'Add to my order',
+];

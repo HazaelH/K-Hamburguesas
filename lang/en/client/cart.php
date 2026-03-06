@@ -1,0 +1,20 @@
+<?php
+return [
+    'title' => 'Your Order',
+    'your_order' => 'Your Order',
+    'items' => 'items',
+    'each' => 'ea',
+    'total' => 'Total',
+    'delete' => 'Delete',
+    'add_more_food' => 'Add more food',
+    'purchase_summary' => 'Purchase Summary',
+    'subtotal' => 'Subtotal',
+    'tax' => 'Tax (16%)',
+    'final_total' => 'Final Total',
+    'taxes_included' => 'Taxes included',
+    'proceed_to_checkout' => 'Proceed to Checkout',
+    'secure_encrypted' => 'Secure and encrypted payment',
+    'empty_cart' => 'Your cart is empty',
+    'empty_cart_desc' => 'Don\'t know what to choose? We have mouth-watering burgers.',
+    'explore_menu' => 'Explore the Menu',
+];
