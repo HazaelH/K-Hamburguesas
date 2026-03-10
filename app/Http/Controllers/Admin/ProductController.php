@@ -112,11 +112,13 @@ class ProductController extends Controller
         Product::create([
             'nombre' => $request->nombre,
             'nombre_en' => $request->nombre_en,
+            'nombre_pt' => $request->nombre_pt,
             'slug' => Str::slug($request->nombre) . '-' . uniqid(),
             'precio' => $request->precio,
             'categoria' => $request->categoria,
             'descripcion' => $request->descripcion,
             'descripcion_en' => $request->descripcion_en,
+            'descripcion_pt'  => $request->descripcion_pt,
             'imagen_url' => $rutaImagen, 
             'is_active' => true,
             'is_available' => true,
@@ -140,20 +142,24 @@ class ProductController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'nombre_en' => 'nullable|string|max:255',
+            'nombre_pt' => 'nullable|string|max:255',
             'precio' => 'required|numeric|min:0',
             'categoria' => 'required|string',
             'descripcion' => 'nullable|string',
             'descripcion_en' => 'nullable|string',
+            'descripcion_pt' => 'nullable|string',            // ← nuevo
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
         ]);
 
         $data = [
             'nombre' => $request->nombre,
             'nombre_en' => $request->nombre_en,
+            'nombre_pt' => $request->nombre_pt,
             'precio' => $request->precio,
             'categoria' => $request->categoria,
             'descripcion' => $request->descripcion,
             'descripcion_en' => $request->descripcion_en,
+            'descripcion_pt'  => $request->descripcion_pt,
         ];
 
         if ($request->filled('opciones_personalizacion')) {

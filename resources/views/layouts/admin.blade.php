@@ -135,9 +135,9 @@
                             <a href="{{ LaravelLocalization::getLocalizedURL('en', null, [], true) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 text-sm font-bold {{ app()->getLocale() == 'en' ? 'text-white bg-slate-700' : 'text-slate-400' }}">
                                 <span class="text-xl">🇺🇸</span> English
                             </a>
-                            <button disabled class="flex items-center gap-3 px-3 py-2 rounded-lg opacity-50 cursor-not-allowed text-sm font-bold text-slate-500 w-full text-left" title="Em breve / Coming soon">
+                            <a href="{{ LaravelLocalization::getLocalizedURL('pt', null, [], true) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 text-sm font-bold {{ app()->getLocale() == 'pt' ? 'text-white bg-slate-700' : 'text-slate-400' }}">
                                 <span class="text-xl">🇧🇷</span> Português
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,47 @@
+<?php
+return [
+    'title' => 'Início',
+    'hero_subtitle' => 'Est. 2026 • Sabor Autêntico',
+    'hero_desc' => 'Na K-Hamburguesas, frescor e qualidade se encontram em cada mordida. Peça agora e receba seu pedido quente em minutos.',
+    'btn_menu' => 'Ver Menu Completo',
+    'btn_ticket' => 'Meu Último Ticket',
+    'special_offers' => 'Ofertas Especiais',
+    'view_all' => 'Ver todas',
+    'favorites' => 'Os Favoritos',
+    'go_to_menu' => 'Ir ao Menu',
+    'sale_badge' => 'OFERTA!',
+    'add_to_order' => 'Adicionar ao meu pedido',
+    'quality_title' => 'Qualidade Premium',
+    'quality_desc' => 'Ingredientes frescos e carne 100% bovina preparada no momento do seu pedido.',
+    'delivery_title' => 'Entrega Rápida',
+    'delivery_desc' => 'Embalado termicamente para que sua comida chegue quente e perfeita à sua porta.',
+    'secure_title' => 'Pagamento Seguro',
+    'secure_desc' => 'Pague em dinheiro na entrega ou com cartão através da nossa plataforma criptografada.',
+    'find_us' => 'Encontre-nos',
+    'address' => 'Endereço',
+    'address_text' => 'Av. Miguel Hidalgo 14, Centro<br>50900 Villa de Almoloya de Juárez, Méx.',
+    'schedule' => 'Horário de Atendimento',
+    'schedule_text' => 'Segunda a Domingo<br>10:00 AM - 8:00 PM',
+    'call_us' => 'Ligue para nós',
+    'how_to_arrive' => 'Como chegar no Google Maps',
+
+    // Textos del Modal
+    'customize_dish' => 'Personalize seu prato',
+    'quantity' => 'Quantidade',
+    'special_notes' => 'Notas Especiais',
+    'placeholder_notes' => 'Ex: Sem cebola...',
+    'add_cart' => 'Adicionar ao pedido',
+
+    // Modal Upsell
+    'added_to_cart' => 'Adicionado ao Carrinho!',
+    'upsell_desc' => 'Que tal acompanhar com batatas crocantes ou uma bebida bem gelada?',
+    'continue_home' => 'Continuar no Início',
+    'go_to_pay' => 'Ir direto para pagar',
+
+    'rider_on_way_title' => 'A caminho!',
+    'rider_on_way_desc' => 'Seu entregador acabou de sair em direção ao seu endereço com o <b>Pedido #:id</b>. Prepare a mesa!',
+    'rider_arrived_title' => 'Já chegou!',
+    'rider_arrived_desc' => 'O entregador com seu <b>Pedido #:id</b> está em frente à sua casa. Vá recebê-lo!',
+    'btn_view_ticket_qr' => 'Ver meu Ticket / QR',
+    'btn_close_notice' => 'Fechar Aviso',
+];

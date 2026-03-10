@@ -1,0 +1,25 @@
+<?php
+return [
+    'title' => 'Ticket de Compra',
+    'k_hamburguesas' => 'K-Hamburguesas',
+    'slogan' => 'Sabor que manda',
+    'order' => 'Pedido',
+    'date' => 'Data',
+    'scan_to_receive' => 'Escaneie para receber',
+    'show_code_driver' => 'Mostre este código ao entregador/caixa',
+    'qty' => 'QTD',
+    'description' => 'DESCRIÇÃO',
+    'total' => 'TOTAL',
+    'subtotal' => 'Subtotal',
+    'shipping' => 'Entrega',
+    'payment_method' => 'Método de Pagamento',
+    'status' => 'Status',
+    'thanks' => 'Obrigado pela sua preferência!',
+    'menu' => 'Menu',
+    'print' => 'Imprimir',
+    // Live Tracker
+    'on_the_way' => 'Seu pedido está a caminho!',
+    'on_the_way_desc' => 'O entregador está se dirigindo ao seu endereço neste momento.',
+    'outside' => 'O entregador está do lado de fora!',
+    'outside_desc' => 'Por favor, saia para receber seu pedido e tenha pronto seu código QR ou o pagamento.',
+];

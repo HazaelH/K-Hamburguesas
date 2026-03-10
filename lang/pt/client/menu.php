@@ -1,0 +1,26 @@
+<?php
+return [
+    'title' => 'Nosso Menu',
+    'subtitle' => 'Encontre seus pratos favoritos rapidamente',
+    'search_placeholder' => 'Buscar pratos, ingredientes...',
+    'sort_recommended' => 'Recomendados',
+    'sort_price_low' => 'Preço: Menor',
+    'sort_price_high' => 'Preço: Maior',
+    'sort_az' => 'A - Z',
+    'view_grid' => 'Vista em Grade',
+    'view_list' => 'Vista em Lista',
+    'all_catalog' => 'Catálogo Completo (Tudo)',
+    'all_menu' => 'Todo o Menu',
+    'no_results' => 'Nenhum resultado encontrado',
+    'no_results_desc' => 'Tente buscar outra palavra ou revisar as categorias.',
+    'sale_badge' => 'OFERTA!',
+    'sold_out' => 'ESGOTADO',
+    'add_btn' => 'Adicionar',
+    'not_available' => 'Não disponível',
+    // Textos do Modal
+    'customize_dish' => 'Personalize seu prato',
+    'quantity' => 'Quantidade',
+    'additional_notes' => 'Notas adicionais',
+    'placeholder_notes' => 'Alergias, observações...',
+    'add_to_my_order' => 'Adicionar ao meu pedido',
+];
