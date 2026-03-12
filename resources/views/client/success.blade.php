@@ -61,13 +61,13 @@
             <div class="flex justify-between items-center pt-4 border-t border-gray-200">
                 <span class="font-bold text-gray-800">{{ __('client/success.total') }}</span>
                 {{-- TOTAL FORMATEADO --}}
-                <span class="text-2xl font-black text-orange-600">{{ formatCurrency($order->total) }}</span>
+                <span class="text-2xl font-black text-orange-700">{{ formatCurrency($order->total) }}</span>
             </div>
         </div>
 
         <div class="p-8 pt-4 space-y-3">
             <a href="{{ route('client.ticket', $order->id) }}" target="_blank" 
-               class="w-full flex justify-center items-center gap-2 py-3 px-4 border-2 border-dashed border-gray-300 rounded-xl text-sm font-bold text-gray-600 hover:text-orange-600 hover:border-orange-400 hover:bg-orange-50 transition-all group">
+               class="w-full flex justify-center items-center gap-2 py-3 px-4 border-2 border-dashed border-gray-300 rounded-xl text-sm font-bold text-gray-600 hover:text-orange-700 hover:border-orange-400 hover:bg-orange-50 transition-all group">
                 <i class="fas fa-file-pdf text-lg group-hover:scale-110 transition-transform"></i> {{ __('client/success.download_pdf') }}
             </a>
 

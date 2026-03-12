@@ -31,7 +31,7 @@
                         <i class="fas fa-lock text-slate-500"></i>
                     </div>
                     <input id="reset-password" type="password" name="password" required placeholder="{{ __('auth/passwords.new_password_placeholder') }}"
-                        class="w-full pl-11 pr-12 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-orange-500 transition-colors">
+                        class="w-full pl-11 pr-12 py-3 bg-slate-950 border border-slate-300 rounded-xl text-white focus:outline-none focus:border-orange-500 transition-colors">
                     
                     <button type="button" onclick="togglePassword('reset-password', 'eye-icon-reset')" class="absolute right-4 top-3.5 text-slate-500 hover:text-orange-500 transition-colors focus:outline-none">
                         <i id="eye-icon-reset" class="fas fa-eye"></i>
@@ -49,7 +49,7 @@
                         <i class="fas fa-lock text-slate-500"></i>
                     </div>
                     <input id="reset-password-confirm" type="password" name="password_confirmation" required placeholder="{{ __('auth/passwords.confirm_placeholder') }}"
-                        class="w-full pl-11 pr-12 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-orange-500 transition-colors">
+                        class="w-full pl-11 pr-12 py-3 bg-slate-950 border border-slate-300 rounded-xl text-white focus:outline-none focus:border-orange-500 transition-colors">
                     
                     <button type="button" onclick="togglePassword('reset-password-confirm', 'eye-icon-reset-conf')" class="absolute right-4 top-3.5 text-slate-500 hover:text-orange-500 transition-colors focus:outline-none">
                         <i id="eye-icon-reset-conf" class="fas fa-eye"></i>

@@ -14,21 +14,21 @@
 
     {{-- TARJETAS --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-slate-800 p-6 rounded-3xl border border-slate-700 shadow-lg flex items-center gap-4">
+        <div class="bg-slate-800 p-6 rounded-3xl border border-slate-300 shadow-lg flex items-center gap-4">
             <div class="h-14 w-14 rounded-2xl bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl"><i class="fas fa-fire"></i></div>
             <div>
                 <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">{{ __('admin/orders/orders.stats_process') }}</p>
                 <p class="text-3xl font-black text-white">{{ $stats->total_pendientes }}</p>
             </div>
         </div>
-        <div class="bg-slate-800 p-6 rounded-3xl border border-slate-700 shadow-lg flex items-center gap-4">
+        <div class="bg-slate-800 p-6 rounded-3xl border border-slate-300 shadow-lg flex items-center gap-4">
             <div class="h-14 w-14 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl"><i class="fas fa-check-double"></i></div>
             <div>
                 <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">{{ __('admin/orders/orders.stats_delivered') }}</p>
                 <p class="text-3xl font-black text-white">{{ $stats->total_entregados }}</p>
             </div>
         </div>
-        <div class="bg-slate-800 p-6 rounded-3xl border border-slate-700 shadow-lg flex items-center gap-4">
+        <div class="bg-slate-800 p-6 rounded-3xl border border-slate-300 shadow-lg flex items-center gap-4">
             <div class="h-14 w-14 rounded-2xl bg-blue-500/20 flex items-center justify-center text-blue-400 text-2xl"><i class="fas fa-dollar-sign"></i></div>
             <div>
                 <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">{{ __('admin/orders/orders.stats_income') }}</p>
@@ -38,7 +38,7 @@
     </div>
 
     {{-- TABLA --}}
-    <div class="bg-slate-800 border border-slate-700 rounded-3xl shadow-xl overflow-hidden">
+    <div class="bg-slate-800 border border-slate-300 rounded-3xl shadow-xl overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm text-left text-slate-400">
                 <thead class="text-[10px] font-black text-slate-500 uppercase tracking-widest bg-slate-900/80">
@@ -108,7 +108,7 @@
             </table>
         </div>
         @if($pedidos->hasPages())
-            <div class="p-4 bg-slate-900 border-t border-slate-700">
+            <div class="p-4 bg-slate-900 border-t border-slate-300">
                 {{ $pedidos->links() }}
             </div>
         @endif

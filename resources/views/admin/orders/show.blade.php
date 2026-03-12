@@ -6,12 +6,12 @@
 <div class="max-w-4xl mx-auto space-y-6 py-6">
 
     {{-- Botón de regreso --}}
-    <a href="{{ route('admin.orders.index') }}" class="text-slate-400 hover:text-white transition flex items-center gap-2 font-bold w-fit bg-slate-800 px-4 py-2 rounded-xl border border-slate-700">
+    <a href="{{ route('admin.orders.index') }}" class="text-slate-400 hover:text-white transition flex items-center gap-2 font-bold w-fit bg-slate-800 px-4 py-2 rounded-xl border border-slate-300">
         <i class="fas fa-arrow-left"></i> {{ __('admin/orders/orders.btn_back') }}
     </a>
 
     {{-- Tarjeta Principal del Ticket --}}
-    <div class="bg-slate-800 rounded-3xl border border-slate-700 shadow-2xl overflow-hidden relative">
+    <div class="bg-slate-800 rounded-3xl border border-slate-300 shadow-2xl overflow-hidden relative">
         
         {{-- Marca de agua Cancelado --}}
         @if($order->status === 'cancelado')
@@ -21,7 +21,7 @@
         @endif
 
         {{-- Cabecera --}}
-        <div class="bg-slate-900/80 p-8 border-b border-slate-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden z-10">
+        <div class="bg-slate-900/80 p-8 border-b border-slate-300 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden z-10">
             <div class="relative z-10">
                 <h1 class="text-4xl font-black text-white font-mono tracking-tight">{{ __('admin/orders/orders.order_number') }}{{ $id }}</h1>
                 <p class="text-slate-400 mt-1">
@@ -49,7 +49,7 @@
             
             {{-- Info del Cliente --}}
             <div class="space-y-4">
-                <h3 class="text-lg font-black text-white uppercase tracking-widest border-b border-slate-700 pb-2"><i class="fas fa-user text-orange-500 mr-2"></i> {{ __('admin/orders/orders.client_data') }}</h3>
+                <h3 class="text-lg font-black text-white uppercase tracking-widest border-b border-slate-300 pb-2"><i class="fas fa-user text-orange-500 mr-2"></i> {{ __('admin/orders/orders.client_data') }}</h3>
                 
                 <div>
                     <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">{{ __('admin/orders/orders.client_name') }}</p>
@@ -64,7 +64,7 @@
 
             {{-- Info de Entrega --}}
             <div class="space-y-4">
-                <h3 class="text-lg font-black text-white uppercase tracking-widest border-b border-slate-700 pb-2"><i class="fas fa-map-marker-alt text-blue-500 mr-2"></i> {{ __('admin/orders/orders.order_details') }}</h3>
+                <h3 class="text-lg font-black text-white uppercase tracking-widest border-b border-slate-300 pb-2"><i class="fas fa-map-marker-alt text-blue-500 mr-2"></i> {{ __('admin/orders/orders.order_details') }}</h3>
                 
                 @if(!$esDomicilio)
                     <div class="bg-orange-500/10 border border-orange-500/20 p-4 rounded-xl flex items-center gap-3">
@@ -93,7 +93,7 @@
                     @if(!empty($order->direccion))
                         <div>
                             <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">{{ __('admin/orders/orders.address_title') }}</p>
-                            <p class="text-slate-300 leading-relaxed text-sm mt-1 bg-slate-900/50 p-3 rounded-lg border border-slate-700">
+                            <p class="text-slate-300 leading-relaxed text-sm mt-1 bg-slate-900/50 p-3 rounded-lg border border-slate-300">
                                 {{ $order->direccion }}
                             </p>
                         </div>
@@ -107,12 +107,12 @@
         </div>
 
         {{-- Detalles de los Productos --}}
-        <div class="bg-slate-900/50 p-8 border-t border-slate-700 relative z-10">
+        <div class="bg-slate-900/50 p-8 border-t border-slate-300 relative z-10">
             <h3 class="text-lg font-black text-white uppercase tracking-widest mb-4"><i class="fas fa-shopping-basket text-emerald-500 mr-2"></i> {{ __('admin/orders/orders.purchase_summary') }}</h3>
             
-            <div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden">
+            <div class="bg-slate-800 rounded-2xl border border-slate-300 overflow-hidden">
                 <table class="w-full text-left text-slate-300">
-                    <thead class="bg-slate-900 text-slate-500 text-xs uppercase font-black tracking-widest border-b border-slate-700">
+                    <thead class="bg-slate-900 text-slate-500 text-xs uppercase font-black tracking-widest border-b border-slate-300">
                         <tr>
                             <th class="px-6 py-4">{{ __('admin/orders/orders.col_qty') }}</th>
                             <th class="px-6 py-4">{{ __('admin/orders/orders.col_product') }}</th>

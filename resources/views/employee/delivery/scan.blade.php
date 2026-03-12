@@ -50,12 +50,12 @@
                 <i class="fas fa-qrcode text-orange-500"></i> {{ __('employee/delivery/scan.scan_receipt') }}
             </h2>
             
-            <div class="w-full bg-black rounded-2xl overflow-hidden border border-slate-700 relative aspect-square flex flex-col justify-center items-center">
+            <div class="w-full bg-black rounded-2xl overflow-hidden border border-slate-300 relative aspect-square flex flex-col justify-center items-center">
                 <div id="reader" class="w-full h-full absolute inset-0"></div>
                 
                 <div id="pantalla-inicio-lector" class="absolute inset-0 bg-slate-900/90 flex flex-col items-center justify-center z-10 transition-opacity duration-300">
                     <i class="fas fa-camera text-5xl text-slate-600 mb-4"></i>
-                    <button onclick="window.abrirOpcionesLente()" class="bg-orange-600 hover:bg-orange-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-orange-900/50 transition transform hover:scale-105">
+                    <button onclick="window.abrirOpcionesLente()" class="bg-orange-700 hover:bg-orange-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-orange-900/50 transition transform hover:scale-105">
                         {{ __('employee/delivery/scan.activate_camera') }}
                     </button>
                     <p class="text-xs text-slate-500 mt-4">{{ __('employee/delivery/scan.save_battery') }}</p>
@@ -79,8 +79,8 @@
             <form action="{{ route('repartidor.orders.scan') }}" method="POST" class="mt-4 relative">
                 @csrf
                 <input type="text" name="codigo" placeholder="{{ __('employee/delivery/scan.manual_code_placeholder') }}" 
-                    class="w-full pl-4 pr-24 py-3 border border-slate-700 rounded-xl bg-slate-950 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-orange-500 transition-colors uppercase">
-                <button type="submit" class="absolute inset-y-0 right-1 my-1 px-4 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-xs font-bold transition">
+                    class="w-full pl-4 pr-24 py-3 border border-slate-300 rounded-xl bg-slate-950 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-orange-500 transition-colors uppercase">
+                <button type="submit" class="absolute inset-y-0 right-1 my-1 px-4 bg-orange-700 hover:bg-orange-500 text-white rounded-lg text-xs font-bold transition">
                     {{ __('employee/delivery/scan.btn_validate') }}
                 </button>
             </form>
@@ -90,7 +90,7 @@
         <div class="mb-8">
             <h2 class="text-white font-bold mb-4 flex items-center justify-between">
                 <span class="flex items-center gap-2"><i class="fas fa-motorcycle text-orange-500"></i> {{ __('employee/delivery/scan.available_to_pickup') }}</span>
-                <span class="bg-orange-600 text-white text-[10px] px-2 py-1 rounded-full">{{ $pedidosDisponibles->count() }}</span>
+                <span class="bg-orange-700 text-white text-[10px] px-2 py-1 rounded-full">{{ $pedidosDisponibles->count() }}</span>
             </h2>
 
             <div class="space-y-4">
@@ -106,7 +106,7 @@
                         
                         <p class="text-xs text-slate-400 mb-4 line-clamp-1"><i class="fas fa-map-marker-alt"></i> {{ $pedido->direccion }}</p>
                         
-                        <button onclick="window.tomarViaje({{ $pedido->id }})" id="btn-tomar-{{ $pedido->id }}" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-black py-3 rounded-xl shadow-lg transition-all active:scale-95 flex justify-center items-center gap-2">
+                        <button onclick="window.tomarViaje({{ $pedido->id }})" id="btn-tomar-{{ $pedido->id }}" class="w-full bg-orange-700 hover:bg-orange-500 text-white font-black py-3 rounded-xl shadow-lg transition-all active:scale-95 flex justify-center items-center gap-2">
                             <i class="fas fa-hand-paper"></i> {{ __('employee/delivery/scan.btn_take_trip') }}
                         </button>
                     </div>
@@ -146,7 +146,7 @@
                                 <p class="text-xs text-slate-500 font-bold uppercase">{{ __('employee/delivery/scan.order_number', ['id' => $pedido->id]) }}</p>
                                 <h3 class="text-white font-black text-lg">{{ $nombre }}</h3>
                             </div>
-                            <span class="bg-slate-800 text-slate-300 border border-slate-700 px-2 py-1 rounded text-xs font-bold">
+                            <span class="bg-slate-800 text-slate-300 border border-slate-300 px-2 py-1 rounded text-xs font-bold">
                                 {{ formatCurrency($pedido->total) }}
                             </span>
                         </div>
@@ -206,14 +206,14 @@
 
     {{-- MODAL 1: S.O.S --}}
     <div id="modal-sos" class="fixed inset-0 z-[120] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm px-4 transition-opacity duration-300 opacity-0">
-        <div class="bg-slate-900 border border-slate-700 w-full max-w-sm rounded-3xl p-6 shadow-2xl transform transition-all duration-300 scale-95" id="panel-sos">
+        <div class="bg-slate-900 border border-slate-300 w-full max-w-sm rounded-3xl p-6 shadow-2xl transform transition-all duration-300 scale-95" id="panel-sos">
             <div class="w-16 h-16 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 border border-red-500/30">
                 <i class="fas fa-bullhorn animate-pulse"></i>
             </div>
             <h3 class="text-xl font-black text-white text-center mb-2">{{ __('employee/delivery/scan.report_problem') }}</h3>
             <p class="text-slate-400 text-xs text-center mb-4">{{ __('employee/delivery/scan.admin_alert_desc') }}<span id="sos-order-id" class="font-black text-white"></span></p>
             
-            <textarea id="sos-mensaje" rows="3" placeholder="{{ __('employee/delivery/scan.sos_placeholder') }}" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-red-500 mb-4 resize-none custom-scrollbar"></textarea>
+            <textarea id="sos-mensaje" rows="3" placeholder="{{ __('employee/delivery/scan.sos_placeholder') }}" class="w-full bg-slate-800 border border-slate-300 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-red-500 mb-4 resize-none custom-scrollbar"></textarea>
             
             <div class="flex gap-3">
                 <button onclick="window.cerrarModalSOS()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl transition">{{ __('employee/delivery/scan.btn_cancel') }}</button>
@@ -246,15 +246,15 @@
 
     {{-- CUADRO DE DIÁLOGO: SELECCIÓN DE ÓPTICA --}}
     <div id="dialogo-seleccion-lente" class="fixed inset-0 z-[100] hidden flex items-end justify-center bg-black/80 backdrop-blur-sm sm:items-center">
-        <div class="bg-slate-900 border border-slate-700 w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl transform transition-transform translate-y-full sm:translate-y-0" id="panel-lente">
+        <div class="bg-slate-900 border border-slate-300 w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl transform transition-transform translate-y-full sm:translate-y-0" id="panel-lente">
             <h3 class="text-xl font-black text-white text-center mb-6">{{ __('employee/delivery/scan.select_lens') }}</h3>
             
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="window.iniciarLectura('environment')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl p-6 flex flex-col items-center gap-3 transition">
+                <button onclick="window.iniciarLectura('environment')" class="bg-slate-800 hover:bg-slate-700 border border-slate-300 rounded-2xl p-6 flex flex-col items-center gap-3 transition">
                     <i class="fas fa-camera text-3xl text-orange-500"></i>
                     <span class="text-white font-bold text-sm">{{ __('employee/delivery/scan.rear_lens') }}</span>
                 </button>
-                <button onclick="window.iniciarLectura('user')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl p-6 flex flex-col items-center gap-3 transition">
+                <button onclick="window.iniciarLectura('user')" class="bg-slate-800 hover:bg-slate-700 border border-slate-300 rounded-2xl p-6 flex flex-col items-center gap-3 transition">
                     <i class="fas fa-user-circle text-3xl text-blue-500"></i>
                     <span class="text-white font-bold text-sm">{{ __('employee/delivery/scan.front_lens') }}</span>
                 </button>

@@ -188,7 +188,7 @@ window.openOrderModal = async function(id) {
 
     document.getElementById('modal-order-id').innerText = id;
     document.getElementById('modal-items-container').innerHTML = `
-        <div class="flex justify-center items-center py-6 text-slate-500">
+        <div class="flex justify-center items-center py-6 text-slate-400">
             <i class="fas fa-circle-notch fa-spin text-2xl mr-2"></i> ${window.ADMIN_LANG.loading_ticket}
         </div>
     `;

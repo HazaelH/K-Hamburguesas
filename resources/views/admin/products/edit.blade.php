@@ -14,7 +14,7 @@
         </a>
     </div>
 
-    <div class="bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 p-8">
+    <div class="bg-gray-800 rounded-2xl shadow-2xl border border-gray-300 p-8">
         <form action="{{ route('admin.products.update', $producto->id_producto) }}" method="POST" enctype="multipart/form-data" class="space-y-8">
             @csrf
             @method('PUT') 
@@ -26,23 +26,23 @@
                 <div class="space-y-6">
                     
                     {{-- BLOQUE: TEXTOS EN ESPAÑOL --}}
-                    <div class="bg-gray-900/50 p-5 rounded-xl border border-gray-700 shadow-inner">
+                    <div class="bg-gray-900/50 p-5 rounded-xl border border-gray-300 shadow-inner">
                         <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-800">
-                            <span class="text-2xl">🇲🇽</span>
-                            <h3 class="text-white font-bold text-sm tracking-widest uppercase">Textos en Español</h3>
+                            <span class="fi fi-mx text-2xl rounded shadow-sm"></span>
+                            <h2 class="text-white font-bold text-sm tracking-widest uppercase">Textos en Español</h2>
                         </div>
 
                         <div class="space-y-4">
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-2">{{ __('admin/products/products.label_name') }} <span class="text-blue-500">*</span></label>
-                                <input type="text" name="nombre" value="{{ old('nombre', $producto->nombre) }}" required
+                                <label for="nombre" class="block text-sm font-bold text-gray-300 mb-2">{{ __('admin/products/products.label_name') }} <span class="text-blue-500">*</span></label>
+                                <input type="text" id="nombre" name="nombre" value="{{ old('nombre', $producto->nombre) }}" required
                                        class="w-full bg-gray-900 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-blue-500 transition">
                                 @error('nombre') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
                             </div>
 
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-2">{{ __('admin/products/products.label_desc') }}</label>
-                                <textarea name="descripcion" rows="3"
+                                <label for="descripcion" class="block text-sm font-bold text-gray-300 mb-2">{{ __('admin/products/products.label_desc') }}</label>
+                                <textarea id="descripcion" name="descripcion" rows="3"
                                           class="w-full bg-gray-900 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-blue-500 transition">{{ old('descripcion', $producto->descripcion) }}</textarea>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                     {{-- BLOQUE: PRECIO Y CATEGORÍA --}}
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-bold text-gray-300 mb-2">{{ __('admin/products/products.label_price') }} <span class="text-blue-500">*</span></label>
+                            <label for="precio_base" class="block text-sm font-bold text-gray-300 mb-2">{{ __('admin/products/products.label_price') }} <span class="text-blue-500">*</span></label>
                             <div class="relative">
                                 <span class="absolute left-3 top-3 text-gray-500 font-bold">MX$</span>
                                 <input type="number" id="precio_base" name="precio" step="0.50" value="{{ old('precio', $producto->precio) }}" required
@@ -68,13 +68,13 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-bold text-gray-300 mb-2">{{ __('admin/products/products.label_category') }} <span class="text-blue-500">*</span></label>
+                            <label for="categoria" class="block text-sm font-bold text-gray-300 mb-2">{{ __('admin/products/products.label_category') }} <span class="text-blue-500">*</span></label>
                             
                             @php
                                 $categoriasBd = \App\Models\Categoria::all();
                             @endphp
                             
-                            <select name="categoria" required class="w-full bg-gray-900 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-blue-500 transition appearance-none cursor-pointer">
+                            <select id="categoria" name="categoria" required class="w-full bg-gray-900 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-blue-500 transition appearance-none cursor-pointer">
                                 <option value="" disabled>{{ __('admin/products/products.ph_category') }}</option>
                                 @foreach($categoriasBd as $cat)
                                     <option value="{{ $cat->nombre }}" {{ old('categoria', $producto->categoria) == $cat->nombre ? 'selected' : '' }}>
@@ -88,13 +88,13 @@
 
                     {{-- BLOQUE: IMAGEN GIGANTE --}}
                     <div class="flex flex-col">
-                        <label class="block text-sm font-bold text-gray-300 mb-2">{{ __('admin/products/products.label_photo_optional') }}</label>
+                        <label for="imagen-input" class="block text-sm font-bold text-gray-300 mb-2">{{ __('admin/products/products.label_photo_optional') }}</label>
                         <div class="bg-gray-900 border-2 border-dashed border-gray-600 rounded-xl flex items-center justify-center relative overflow-hidden group hover:border-blue-500 transition h-72 shadow-inner" id="image-preview-container">
                             @if($producto->imagen_url)
-                                <img id="preview-img" src="{{ asset('imagenes/' . $producto->imagen_url) }}" class="absolute inset-0 w-full h-full object-contain bg-black/50 backdrop-blur-sm p-2">
+                                <img id="preview-img" src="{{ asset('imagenes/' . $producto->imagen_url) }}" alt="Vista previa de {{ $producto->nombre_traducido }}" class="absolute inset-0 w-full h-full object-contain bg-black/50 backdrop-blur-sm p-2">
                                 <div class="text-center p-6 hidden opacity-0 group-hover:opacity-100 transition-opacity bg-black/70 absolute inset-0 flex flex-col justify-center items-center" id="placeholder-text">
                             @else
-                                <img id="preview-img" src="#" class="absolute inset-0 w-full h-full object-contain hidden bg-black/50 backdrop-blur-sm p-2">
+                                <img id="preview-img" src="#" alt="Vista previa de imagen seleccionada" class="absolute inset-0 w-full h-full object-contain hidden bg-black/50 backdrop-blur-sm p-2">
                                 <div class="text-center p-6 transition transform group-hover:scale-105" id="placeholder-text">
                             @endif
                                 <i class="fas fa-cloud-upload-alt text-5xl text-gray-400 mb-3"></i>
@@ -114,20 +114,20 @@
                     {{-- BLOQUE: TEXTOS EN INGLÉS --}}
                     <div class="bg-blue-900/10 p-5 rounded-xl border border-blue-900/30">
                         <div class="flex items-center gap-2 mb-4 pb-2 border-b border-blue-900/50">
-                            <span class="text-2xl">🇺🇸</span>
-                            <h3 class="text-blue-300 font-bold text-sm tracking-widest uppercase">English Translation</h3>
+                            <span class="fi fi-us text-2xl rounded shadow-sm"></span>
+                            <h2 class="text-blue-300 font-bold text-sm tracking-widest uppercase">English Translation</h2>
                         </div>
 
                         <div class="space-y-4">
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-2">Dish Name (English)</label>
-                                <input type="text" name="nombre_en" value="{{ old('nombre_en', $producto->nombre_en) }}" placeholder="Ex: Double Monster Burger"
+                                <label for="nombre_en" class="block text-sm font-bold text-gray-300 mb-2">Dish Name (English)</label>
+                                <input type="text" id="nombre_en" name="nombre_en" value="{{ old('nombre_en', $producto->nombre_en) }}" placeholder="Ex: Double Monster Burger"
                                        class="w-full bg-gray-900 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-blue-500 transition">
                             </div>
 
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-2">Description (English)</label>
-                                <textarea name="descripcion_en" rows="2" placeholder="Ingredients, details..."
+                                <label for="descripcion_en" class="block text-sm font-bold text-gray-300 mb-2">Description (English)</label>
+                                <textarea id="descripcion_en" name="descripcion_en" rows="2" placeholder="Ingredients, details..."
                                           class="w-full bg-gray-900 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-blue-500 transition">{{ old('descripcion_en', $producto->descripcion_en) }}</textarea>
                             </div>
                         </div>
@@ -136,20 +136,20 @@
                     {{-- BLOQUE: TEXTOS EN PORTUGUÉS (BRASIL) --}}
                     <div class="bg-emerald-900/10 p-5 rounded-xl border border-emerald-900/30">
                         <div class="flex items-center gap-2 mb-4 pb-2 border-b border-emerald-900/50">
-                            <span class="text-2xl">🇧🇷</span>
-                            <h3 class="text-emerald-400 font-bold text-sm tracking-widest uppercase">Tradução em Português</h3>
+                            <span class="fi fi-br text-2xl rounded shadow-sm"></span>
+                            <h2 class="text-emerald-400 font-bold text-sm tracking-widest uppercase">Tradução em Português</h2>
                         </div>
 
                         <div class="space-y-4">
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-2">Nome do Prato (Português)</label>
-                                <input type="text" name="nombre_pt" value="{{ old('nombre_pt', $producto->nombre_pt ?? '') }}" placeholder="Ex: Hambúrguer Monstro"
+                                <label for="nombre_pt" class="block text-sm font-bold text-gray-300 mb-2">Nome do Prato (Português)</label>
+                                <input type="text" id="nombre_pt" name="nombre_pt" value="{{ old('nombre_pt', $producto->nombre_pt ?? '') }}" placeholder="Ex: Hambúrguer Monstro"
                                        class="w-full bg-gray-900 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-emerald-500 transition">
                             </div>
 
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-2">Descrição (Português)</label>
-                                <textarea name="descripcion_pt" rows="2" placeholder="Ingredientes, detalhes..."
+                                <label for="descripcion_pt" class="block text-sm font-bold text-gray-300 mb-2">Descrição (Português)</label>
+                                <textarea id="descripcion_pt" name="descripcion_pt" rows="2" placeholder="Ingredientes, detalhes..."
                                           class="w-full bg-gray-900 text-white border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-emerald-500 transition">{{ old('descripcion_pt', $producto->descripcion_pt ?? '') }}</textarea>
                             </div>
                         </div>
@@ -159,34 +159,34 @@
             </div>
 
             {{-- ZONA INFERIOR: EXTRAS (Ancho Completo) --}}
-            <div class="bg-gray-900/30 p-6 rounded-xl border border-gray-700 w-full mt-6">
+            <div class="bg-gray-900/30 p-6 rounded-xl border border-gray-300 w-full mt-6">
                 <label class="block text-lg font-bold text-white mb-4">
                     <i class="fas fa-list-ul text-blue-500 mr-2"></i> {{ __('admin/products/products.label_modifiers') }}
                 </label>
                 
                 <div class="bg-gray-900 border border-gray-600 rounded-xl p-5 transition min-h-[50px]">
                     {{-- Contenedor de etiquetas creadas --}}
-                    <div id="tags-container" class="flex flex-wrap gap-3 empty:hidden mb-6 border-b border-gray-700 pb-5"></div>
+                    <div id="tags-container" class="flex flex-wrap gap-3 empty:hidden mb-6 border-b border-gray-300 pb-5"></div>
                     
                     {{-- Formulario para agregar un nuevo Extra --}}
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-start">
                         <div class="lg:col-span-1">
-                            <label class="text-[10px] text-gray-400 font-bold uppercase mb-1 block">🇲🇽 Español</label>
-                            <input type="text" id="tag-name" placeholder="Ej: Con limón" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2.5 text-sm outline-none focus:border-blue-500 transition">
+                            <label for="tag-name" class="text-[10px] text-gray-400 font-bold uppercase mb-1 block"><span class="fi fi-mx rounded-sm mr-1"></span> Español</label>
+                            <input type="text" id="tag-name" placeholder="Ej: Con limón" class="w-full bg-gray-800 text-white border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:border-blue-500 transition">
                         </div>
                         <div class="lg:col-span-1">
-                            <label class="text-[10px] text-gray-400 font-bold uppercase mb-1 block">🇺🇸 Inglés</label>
-                            <input type="text" id="tag-name-en" placeholder="Ej: With lemon" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2.5 text-sm outline-none focus:border-blue-500 transition">
+                            <label for="tag-name-en" class="text-[10px] text-gray-400 font-bold uppercase mb-1 block"><span class="fi fi-us rounded-sm mr-1"></span> Inglés</label>
+                            <input type="text" id="tag-name-en" placeholder="Ej: With lemon" class="w-full bg-gray-800 text-white border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:border-blue-500 transition">
                         </div>
                         <div class="lg:col-span-1">
-                            <label class="text-[10px] text-gray-400 font-bold uppercase mb-1 block">🇧🇷 Portugués</label>
-                            <input type="text" id="tag-name-pt" placeholder="Ej: Com limão" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2.5 text-sm outline-none focus:border-emerald-500 transition">
+                            <label for="tag-name-pt" class="text-[10px] text-gray-400 font-bold uppercase mb-1 block"><span class="fi fi-br rounded-sm mr-1"></span> Portugués</label>
+                            <input type="text" id="tag-name-pt" placeholder="Ej: Com limão" class="w-full bg-gray-800 text-white border border-gray-300 rounded-lg p-2.5 text-sm outline-none focus:border-emerald-500 transition">
                         </div>
                         <div class="lg:col-span-1">
-                            <label class="text-[10px] text-gray-400 font-bold uppercase mb-1 block">Precio (MXN)</label>
+                            <label for="tag-price" class="text-[10px] text-gray-400 font-bold uppercase mb-1 block">Precio (MXN)</label>
                             <div class="relative">
                                 <span class="absolute left-3 top-2.5 text-gray-400 text-sm">+$</span>
-                                <input type="number" id="tag-price" placeholder="0.00" min="0" step="0.50" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2.5 pl-8 text-sm outline-none focus:border-blue-500 transition font-mono">
+                                <input type="number" id="tag-price" placeholder="0.00" min="0" step="0.50" class="w-full bg-gray-800 text-white border border-gray-300 rounded-lg p-2.5 pl-8 text-sm outline-none focus:border-blue-500 transition font-mono">
                             </div>
                             
                             {{-- CONVERSOR PARA EL EXTRA --}}
@@ -208,7 +208,7 @@
                 <p class="text-gray-400 text-xs mt-3 leading-relaxed ml-2"><i class="fas fa-info-circle text-blue-400 mr-1"></i> {{ __('admin/products/products.modifier_hint') }}</p>
             </div>
 
-            <div class="border-t border-gray-700 pt-6 mt-6">
+            <div class="border-t border-gray-300 pt-6 mt-6">
                 <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-lg transform transition hover:scale-[1.01] text-lg">
                     <i class="fas fa-sync-alt mr-2"></i> {{ __('admin/products/products.btn_update') }}
                 </button>
@@ -217,6 +217,7 @@
     </div>
 </div>
 
+{{-- SCRIPT PARA PRECIO Y ETIQUETAS --}}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         
@@ -279,14 +280,14 @@
                 let precioTxt = tag.precio > 0 ? `<span class="text-emerald-400 text-base">+$${parseFloat(tag.precio).toFixed(2)} MXN</span>` : `<span class="text-slate-400 text-base">${textGratis}</span>`;
                 
                 badge.innerHTML = `
-                    <div class="flex justify-between items-center w-full border-b border-slate-700 pb-1 mb-1">
-                        <span class="text-orange-400">🇲🇽 ${tag.nombre}</span>
+                    <div class="flex justify-between items-center w-full border-b border-slate-300 pb-1 mb-1">
+                        <span class="text-orange-400"><span class="fi fi-mx rounded-sm mr-1"></span> ${tag.nombre}</span>
                     </div>
-                    <span class="text-blue-300 font-normal text-xs">🇺🇸 ${tag.nombre_en || 'N/A'}</span>
-                    <span class="text-emerald-300 font-normal text-xs">🇧🇷 ${tag.nombre_pt || 'N/A'}</span>
+                    <span class="text-blue-300 font-normal text-xs"><span class="fi fi-us rounded-sm mr-1"></span> ${tag.nombre_en || 'N/A'}</span>
+                    <span class="text-emerald-300 font-normal text-xs"><span class="fi fi-br rounded-sm mr-1"></span> ${tag.nombre_pt || 'N/A'}</span>
                     <div class="text-right mt-2 font-black">${precioTxt}</div>
-                    <button type="button" class="absolute top-2 right-2 text-slate-500 hover:text-red-400 transition-colors w-6 h-6 flex items-center justify-center rounded bg-slate-900" onclick="window.removeTag(${index})">
-                        <i class="fas fa-times"></i>
+                    <button type="button" aria-label="Eliminar extra" class="absolute top-2 right-2 text-slate-500 hover:text-red-400 transition-colors w-6 h-6 flex items-center justify-center rounded bg-slate-900" onclick="window.removeTag(${index})">
+                        <i class="fas fa-times pointer-events-none"></i>
                     </button>
                 `;
                 tagsContainer.appendChild(badge);
@@ -312,7 +313,6 @@
                         precio: precio 
                     });
                     
-                    // Limpiamos las cajitas y ocultamos el preview del precio
                     tagName.value = ''; 
                     tagNameEn.value = ''; 
                     tagNamePt.value = ''; 

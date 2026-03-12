@@ -16,7 +16,7 @@
         </a>
     </div>
 
-    <div class="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-8">
+    <div class="bg-slate-800 rounded-2xl shadow-xl border border-slate-300 p-8">
         <form action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
             @csrf
 
@@ -91,7 +91,7 @@
                     </div>
                 </div>
 
-                <div class="border-l border-slate-700 pl-8 space-y-6">
+                <div class="border-l border-slate-300 pl-8 space-y-6">
                     <label class="block text-sm font-bold text-slate-300">{{ __('admin/users/users.profile_image') }}</label>
 
                     <div>
@@ -136,7 +136,7 @@
                 </div>
             </div>
 
-            <div class="border-t border-slate-700 pt-6">
+            <div class="border-t border-slate-300 pt-6">
                 <button type="submit" 
                         class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl shadow-lg transform transition hover:scale-[1.01]">
                     <i class="fas fa-save mr-2"></i> {{ __('admin/users/users.btn_save_user') }}

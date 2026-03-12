@@ -30,14 +30,14 @@
                         <i class="fas fa-envelope text-slate-500"></i>
                     </div>
                     <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus placeholder="{{ __('auth/passwords.email_placeholder') }}"
-                        class="w-full pl-11 pr-4 py-3 bg-slate-950 border @error('email') border-red-500 @else border-slate-700 @enderror rounded-xl text-white focus:outline-none focus:border-orange-500 transition-colors">
+                        class="w-full pl-11 pr-4 py-3 bg-slate-950 border @error('email') border-red-500 @else border-slate-300 @enderror rounded-xl text-white focus:outline-none focus:border-orange-500 transition-colors">
                 </div>
                 @error('email')
                     <p class="text-red-500 text-xs mt-2 font-bold flex items-center gap-1"><i class="fas fa-exclamation-circle"></i> {{ $message }}</p>
                 @enderror
             </div>
 
-            <button type="submit" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+            <button type="submit" class="w-full bg-orange-700 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
                 <i class="fas fa-paper-plane"></i> {{ __('auth/passwords.btn_send_link') }}
             </button>
 

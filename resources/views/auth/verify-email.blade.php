@@ -4,9 +4,9 @@
 
 @section('contenido')
 <div class="min-h-[60vh] flex items-center justify-center py-12 px-4">
-    <div class="max-w-md w-full bg-slate-900 rounded-2xl shadow-2xl p-8 border border-slate-700 text-center">
+    <div class="max-w-md w-full bg-slate-900 rounded-2xl shadow-2xl p-8 border border-slate-300 text-center">
         
-        <div class="bg-orange-600/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+        <div class="bg-orange-700/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
             <i class="fas fa-envelope-open-text text-3xl text-orange-500"></i>
         </div>
 
@@ -24,7 +24,7 @@
         <div class="space-y-4">
             <form method="POST" action="{{ route('verification.send') }}">
                 @csrf
-                <button type="submit" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-orange-900/20">
+                <button type="submit" class="w-full bg-orange-700 hover:bg-orange-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-orange-900/20">
                     {{ __('auth/verify.btn_resend') }}
                 </button>
             </form>

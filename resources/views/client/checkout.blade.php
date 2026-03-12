@@ -22,7 +22,7 @@
 
 <div class="bg-gray-900 min-h-screen pb-20">
     
-    <div class="bg-gray-800 border-b border-gray-700 pt-8 pb-6 mb-8 shadow-sm">
+    <div class="bg-gray-800 border-b border-gray-300 pt-8 pb-6 mb-8 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <h1 class="text-3xl font-extrabold text-white flex items-center">
@@ -78,12 +78,12 @@
 
             <div class="lg:col-span-7 space-y-8">
                 
-                <div class="bg-gray-800 rounded-3xl p-6 sm:p-8 border border-gray-700 shadow-xl relative overflow-hidden">
+                <div class="bg-gray-800 rounded-3xl p-6 sm:p-8 border border-gray-300 shadow-xl relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-1.5 h-full bg-orange-500"></div>
                     
-                    <div class="flex justify-between items-center border-b border-gray-700 pb-4 mb-6">
+                    <div class="flex justify-between items-center border-b border-gray-300 pb-4 mb-6">
                         <h2 class="text-xl font-bold text-white flex items-center">
-                            <span class="bg-gray-900 text-orange-500 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm border border-gray-700">1</span>
+                            <span class="bg-gray-900 text-orange-500 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm border border-gray-300">1</span>
                             {{ __('client/checkout.where_to_send') }}
                         </h2>
                         
@@ -102,7 +102,7 @@
                         <input type="hidden" name="codigo_pais" id="codigo_pais_final" value="{{ old('codigo_pais', '+52') }}">
                         <div class="relative w-full">
                             <input type="tel" name="telefono" id="telefono_input" value="{{ old('telefono', Auth::check() ? Auth::user()->telefono : '') }}" placeholder="{{ __('client/checkout.cellphone_placeholder') }}"
-                                class="w-full bg-gray-900 text-white rounded-xl py-3 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner
+                                class="w-full bg-gray-900 text-white rounded-xl py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner
                                 @error('telefono') border-red-500 @enderror">
                         </div>
                         @error('telefono') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
@@ -112,7 +112,7 @@
                         <div class="sm:col-span-2">
                             <label class="block text-gray-400 text-xs font-bold uppercase tracking-wider mb-2">{{ __('client/checkout.street') }}</label>
                             <input type="text" name="calle" id="calle_input" value="{{ old('calle') }}" placeholder="{{ __('client/checkout.street_placeholder') }}"
-                                   class="w-full bg-gray-900 text-white rounded-xl px-4 py-3 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner
+                                   class="w-full bg-gray-900 text-white rounded-xl px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner
                                    @error('calle') border-red-500 @enderror">
                         </div>
                         <div>
@@ -120,7 +120,7 @@
                             <input type="text" name="numero" id="numero_input" value="{{ old('numero') }}" placeholder="{{ __('client/checkout.ext_num_placeholder') }}"
                                 maxlength="5"
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                                class="w-full bg-gray-900 text-white rounded-xl px-4 py-3 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner
+                                class="w-full bg-gray-900 text-white rounded-xl px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner
                                 @error('numero') border-red-500 @enderror">
                         </div>
                     </div>
@@ -132,7 +132,7 @@
                                 <input type="text" id="cp_input" name="codigo_postal" value="{{ old('codigo_postal') }}" placeholder="50000" 
                                     maxlength="5"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                                    class="w-full bg-gray-900 text-white rounded-xl px-4 py-3 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner
+                                    class="w-full bg-gray-900 text-white rounded-xl px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner
                                     @error('codigo_postal') border-red-500 @enderror">
                                 <i id="cp_loading" class="fas fa-circle-notch fa-spin absolute right-3 top-3.5 text-orange-500 hidden"></i>
                             </div>
@@ -143,14 +143,14 @@
                             
                             <div class="relative">
                                 <input type="text" id="colonia_input" autocomplete="off" placeholder="{{ __('client/checkout.neighborhood_placeholder') }}"
-                                    class="w-full bg-gray-900 text-white rounded-xl px-4 py-3 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner placeholder-gray-600">
+                                    class="w-full bg-gray-900 text-white rounded-xl px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner placeholder-gray-600">
                                 
-                                <ul id="colonia_autocomplete_list" class="hidden absolute z-50 w-full bg-gray-800 border border-gray-600 rounded-xl shadow-2xl mt-1 max-h-56 overflow-y-auto divide-y divide-gray-700">
+                                <ul id="colonia_autocomplete_list" class="hidden absolute z-50 w-full bg-gray-800 border border-gray-600 rounded-xl shadow-2xl mt-1 max-h-56 overflow-y-auto divide-y divide-gray-300">
                                 </ul>
                             </div>
 
                             <div id="colonia_select_wrapper" class="hidden relative">
-                                <select id="colonia_select" class="custom-select w-full bg-gray-900 text-white rounded-xl px-4 py-3 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner cursor-pointer">
+                                <select id="colonia_select" class="custom-select w-full bg-gray-900 text-white rounded-xl px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner cursor-pointer">
                                     <option value="" disabled selected>{{ __('client/checkout.select_neighborhood') }}</option>
                                 </select>
                                 <i class="fas fa-chevron-down absolute right-4 top-4 text-orange-500 pointer-events-none"></i>
@@ -165,24 +165,24 @@
                         <div>
                             <label class="block text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">{{ __('client/checkout.municipality') }}</label>
                             <input type="text" name="municipio" id="municipio_input" readonly value="{{ old('municipio') }}" tabindex="-1"
-                                   class="w-full bg-gray-900 text-gray-400 rounded-xl px-4 py-3 border border-gray-700 cursor-not-allowed">
+                                   class="w-full bg-gray-900 text-gray-400 rounded-xl px-4 py-3 border border-gray-300 cursor-not-allowed">
                         </div>
                         <div>
                             <label class="block text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">{{ __('client/checkout.state') }}</label>
                             <input type="text" name="estado" id="estado_input" readonly value="{{ old('estado') }}" tabindex="-1"
-                                   class="w-full bg-gray-900 text-gray-400 rounded-xl px-4 py-3 border border-gray-700 cursor-not-allowed">
+                                   class="w-full bg-gray-900 text-gray-400 rounded-xl px-4 py-3 border border-gray-300 cursor-not-allowed">
                         </div>
                     </div>
 
                     <div>
                         <label class="block text-gray-400 text-xs font-bold uppercase tracking-wider mb-2">{{ __('client/checkout.references') }}</label>
                         <textarea name="referencias" id="referencias_input" rows="2" placeholder="{{ __('client/checkout.references_placeholder') }}"
-                                  class="w-full bg-gray-900 text-white rounded-xl px-4 py-3 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner resize-none">{{ old('referencias') }}</textarea>
+                                  class="w-full bg-gray-900 text-white rounded-xl px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner resize-none">{{ old('referencias') }}</textarea>
                     </div>
 
                     {{-- CHECKBOX PARA GUARDAR DIRECCIÓN --}}
                     @auth
-                    <div class="mt-5 bg-gray-900/50 p-4 rounded-xl border border-gray-700/50">
+                    <div class="mt-5 bg-gray-900/50 p-4 rounded-xl border border-gray-300/50">
                         <label class="flex items-center gap-3 cursor-pointer group">
                             <div class="relative flex items-center justify-center shrink-0">
                                 <input type="checkbox" name="guardar_direccion" value="1" class="peer appearance-none w-5 h-5 border-2 border-gray-600 rounded bg-gray-900 checked:bg-orange-500 checked:border-orange-500 transition-colors cursor-pointer">
@@ -197,16 +197,16 @@
 
                 </div>
 
-                <div class="bg-gray-800 rounded-3xl p-6 sm:p-8 border border-gray-700 shadow-xl relative overflow-hidden">
+                <div class="bg-gray-800 rounded-3xl p-6 sm:p-8 border border-gray-300 shadow-xl relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-1.5 h-full bg-orange-500"></div>
                     
-                    <h2 class="text-xl font-bold text-white mb-6 flex items-center border-b border-gray-700 pb-4">
-                        <span class="bg-gray-900 text-orange-500 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm border border-gray-700">2</span>
+                    <h2 class="text-xl font-bold text-white mb-6 flex items-center border-b border-gray-300 pb-4">
+                        <span class="bg-gray-900 text-orange-500 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm border border-gray-300">2</span>
                         {{ __('client/checkout.how_to_pay') }}
                     </h2>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <label class="relative flex flex-col items-center justify-center p-4 bg-gray-900 rounded-2xl border-2 cursor-pointer transition-all hover:bg-gray-800 group payment-label {{ old('metodo_pago', 'efectivo') == 'efectivo' ? 'border-orange-500 shadow-[0_0_15px_rgba(234,88,12,0.2)]' : 'border-gray-700' }}">
+                        <label class="relative flex flex-col items-center justify-center p-4 bg-gray-900 rounded-2xl border-2 cursor-pointer transition-all hover:bg-gray-800 group payment-label {{ old('metodo_pago', 'efectivo') == 'efectivo' ? 'border-orange-500 shadow-[0_0_15px_rgba(234,88,12,0.2)]' : 'border-gray-300' }}">
                             <input type="radio" name="metodo_pago" value="efectivo" class="sr-only peer payment-radio" {{ old('metodo_pago', 'efectivo') == 'efectivo' ? 'checked' : '' }}>
                             <i class="fas fa-money-bill-wave text-2xl mb-2 payment-icon transition-colors {{ old('metodo_pago', 'efectivo') == 'efectivo' ? 'text-green-400' : 'text-gray-500' }}"></i>
                             <span class="font-bold text-white text-sm text-center">{{ __('client/checkout.cash') }}</span>
@@ -214,7 +214,7 @@
                             <i class="fas fa-check-circle check-icon absolute top-3 right-3 text-orange-500 text-lg transition-opacity duration-300 {{ old('metodo_pago', 'efectivo') == 'efectivo' ? 'opacity-100' : 'opacity-0' }}"></i>
                         </label>
 
-                        <label class="relative flex flex-col items-center justify-center p-4 bg-gray-900 rounded-2xl border-2 cursor-pointer transition-all hover:bg-gray-800 group payment-label {{ old('metodo_pago') == 'tarjeta_entrega' ? 'border-orange-500 shadow-[0_0_15px_rgba(234,88,12,0.2)]' : 'border-gray-700' }}">
+                        <label class="relative flex flex-col items-center justify-center p-4 bg-gray-900 rounded-2xl border-2 cursor-pointer transition-all hover:bg-gray-800 group payment-label {{ old('metodo_pago') == 'tarjeta_entrega' ? 'border-orange-500 shadow-[0_0_15px_rgba(234,88,12,0.2)]' : 'border-gray-300' }}">
                             <input type="radio" name="metodo_pago" value="tarjeta_entrega" class="sr-only peer payment-radio" {{ old('metodo_pago') == 'tarjeta_entrega' ? 'checked' : '' }}>
                             <i class="fas fa-credit-card text-2xl mb-2 payment-icon transition-colors {{ old('metodo_pago') == 'tarjeta_entrega' ? 'text-blue-400' : 'text-gray-500' }}"></i>
                             <span class="font-bold text-white text-sm text-center">{{ __('client/checkout.terminal') }}</span>
@@ -222,7 +222,7 @@
                             <i class="fas fa-check-circle check-icon absolute top-3 right-3 text-orange-500 text-lg transition-opacity duration-300 {{ old('metodo_pago') == 'tarjeta_entrega' ? 'opacity-100' : 'opacity-0' }}"></i>
                         </label>
 
-                        <label class="relative flex flex-col items-center justify-center p-4 bg-gray-900 rounded-2xl border-2 cursor-pointer transition-all hover:bg-gray-800 group payment-label {{ old('metodo_pago') == 'stripe' ? 'border-orange-500 shadow-[0_0_15px_rgba(234,88,12,0.2)]' : 'border-gray-700' }}">
+                        <label class="relative flex flex-col items-center justify-center p-4 bg-gray-900 rounded-2xl border-2 cursor-pointer transition-all hover:bg-gray-800 group payment-label {{ old('metodo_pago') == 'stripe' ? 'border-orange-500 shadow-[0_0_15px_rgba(234,88,12,0.2)]' : 'border-gray-300' }}">
                             <input type="radio" name="metodo_pago" value="stripe" class="sr-only peer payment-radio" id="radio-stripe" {{ old('metodo_pago') == 'stripe' ? 'checked' : '' }}>
                             <i class="fas fa-lock text-2xl mb-2 payment-icon transition-colors {{ old('metodo_pago') == 'stripe' ? 'text-purple-400' : 'text-gray-500' }}"></i>
                             <span class="font-bold text-white text-sm text-center">{{ __('client/checkout.online') }}</span>
@@ -236,14 +236,14 @@
                             <i class="fas fa-shield-alt text-purple-400 mr-1"></i> {{ __('client/checkout.card_data') }}
                         </label>
                         
-                        <div id="card-element" class="bg-gray-800 p-4 rounded-lg border border-gray-700"></div>
+                        <div id="card-element" class="bg-gray-800 p-4 rounded-lg border border-gray-300"></div>
                         <div id="card-errors" role="alert" class="text-red-400 text-xs mt-2 font-bold"></div>
                     </div>
                 </div>
             </div>
 
             <div class="lg:col-span-5">
-                <div class="bg-gradient-to-b from-gray-800 to-gray-900 p-6 sm:p-8 rounded-3xl border border-gray-700 shadow-2xl sticky top-28 lg:top-24">
+                <div class="bg-gradient-to-b from-gray-800 to-gray-900 p-6 sm:p-8 rounded-3xl border border-gray-300 shadow-2xl sticky top-28 lg:top-24">
                     
                     <h3 class="text-xl font-black text-white mb-6 flex items-center">
                         <i class="fas fa-receipt text-gray-500 mr-2"></i> {{ __('client/checkout.summary') }}
@@ -255,9 +255,9 @@
                                 $productoModel = \App\Models\Product::find($item['id_producto']);
                                 $nombreItem = $productoModel ? $productoModel->nombre_traducido : $item['nombre'];
                             @endphp
-                            <div class="flex justify-between items-center text-sm border-b border-gray-700/50 pb-3 last:border-0 last:pb-0">
+                            <div class="flex justify-between items-center text-sm border-b border-gray-300/50 pb-3 last:border-0 last:pb-0">
                                 <div class="flex items-center gap-3">
-                                    <span class="bg-gray-700 text-white rounded-lg w-7 h-7 flex items-center justify-center text-xs font-bold">{{ $item['cantidad'] }}x</span>
+                                    <span class="bg-orange-700 text-white rounded-lg w-7 h-7 flex items-center justify-center text-xs font-bold">{{ $item['cantidad'] }}x</span>
                                     <span class="text-gray-300">{{ $nombreItem }}</span>
                                 </div>
                                 <span class="text-white font-bold">{{ formatCurrency($item['precio'] * $item['cantidad']) }}</span>
@@ -265,7 +265,7 @@
                         @endforeach
                     </div>
 
-                    <div class="bg-gray-900/50 rounded-2xl p-5 border border-gray-700 space-y-3 mb-8">
+                    <div class="bg-gray-900/50 rounded-2xl p-5 border border-gray-300 space-y-3 mb-8">
                         <div class="flex justify-between text-gray-400 text-sm font-medium">
                             <span>{{ __('client/checkout.subtotal') }}</span>
                             <span>{{ formatCurrency($subtotal) }}</span>
@@ -280,21 +280,21 @@
                             @endif
                         </div>
                         
-                        <div class="border-t border-gray-700 border-dashed my-3"></div>
+                        <div class="border-t border-gray-300 border-dashed my-3"></div>
 
                         <div class="flex justify-between items-end">
                             <span class="text-gray-400 font-bold uppercase tracking-wider text-xs">{{ __('client/checkout.total_to_pay') }}</span>
-                            <span class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
+                            <span class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-700">
                                 {{ formatCurrency($totalFinal) }}
                             </span>
                         </div>
                     </div>
 
                     {{-- INICIO DE SECCIÓN LEGAL --}}
-                    <div class="mb-6 bg-gray-900/30 p-4 rounded-xl border border-gray-700/50">
+                    <div class="mb-6 bg-gray-900/30 p-4 rounded-xl border border-gray-300">
                         <label class="flex items-start gap-3 cursor-pointer group">
                             <div class="relative flex items-center justify-center shrink-0 mt-0.5">
-                                <input type="checkbox" id="legal_consent" name="legal_consent" class="peer appearance-none w-5 h-5 border-2 border-gray-600 rounded bg-gray-900 checked:bg-orange-500 checked:border-orange-500 transition-colors cursor-pointer">
+                                <input type="checkbox" id="legal_consent" name="legal_consent" class="peer appearance-none w-5 h-5 border-2 border-gray-300 rounded bg-gray-900 checked:bg-orange-500 checked:border-orange-500 transition-colors cursor-pointer">
                                 <i class="fas fa-check absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"></i>
                             </div>
                             <span class="text-xs text-gray-400 leading-relaxed select-none">
@@ -307,7 +307,7 @@
                     </div>
                     {{-- FIN DE SECCIÓN LEGAL --}}
 
-                    <button type="button" id="btn-confirmar" class="relative flex items-center justify-center w-full py-4 px-6 font-black text-white text-lg rounded-2xl shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_15px_30px_-10px_rgba(234,88,12,0.5)] active:scale-95 group overflow-hidden bg-orange-600 hover:bg-orange-50 border border-orange-400">
+                    <button type="button" id="btn-confirmar" class="relative flex items-center justify-center w-full py-4 px-6 font-black text-white text-lg rounded-2xl shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_15px_30px_-10px_rgba(234,88,12,0.5)] active:scale-95 group overflow-hidden bg-orange-700 hover:bg-orange-400 border border-orange-400">
                         <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer"></div>
                         <span class="relative z-10 flex items-center">
                             <i class="fas fa-check-circle mr-3 transform group-hover:scale-110 transition-transform"></i>
@@ -328,18 +328,18 @@
 @auth
 @if(Auth::user()->addresses()->count() > 0)
 <div id="modal-direcciones" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-opacity duration-300">
-    <div class="bg-gray-800 border border-gray-700 rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 opacity-0 transition-all duration-300 flex flex-col max-h-[80vh]" id="modal-direcciones-panel">
+    <div class="bg-gray-800 border border-gray-300 rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 opacity-0 transition-all duration-300 flex flex-col max-h-[80vh]" id="modal-direcciones-panel">
         
-        <div class="p-6 border-b border-gray-700 flex justify-between items-center bg-gray-900/50">
+        <div class="p-6 border-b border-gray-300 flex justify-between items-center bg-gray-900/50">
             <h3 class="text-xl font-bold text-white"><i class="fas fa-bookmark text-orange-500 mr-2"></i> {{ __('client/checkout.modal_addresses_title') }}</h3>
-            <button onclick="cerrarModalDirecciones()" class="text-gray-400 hover:text-red-400 transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-700">
+            <button onclick="cerrarModalDirecciones()" class="text-gray-400 hover:text-red-400 transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-300">
                 <i class="fas fa-times"></i>
             </button>
         </div>
 
         <div class="p-6 overflow-y-auto custom-scrollbar space-y-4 flex-1">
             @foreach(Auth::user()->addresses as $dir)
-                <div class="bg-gray-900 border border-gray-700 rounded-2xl p-4 hover:border-orange-500/50 cursor-pointer transition-colors group relative"
+                <div class="bg-gray-900 border border-gray-300 rounded-2xl p-4 hover:border-orange-500/50 cursor-pointer transition-colors group relative"
                      onclick="seleccionarDireccion('{{ $dir->codigo_pais }}', '{{ $dir->telefono }}', '{{ $dir->calle }}', '{{ $dir->numero }}', '{{ $dir->codigo_postal }}', '{{ $dir->colonia }}', '{{ $dir->municipio }}', '{{ $dir->estado }}', '{{ $dir->referencias }}')">
                     
                     @if($dir->is_default)

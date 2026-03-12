@@ -28,13 +28,13 @@
                 </p>
                 
                 <div class="flex flex-wrap gap-4 pt-4">
-                    <a href="{{ route('menu') }}" class="bg-orange-600 hover:bg-orange-500 text-white px-8 py-4 rounded-xl font-black transition-all transform hover:-translate-y-1 shadow-[0_0_20px_rgba(234,88,12,0.4)] flex items-center gap-2">
-                        <i class="fas fa-utensils"></i> {{ __('client/home.btn_menu') }}
-                    </a>
+                    <a href="{{ route('menu') }}" class="bg-orange-700 hover:bg-orange-700 text-white px-8 py-4 rounded-xl font-black transition-all transform hover:-translate-y-1 shadow-[0_0_20px_rgba(194,65,12,0.4)] flex items-center gap-2">
+    			<i class="fas fa-utensils"></i> {{ __('client/home.btn_menu') }}
+		</a>
                     
                     @auth
                         @if($ultimoPedido)
-                            <a href="{{ route('ticket', $ultimoPedido->id) }}" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-300 px-8 py-4 rounded-xl font-bold transition flex items-center group">
+                            <a href="{{ route('ticket', $ultimoPedido->id) }}" class="bg-slate-800 hover:bg-slate-700 border border-slate-300 text-slate-300 px-8 py-4 rounded-xl font-bold transition flex items-center group">
                                 <i class="fas fa-history mr-2 text-orange-500 group-hover:rotate-180 transition-transform"></i>
                                 {{ __('client/home.btn_ticket') }}
                             </a>
@@ -63,7 +63,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach($ofertas as $oferta)
-                <a href="{{ route('offers.index') }}" class="block relative bg-slate-800 rounded-3xl overflow-hidden group hover:-translate-y-2 transition-transform duration-300 shadow-xl border border-slate-700 hover:border-orange-500/50">
+                <a href="{{ route('offers.index') }}" class="block relative bg-slate-800 rounded-3xl overflow-hidden group hover:-translate-y-2 transition-transform duration-300 shadow-xl border border-slate-300 hover:border-orange-500/50">
                     <div class="h-40 relative bg-slate-900">
                         @if($oferta->imagen_url)
                             <img src="{{ asset('storage/' . $oferta->imagen_url) }}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
@@ -77,7 +77,7 @@
                             {{ $oferta->porcentaje > 0 ? "-{$oferta->porcentaje}%" : __('client/offers.only') . ' ' . formatCurrency($oferta->precio_promo) }}
                         </span>
                         {{-- APLICANDO ACCESORES DE TRADUCCIÓN --}}
-                        <h3 class="text-xl font-bold text-white mb-1 group-hover:text-orange-400 transition-colors">{{ $oferta->titulo_traducido }}</h3>
+                        <h2 class="text-xl font-bold text-white mb-1 group-hover:text-orange-400 transition-colors">{{ $oferta->titulo_traducido }}</h2>
                         <p class="text-slate-400 text-xs line-clamp-2">{{ $oferta->descripcion_traducida }}</p>
                     </div>
                 </a>
@@ -99,7 +99,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($platosPopulares as $producto)
-                <div class="bg-slate-800 rounded-3xl overflow-hidden shadow-lg border border-slate-700 hover:border-orange-500/50 transition duration-300 group flex flex-col relative hover:-translate-y-1">
+                <div class="bg-slate-800 rounded-3xl overflow-hidden shadow-lg border border-slate-300 hover:border-orange-500/50 transition duration-300 group flex flex-col relative hover:-translate-y-1">
                     
                     <div class="h-48 overflow-hidden relative cursor-pointer" onclick="window.abrirModalHome({{ json_encode($producto) }}, '{{ app()->getLocale() }}')">
                         <img src="{{ asset('imagenes/' . $producto->imagen_url) }}" alt="{{ $producto->nombre_traducido }}" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 opacity-90 group-hover:opacity-100">
@@ -108,12 +108,12 @@
                         <div class="absolute bottom-3 right-3 flex flex-col items-end">
                             @if($producto->precio_final < $producto->precio)
                                 <span class="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded-t-md shadow-md animate-pulse">{{ __('client/home.sale_badge') }}</span>
-                                <div class="bg-orange-600 text-white font-black px-3 py-1 rounded-b-md rounded-tl-md text-sm shadow-md flex items-center gap-2">
+                                <div class="bg-orange-700 text-white font-black px-3 py-1 rounded-b-md rounded-tl-md text-sm shadow-md flex items-center gap-2">
                                     <span class="line-through text-orange-300 text-[10px]">{{ formatCurrency($producto->precio) }}</span>
                                     <span>{{ formatCurrency($producto->precio_final) }}</span>
                                 </div>
                             @else
-                                <div class="bg-orange-600 text-white font-black px-3 py-1 rounded-xl text-sm shadow-md">
+                                <div class="bg-orange-700 text-white font-black px-3 py-1 rounded-xl text-sm shadow-md">
                                     {{ formatCurrency($producto->precio) }}
                                 </div>
                             @endif
@@ -125,15 +125,15 @@
                             <span class="text-[10px] font-black text-orange-400 uppercase tracking-widest bg-orange-500/10 px-3 py-1 rounded-full border border-orange-500/20 mb-3 inline-block">
                                 {{ $producto->categoria_traducida }}
                             </span>
-                            <h3 class="text-lg font-black text-white mb-2 leading-tight cursor-pointer hover:text-orange-500 transition" onclick="window.abrirModalHome({{ json_encode($producto) }}, '{{ app()->getLocale() }}')">
+                            <h2 class="text-lg font-black text-white mb-2 leading-tight cursor-pointer hover:text-orange-500 transition" onclick="window.abrirModalHome({{ json_encode($producto) }}, '{{ app()->getLocale() }}')">
                                 {{ $producto->nombre_traducido }}
-                            </h3>
+                            </h2>
                             <p class="text-slate-400 text-sm mb-4 line-clamp-2">
                                 {{ $producto->descripcion_traducida }}
                             </p>
                         </div>
                         
-                        <button onclick="window.abrirModalHome({{ json_encode($producto) }}, '{{ app()->getLocale() }}')" class="w-full bg-slate-700 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-colors duration-300 flex items-center justify-center gap-2 mt-auto border border-slate-600 hover:border-orange-500">
+                        <button onclick="window.abrirModalHome({{ json_encode($producto) }}, '{{ app()->getLocale() }}')" class="w-full bg-slate-700 hover:bg-orange-700 text-white font-bold py-3 rounded-xl transition-colors duration-300 flex items-center justify-center gap-2 mt-auto border border-slate-600 hover:border-orange-500">
                             <i class="fas fa-plus"></i> {{ __('client/home.add_to_order') }}
                         </button>
                     </div>
@@ -143,34 +143,34 @@
     </section>
 
     {{-- SECCIÓN: POR QUÉ ELEGIRNOS --}}
-    <section class="mb-10 bg-slate-800/50 rounded-3xl p-8 sm:p-12 border border-slate-700">
+    <section class="mb-10 bg-slate-800/50 rounded-3xl p-8 sm:p-12 border border-slate-300">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
                 <div class="w-16 h-16 mx-auto bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-500 text-3xl mb-4 transform transition hover:-translate-y-2">
                     <i class="fas fa-hamburger"></i>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">{{ __('client/home.quality_title') }}</h3>
+                <h2 class="text-xl font-bold text-white mb-2">{{ __('client/home.quality_title') }}</h2>
                 <p class="text-slate-400 text-sm">{{ __('client/home.quality_desc') }}</p>
             </div>
             <div>
                 <div class="w-16 h-16 mx-auto bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-500 text-3xl mb-4 transform transition hover:-translate-y-2">
                     <i class="fas fa-motorcycle"></i>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">{{ __('client/home.delivery_title') }}</h3>
+                <h2 class="text-xl font-bold text-white mb-2">{{ __('client/home.delivery_title') }}</h2>
                 <p class="text-slate-400 text-sm">{{ __('client/home.delivery_desc') }}</p>
             </div>
             <div>
                 <div class="w-16 h-16 mx-auto bg-green-500/10 rounded-2xl flex items-center justify-center text-green-500 text-3xl mb-4 transform transition hover:-translate-y-2">
                     <i class="fas fa-shield-alt"></i>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">{{ __('client/home.secure_title') }}</h3>
+                <h2 class="text-xl font-bold text-white mb-2">{{ __('client/home.secure_title') }}</h2>
                 <p class="text-slate-400 text-sm">{{ __('client/home.secure_desc') }}</p>
             </div>
         </div>
     </section>
     
     {{-- SECCIÓN: UBICACIÓN Y CONTACTO --}}
-    <section class="mb-20 bg-slate-800/50 rounded-3xl p-6 sm:p-10 border border-slate-700">
+    <section class="mb-20 bg-slate-800/50 rounded-3xl p-6 sm:p-10 border border-slate-300">
         <div class="flex flex-col lg:flex-row gap-10 items-center">
             
             <div class="w-full lg:w-1/3 space-y-6">
@@ -207,7 +207,7 @@
                         <i class="fas fa-phone-alt"></i>
                     </div>
                     <div>
-                        <h4 class="text-white font-bold text-lg">{{ __('client/home.call_us') }}</h4>
+                        <h2 class="text-white font-bold text-lg">{{ __('client/home.call_us') }}</h2>
                         <p class="text-slate-400 text-sm">
                             <a href="tel:+527251361324" class="hover:text-orange-400 transition-colors duration-300 font-mono text-base">
                                 +52 725 136 1324
@@ -221,9 +221,10 @@
                 </a>
             </div>
 
-            <div class="w-full lg:w-2/3 h-80 sm:h-[400px] rounded-2xl overflow-hidden border border-slate-700 shadow-2xl relative group">
+            <div class="w-full lg:w-2/3 h-80 sm:h-[400px] rounded-2xl overflow-hidden border border-slate-300 shadow-2xl relative group">
                 <div class="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition-colors duration-500 pointer-events-none z-10"></div>
-                <iframe 
+                <iframe
+title="Mapa de ubicación de K-Hamburguesas" 
                     src="https://maps.google.com/maps?q=Clasi-k+Hamburguesas,+Av.+Miguel+Hidalgo+14,+Villa+de+Almoloya+de+Juárez&t=&z=16&ie=UTF8&iwloc=&output=embed" 
                     width="100%" 
                     height="100%" 
@@ -242,7 +243,7 @@
 <div id="home-product-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6" aria-modal="true">
     <div class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onclick="cerrarModalHome()"></div>
 
-    <div class="relative w-full max-w-2xl bg-slate-800 rounded-3xl shadow-2xl border border-slate-700 overflow-hidden transform transition-all translate-y-8 opacity-0 scale-95 duration-300 flex flex-col max-h-[90vh]" id="home-modal-container">
+    <div class="relative w-full max-w-2xl bg-slate-800 rounded-3xl shadow-2xl border border-slate-300 overflow-hidden transform transition-all translate-y-8 opacity-0 scale-95 duration-300 flex flex-col max-h-[90vh]" id="home-modal-container">
         
         <button onclick="cerrarModalHome()" class="absolute top-4 right-4 z-50 w-10 h-10 bg-black/50 hover:bg-red-500 text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-colors border border-white/10">
             <i class="fas fa-times text-lg"></i>
@@ -255,15 +256,15 @@
 
         <div class="p-6 sm:p-8 overflow-y-auto custom-scrollbar">
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-4 gap-2">
-                <h3 class="text-2xl sm:text-3xl font-black text-white leading-tight drop-shadow-lg" id="home-modal-title">Platillo</h3>
-                <p class="text-2xl font-black text-orange-500 bg-slate-900 px-4 py-1.5 rounded-xl shadow-inner border border-slate-700 inline-block w-max" id="home-modal-price">$0.00</p>
+                <h2 class="text-2xl sm:text-3xl font-black text-white leading-tight drop-shadow-lg" id="home-modal-title">Platillo</h2>
+                <p class="text-2xl font-black text-orange-500 bg-slate-900 px-4 py-1.5 rounded-xl shadow-inner border border-slate-300 inline-block w-max" id="home-modal-price">$0.00</p>
             </div>
             
             <p class="text-slate-400 text-sm mb-6 leading-relaxed" id="home-modal-desc">Detalles...</p>
 
             <div class="space-y-6">
                 
-                <div id="home-opciones-contenedor" class="hidden bg-slate-900/50 p-4 rounded-2xl border border-slate-700/50">
+                <div id="home-opciones-contenedor" class="hidden bg-slate-900/50 p-4 rounded-2xl border border-slate-300/50">
                     <label class="block text-xs font-bold text-orange-400 mb-3 uppercase tracking-wider"><i class="fas fa-sliders-h mr-1"></i> {{ __('client/home.customize_dish') }}</label>
                     <div id="home-modal-opciones-dinamicas" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     </div>
@@ -271,22 +272,22 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-end">
                     <div class="space-y-4">
-                        <div class="flex items-center justify-between bg-slate-900 p-2 border border-slate-700 rounded-2xl shadow-inner">
+                        <div class="flex items-center justify-between bg-slate-900 p-2 border border-slate-300 rounded-2xl shadow-inner">
                             <span class="text-slate-400 font-bold ml-4 uppercase tracking-wider text-xs flex items-center gap-2"><i class="fas fa-utensils text-slate-500"></i> {{ __('client/home.quantity') }}</span>
                             <div class="flex items-center space-x-2">
-                                <button onclick="cambiarCantidadHome(-1)" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-slate-800 border border-slate-700 text-white hover:bg-orange-500 transition font-bold text-xl active:scale-95">-</button>
+                                <button onclick="cambiarCantidadHome(-1)" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-slate-800 border border-slate-300 text-white hover:bg-orange-500 transition font-bold text-xl active:scale-95">-</button>
                                 <span id="home-cantidad-span" class="text-white font-black text-2xl w-10 text-center transition-transform">1</span>
-                                <button onclick="cambiarCantidadHome(1)" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-orange-600 text-white hover:bg-orange-500 transition font-bold text-xl active:scale-95 shadow-[0_0_10px_rgba(234,88,12,0.3)]">+</button>
+                                <button onclick="cambiarCantidadHome(1)" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-orange-700 text-white hover:bg-orange-500 transition font-bold text-xl active:scale-95 shadow-[0_0_10px_rgba(234,88,12,0.3)]">+</button>
                             </div>
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">{{ __('client/home.special_notes') }}</label>
-                            <textarea id="home-modal-notas" rows="1" class="w-full bg-slate-900 text-white border border-slate-700 rounded-xl p-3 focus:ring-2 focus:ring-orange-500 outline-none transition-all text-sm placeholder-slate-600 resize-none shadow-inner" placeholder="{{ __('client/home.placeholder_notes') }}"></textarea>
+                            <textarea id="home-modal-notas" rows="1" class="w-full bg-slate-900 text-white border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-orange-500 outline-none transition-all text-sm placeholder-slate-600 resize-none shadow-inner" placeholder="{{ __('client/home.placeholder_notes') }}"></textarea>
                         </div>
                     </div>
 
-                    <button onclick="agregarAlCarritoHome()" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-black py-4 rounded-2xl shadow-[0_0_15px_rgba(234,88,12,0.4)] hover:shadow-[0_0_25px_rgba(234,88,12,0.6)] transform transition hover:-translate-y-0.5 active:scale-[0.98] flex flex-col items-center justify-center gap-1 group h-full max-h-[110px]">
+                    <button onclick="agregarAlCarritoHome()" class="w-full bg-orange-700 hover:bg-orange-500 text-white font-black py-4 rounded-2xl shadow-[0_0_15px_rgba(234,88,12,0.4)] hover:shadow-[0_0_25px_rgba(234,88,12,0.6)] transform transition hover:-translate-y-0.5 active:scale-[0.98] flex flex-col items-center justify-center gap-1 group h-full max-h-[110px]">
                         <span id="home-btn-add-text" class="text-sm sm:text-base flex items-center gap-2 uppercase tracking-wider"><i class="fas fa-shopping-cart group-hover:animate-bounce"></i> {{ __('client/home.add_cart') }}</span>
                         <span id="home-modal-total" class="bg-black/20 px-4 py-1 rounded-xl text-xl sm:text-2xl font-black tracking-wide border border-white/10 w-3/4 text-center mt-1">$0.00</span>
                     </button>
@@ -299,15 +300,15 @@
 {{-- MODAL DE UPSELLING --}}
 <div id="upsell-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 sm:p-6" aria-modal="true">
     <div class="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity" onclick="cerrarUpsellModal()"></div>
-    <div id="upsell-modal-panel" class="relative w-full max-w-md bg-slate-800 rounded-3xl shadow-2xl border border-slate-700 overflow-hidden transform scale-95 opacity-0 transition-all duration-300 text-center p-8">
+    <div id="upsell-modal-panel" class="relative w-full max-w-md bg-slate-800 rounded-3xl shadow-2xl border border-slate-300 overflow-hidden transform scale-95 opacity-0 transition-all duration-300 text-center p-8">
         <div class="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
             <i class="fas fa-check text-4xl text-emerald-500"></i>
         </div>
-        <h3 class="text-2xl font-black text-white mb-2">{{ __('client/home.added_to_cart') }}</h3>
+        <h2 class="text-2xl font-black text-white mb-2">{{ __('client/home.added_to_cart') }}</h2>
         <p class="text-slate-400 text-sm mb-8">{{ __('client/home.upsell_desc') }}</p>
         
         <div class="flex flex-col gap-3">
-            <a href="{{ route('menu') }}" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-orange-500/30 transition-all">
+            <a href="{{ route('menu') }}" class="w-full bg-orange-700 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-orange-500/30 transition-all">
                 {{ __('client/home.btn_menu') }}
             </a>
             <button onclick="cerrarUpsellModal()" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3.5 rounded-xl transition-all">
@@ -376,13 +377,13 @@
                                     <div class="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6 shadow-inner bg-${color}-500/20 text-${color}-500">
                                         ${icon}
                                     </div>
-                                    <h3 class="text-2xl font-black text-white mb-2 uppercase tracking-wide">${title}</h3>
+                                    <h2 class="text-2xl font-black text-white mb-2 uppercase tracking-wide">${title}</h2>
                                     <p class="text-slate-400 text-sm mb-8 leading-relaxed">${text}</p>
                                     <div class="flex flex-col gap-3">
                                         <a href="/ticket/${data.id}" class="w-full font-bold py-3.5 rounded-xl shadow-lg transition-all bg-${color}-600 hover:bg-${color}-500 text-white">
                                             ${btnTicket}
                                         </a>
-                                        <button onclick="cerrarAvisoRepartidor('${data.notificacion}')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 rounded-xl transition-all border border-slate-700">
+                                        <button onclick="cerrarAvisoRepartidor('${data.notificacion}')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 rounded-xl transition-all border border-slate-300">
                                             ${btnClose}
                                         </button>
                                     </div>

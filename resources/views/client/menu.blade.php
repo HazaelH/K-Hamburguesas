@@ -12,19 +12,19 @@
     </div>
 
     {{-- BARRA DE CONTROLES (Sticky) --}}
-    <div class="sticky top-0 z-30 bg-gray-900/95 backdrop-blur-md border-b border-gray-800 py-4 mb-6 shadow-sm">
+    <div class="sticky top-0 z-30 bg-gray-900/95 backdrop-blur-md border-b border-gray-300 py-4 mb-6 shadow-sm">
         <div class="container mx-auto px-4 space-y-5">
             
             <div class="flex flex-col sm:flex-row gap-4 justify-between items-center">
                 <div class="relative w-full sm:w-1/2 lg:w-1/3">
                     <i class="fas fa-search absolute left-4 top-3.5 text-gray-500"></i>
                     <input type="text" id="search-input" placeholder="{{ __('client/menu.search_placeholder') }}" 
-                           class="w-full bg-gray-800 text-white rounded-xl pl-11 pr-4 py-3 border border-gray-700 focus:ring-2 focus:ring-orange-500 transition-all text-sm shadow-inner">
+                           class="w-full bg-gray-800 text-white rounded-xl pl-11 pr-4 py-3 border border-gray-300 focus:ring-2 focus:ring-orange-500 transition-all text-sm shadow-inner">
                 </div>
 
                 <div class="flex gap-3 w-full sm:w-auto justify-between sm:justify-end">
                     <div class="w-full sm:w-48">
-                        <select id="sort-select" class="w-full bg-gray-800 text-white rounded-xl px-4 py-3 border border-gray-700 focus:ring-2 focus:ring-orange-500 outline-none cursor-pointer text-sm shadow-sm">
+                        <select id="sort-select" aria-label="Ordenar productos" class="w-full bg-gray-800 text-white rounded-xl px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-orange-500 outline-none cursor-pointer text-sm shadow-sm">
                             <option value="default">{{ __('client/menu.sort_recommended') }}</option>
                             <option value="price-asc">{{ __('client/menu.sort_price_low') }}</option>
                             <option value="price-desc">{{ __('client/menu.sort_price_high') }}</option>
@@ -32,7 +32,7 @@
                         </select>
                     </div>
 
-                    <div class="flex bg-gray-800 rounded-xl p-1.5 border border-gray-700 flex-shrink-0 shadow-sm">
+                    <div class="flex bg-gray-800 rounded-xl p-1.5 border border-gray-300 flex-shrink-0 shadow-sm">
                         <button onclick="setGlobalView('grid')" id="btn-view-grid" class="p-2 w-10 h-10 flex items-center justify-center text-orange-500 bg-gray-900 rounded-lg transition-all" title="{{ __('client/menu.view_grid') }}">
                             <i class="fas fa-th-large"></i>
                         </button>
@@ -50,7 +50,7 @@
                 @endphp
 
                 <div class="block md:hidden">
-                    <select id="mobile-category-select" onchange="cambiarCategoria(this.value, null)" class="w-full bg-gray-800 text-white rounded-xl px-4 py-3 border border-gray-700 focus:ring-2 focus:ring-orange-500 font-bold text-sm shadow-sm">
+                    <select id="mobile-category-select" aria-label="Filtrar por categoría" onchange="cambiarCategoria(this.value, null)" class="w-full bg-gray-800 text-white rounded-xl px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-orange-500 font-bold text-sm shadow-sm">
                         <option value="Todas">{{ __('client/menu.all_catalog') }}</option>
                         @foreach($categoriasBd as $cat)
                             @php
@@ -65,7 +65,7 @@
 
                 <div class="hidden md:flex flex-wrap gap-3 pb-2 items-center justify-center">
                     <button onclick="cambiarCategoria('Todas', this)" 
-                            class="filter-btn active px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-orange-600 text-white shadow-[0_4px_15px_rgba(234,88,12,0.3)] border border-orange-500 transform hover:-translate-y-1"
+                            class="filter-btn active px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-orange-700 text-white shadow-[0_4px_15px_rgba(234,88,12,0.3)] border border-orange-500 transform hover:-translate-y-1"
                             data-category="Todas">
                         <i class="fas fa-star text-orange-200 mr-1"></i> {{ __('client/menu.all_menu') }}
                     </button>
@@ -77,7 +77,7 @@
                             if (app()->getLocale() == 'pt' && !empty($cat->nombre_pt)) $nombreMostrar = $cat->nombre_pt;
                         @endphp
                         <button onclick="cambiarCategoria('{{ $cat->nombre }}', this)" 
-                                class="filter-btn px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white border border-gray-700 hover:shadow-lg transform hover:-translate-y-1"
+                                class="filter-btn px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white border border-gray-300 hover:shadow-lg transform hover:-translate-y-1"
                                 data-category="{{ $cat->nombre }}">
                             {{ $nombreMostrar }}
                         </button>
@@ -93,7 +93,7 @@
         
         <div id="no-results-msg" class="hidden text-center py-16">
             <i class="fas fa-ghost text-5xl text-gray-600 mb-4"></i>
-            <h3 class="text-xl font-bold text-white">{{ __('client/menu.no_results') }}</h3>
+            <h2 class="text-xl font-bold text-white">{{ __('client/menu.no_results') }}</h2>
             <p class="text-gray-400 mt-2 text-sm">{{ __('client/menu.no_results_desc') }}</p>
         </div>
 
@@ -106,7 +106,7 @@
                     $precioFiltro = convertCurrencyValue($producto->precio_final ?? $producto->precio);
                 @endphp
 
-                <div class="product-card flex flex-col h-full transition-all duration-500 transform scale-100 bg-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-gray-700 relative {{ $producto->is_active ? 'hover:border-orange-500/50 hover:-translate-y-1 hover:shadow-2xl' : 'opacity-60 grayscale' }}"
+                <div class="product-card flex flex-col h-full transition-all duration-500 transform scale-100 bg-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-gray-300 relative {{ $producto->is_active ? 'hover:border-orange-500/50 hover:-translate-y-1 hover:shadow-2xl' : 'opacity-60 grayscale' }}"
                      data-categoria="{{ $producto->categoria }}"
                      data-precio="{{ $precioFiltro }}"
                      data-nombre="{{ strtolower($producto->nombre_traducido) }}"
@@ -125,12 +125,12 @@
                             <div class="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 flex flex-col items-end">
                                 @if($producto->precio_final < $producto->precio)
                                     <span class="bg-red-600 text-white text-[10px] sm:text-xs font-black px-3 py-0.5 rounded-t-md shadow-md animate-pulse">{{ __('client/menu.sale_badge') }}</span>
-                                    <div class="bg-orange-600 text-white font-black px-2 py-1 sm:px-4 sm:py-1.5 rounded-b-md rounded-tl-md text-xs sm:text-lg shadow-md flex items-center gap-2">
+                                    <div class="bg-orange-700 text-white font-black px-2 py-1 sm:px-4 sm:py-1.5 rounded-b-md rounded-tl-md text-xs sm:text-lg shadow-md flex items-center gap-2">
                                         <span class="line-through text-orange-300 text-[10px] sm:text-xs opacity-80">{{ formatCurrency($producto->precio) }}</span>
                                         <span>{{ formatCurrency($producto->precio_final) }}</span>
                                     </div>
                                 @else
-                                    <div class="bg-orange-600 text-white font-black px-3 py-1 sm:px-4 sm:py-1.5 rounded-xl text-xs sm:text-lg shadow-md border border-orange-500/50">
+                                    <div class="bg-orange-700 text-white font-black px-3 py-1 sm:px-4 sm:py-1.5 rounded-xl text-xs sm:text-lg shadow-md border border-orange-500/50">
                                         {{ formatCurrency($producto->precio) }}
                                     </div>
                                 @endif
@@ -152,22 +152,22 @@
                                 </span>
                             </div>
 
-                            <h3 class="card-title text-base sm:text-xl font-black text-white mb-2 {{ $producto->is_active ? 'cursor-pointer hover:text-orange-500 transition-colors' : '' }} leading-tight" 
+                            <h2 class="card-title text-base sm:text-xl font-black text-white mb-2 {{ $producto->is_active ? 'cursor-pointer hover:text-orange-500 transition-colors' : '' }} leading-tight" 
                                 onclick="{{ $producto->is_active ? 'abrirModal('.json_encode($producto).', \''.app()->getLocale().'\')' : '' }}">
                                 {{ $producto->nombre_traducido }}
-                            </h3>
+                            </h2>
                             
                             <p class="card-desc text-gray-400 text-xs sm:text-sm mb-4 sm:mb-6 line-clamp-2 leading-relaxed">{{ $producto->descripcion_traducida }}</p>
                         </div>
                         
                         @if($producto->is_active)
                             <button onclick="abrirModal({{ json_encode($producto) }}, '{{ app()->getLocale() }}')" 
-                                    class="w-full bg-gray-700 hover:bg-orange-600 text-white font-bold py-2.5 sm:py-3.5 rounded-xl transition-all duration-300 flex items-center justify-center group hover:shadow-[0_0_15px_rgba(234,88,12,0.4)] mt-auto border border-gray-600 hover:border-orange-500">
+                                    class="w-full bg-gray-700 hover:bg-orange-700 text-white font-bold py-2.5 sm:py-3.5 rounded-xl transition-all duration-300 flex items-center justify-center group hover:shadow-[0_0_15px_rgba(234,88,12,0.4)] mt-auto border border-gray-300 hover:border-orange-500">
                                 <i class="fas fa-plus sm:mr-2 transform group-hover:rotate-90 transition-transform"></i> 
                                 <span class="btn-text ml-1 text-xs sm:text-base tracking-wide">{{ __('client/menu.add_btn') }}</span>
                             </button>
                         @else
-                            <button disabled class="w-full bg-gray-900 text-gray-600 font-bold py-2.5 sm:py-3.5 rounded-xl border border-gray-700 cursor-not-allowed mt-auto text-xs sm:text-base flex items-center justify-center gap-2 shadow-inner">
+                            <button disabled class="w-full bg-gray-900 text-gray-600 font-bold py-2.5 sm:py-3.5 rounded-xl border border-gray-300 cursor-not-allowed mt-auto text-xs sm:text-base flex items-center justify-center gap-2 shadow-inner">
                                 <i class="fas fa-ban"></i> {{ __('client/menu.not_available') }}
                             </button>
                         @endif
@@ -201,7 +201,7 @@
         <div class="p-6 sm:p-8 overflow-y-auto custom-scrollbar">
             
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-4 gap-2">
-                <h3 class="text-2xl sm:text-3xl font-black text-white leading-tight drop-shadow-lg" id="modal-title">Platillo</h3>
+                <h2 class="text-2xl sm:text-3xl font-black text-white leading-tight drop-shadow-lg" id="modal-title">Platillo</h2>
                 <p class="text-2xl font-black text-orange-500 bg-slate-900 px-4 py-1.5 rounded-xl shadow-inner border border-slate-700 inline-block w-max" id="modal-price">$0.00</p>
             </div>
             
@@ -223,7 +223,7 @@
                             <div class="flex items-center space-x-2">
                                 <button onclick="cambiarCantidad(-1)" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-slate-800 border border-slate-700 text-white hover:bg-orange-500 hover:border-orange-500 transition font-bold text-xl active:scale-95 shadow-sm">-</button>
                                 <span id="cantidad-span" class="text-white font-black text-2xl w-10 text-center transition-transform">1</span>
-                                <button onclick="cambiarCantidad(1)" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-orange-600 text-white hover:bg-orange-500 transition font-bold text-xl active:scale-95 shadow-[0_0_10px_rgba(234,88,12,0.3)]">+</button>
+                                <button onclick="cambiarCantidad(1)" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-orange-700 text-white hover:bg-orange-500 transition font-bold text-xl active:scale-95 shadow-[0_0_10px_rgba(234,88,12,0.3)]">+</button>
                             </div>
                         </div>
 
@@ -233,7 +233,7 @@
                         </div>
                     </div>
 
-                    <button onclick="agregarAlCarrito()" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-black py-4 rounded-2xl shadow-[0_0_15px_rgba(234,88,12,0.4)] hover:shadow-[0_0_25px_rgba(234,88,12,0.6)] transform transition hover:-translate-y-0.5 active:scale-[0.98] flex flex-col items-center justify-center gap-1 group h-full max-h-[110px]">
+                    <button onclick="agregarAlCarrito()" class="w-full bg-orange-700 hover:bg-orange-500 text-white font-black py-4 rounded-2xl shadow-[0_0_15px_rgba(234,88,12,0.4)] hover:shadow-[0_0_25px_rgba(234,88,12,0.6)] transform transition hover:-translate-y-0.5 active:scale-[0.98] flex flex-col items-center justify-center gap-1 group h-full max-h-[110px]">
                         <span id="btn-add-text" class="text-sm sm:text-base flex items-center gap-2 uppercase tracking-wider"><i class="fas fa-shopping-cart group-hover:animate-bounce"></i> {{ __('client/menu.add_to_my_order') }}</span>
                         <span id="modal-total" class="bg-black/20 px-4 py-1 rounded-xl text-xl sm:text-2xl font-black tracking-wide border border-white/10 w-3/4 text-center mt-1">$0.00</span>
                     </button>

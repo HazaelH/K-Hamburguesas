@@ -5,9 +5,9 @@
 @section('contenido')
 <div class="py-12 bg-slate-900 min-h-screen">
     <div class="max-w-4xl mx-auto px-6">
-        <div class="bg-slate-800 rounded-3xl shadow-2xl border border-slate-700 p-8 sm:p-12 animate-fade-in-up">
+        <div class="bg-slate-800 rounded-3xl shadow-2xl border border-slate-300 p-8 sm:p-12 animate-fade-in-up">
             
-            <div class="border-b border-slate-700 pb-6 mb-8">
+            <div class="border-b border-slate-300 pb-6 mb-8">
                 <h1 class="text-3xl md:text-4xl font-black text-white mb-2">{{ __('client/legal.privacy_title') }}</h1>
                 <p class="text-slate-400">{{ __('client/legal.last_updated') }} {{ date('d/m/Y') }}</p>
             </div>

@@ -16,6 +16,31 @@ const formatearMoneda = (cantidadEnPesos) => {
     return `${symbol}${cantidadConvertida}${code}`;
 };
 
+// =========================================================
+// CONTROL DEL CAJÓN DESLIZABLE (MÓVIL)
+// =========================================================
+window.toggleCartMobile = function() {
+    vibrate();
+    const panel = document.getElementById('cart-panel');
+    
+    // Simplemente intercalamos la clase que lo esconde al 100% hacia abajo
+    panel.classList.toggle('translate-y-full');
+    panel.classList.toggle('translate-y-0');
+};
+
+window.cambiarIconoMesa = function(valor) {
+    const icono = document.getElementById('icono-mesa');
+    if (!icono) return;
+
+    if (valor === "") {
+        // Es un pedido "Para llevar"
+        icono.className = 'fas fa-shopping-bag text-orange-500';
+    } else {
+        // Es un pedido "En Mesa"
+        icono.className = 'fas fa-chair text-blue-500';
+    }
+};
+
 window.showToast = function(message, type = 'success') {
     const container = document.getElementById('toast-container');
     if(!container) return;
@@ -82,7 +107,6 @@ window.openCustomizationModal = function(id, name, basePrice, img, rawOptions, l
     document.getElementById('modal-prod-img').src = img;
     document.getElementById('modal-prod-name').innerText = name;
     
-    // Mostramos el precio visual con la moneda formateada
     document.getElementById('modal-prod-base-price').innerText = formatearMoneda(basePrice);
     document.getElementById('modal-final-price').innerText = formatearMoneda(basePrice);
 
@@ -90,18 +114,15 @@ window.openCustomizationModal = function(id, name, basePrice, img, rawOptions, l
     container.innerHTML = `<p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">${window.POS_LANG.extras}</p>`;
 
     options.forEach((opt, index) => {
-        // Traducción del Extra para la pantalla
         let optNameTranslated = typeof opt === 'string' ? opt : opt.nombre;
         if (typeof opt === 'object') {
             if (locale === 'en' && opt.nombre_en) optNameTranslated = opt.nombre_en;
             if (locale === 'pt' && opt.nombre_pt) optNameTranslated = opt.nombre_pt;
         }
 
-        // El nombre original siempre se guarda en data-name para la base de datos/cocina
         const originalOptName = typeof opt === 'string' ? opt : opt.nombre;
         const optPriceMxn = parseFloat(opt.precio || 0);
         
-        // Precio del extra formateado
         const priceBadge = optPriceMxn > 0 ? `<span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded text-xs font-bold font-mono">+${formatearMoneda(optPriceMxn)}</span>` : '';
 
         container.innerHTML += `
@@ -142,7 +163,6 @@ function calculateModalTotal() {
     document.querySelectorAll('.custom-extra-checkbox:checked').forEach(box => {
         const priceMxn = parseFloat(box.dataset.price);
         extraCostMxn += priceMxn;
-        // Guardamos el original para la BD, y el traducido para la UI del carrito
         currentProduct.selections.push({ 
             name: box.dataset.name, 
             translatedName: box.dataset.translated,
@@ -153,7 +173,6 @@ function calculateModalTotal() {
     currentProduct.extras = extraCostMxn;
     const finalPriceMxn = currentProduct.basePrice + extraCostMxn;
     
-    // Mostramos el total final convertido
     document.getElementById('modal-final-price').innerText = formatearMoneda(finalPriceMxn);
 }
 
@@ -211,6 +230,8 @@ window.changeQty = function(uniqueId, change) {
 window.clearCart = function() {
     if(cart.length === 0) return;
     vibrate();
+
+    if(document.getElementById('icono-mesa')) document.getElementById('icono-mesa').className = 'fas fa-shopping-bag text-orange-500';
     
     const modalBg = document.createElement('div');
     modalBg.className = "fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300 p-4";
@@ -257,6 +278,10 @@ window.updateCartUI = function() {
         container.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-slate-500 opacity-50 select-none"><i class="fas fa-receipt text-6xl mb-4"></i><p class="font-bold text-lg">${window.POS_LANG.empty_acc}</p><p class="text-sm text-center mt-2">${window.POS_LANG.empty_desc}</p></div>`;
         btnPagar.disabled = true;
         totalEl.innerText = formatearMoneda(0);
+        
+        // Actualizar badge móvil
+        const mobileTotalBadge = document.getElementById('mobile-cart-total-badge');
+        if (mobileTotalBadge) mobileTotalBadge.innerText = formatearMoneda(0);
         return;
     }
 
@@ -267,16 +292,16 @@ window.updateCartUI = function() {
         
         let extrasHtml = '';
         if (item.selections && item.selections.length > 0) {
-            // Dibujamos el nombre traducido y el precio convertido en el HTML
             const modsText = item.selections.map(s => s.price > 0 ? `${s.translatedName} (+${formatearMoneda(s.price)})` : s.translatedName).join(', ');
             extrasHtml = `<p class="text-[10px] text-orange-400 font-mono mt-0.5 leading-tight line-clamp-1">+ ${modsText}</p>`;
         }
 
         const itemDiv = document.createElement('div');
         itemDiv.className = 'flex gap-2 bg-slate-800/80 p-2 rounded-xl border border-slate-700 items-center mb-2 shadow-sm w-full';
+        
         itemDiv.innerHTML = `
             <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-slate-600 bg-slate-900">
-                <img src="${item.img}" class="w-full h-full object-cover">
+                <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover">
             </div>
             <div class="flex-1 min-w-0 pr-1">
                 <div class="text-white text-sm font-bold truncate leading-tight" title="${item.name}">${item.name}</div>
@@ -284,15 +309,19 @@ window.updateCartUI = function() {
                 <div class="text-emerald-400 font-bold text-xs mt-0.5">${formatearMoneda(item.price)}</div>
             </div>
             <div class="flex items-center bg-slate-900 rounded-lg border border-slate-700 shrink-0 overflow-hidden">
-                <button onclick="changeQty('${item.uniqueId}', -1)" class="w-8 h-8 flex items-center justify-center text-slate-300 hover:bg-red-500 hover:text-white transition-colors"><i class="fas fa-minus text-xs"></i></button>
+                <button aria-label="Disminuir cantidad" onclick="changeQty('${item.uniqueId}', -1)" class="w-8 h-8 flex items-center justify-center text-slate-300 hover:bg-red-500 hover:text-white transition-colors"><i class="fas fa-minus text-xs"></i></button>
                 <span class="text-white font-bold text-xs w-5 text-center select-none">${item.qty}</span>
-                <button onclick="changeQty('${item.uniqueId}', 1)" class="w-8 h-8 flex items-center justify-center text-slate-300 hover:bg-blue-500 hover:text-white transition-colors"><i class="fas fa-plus text-xs"></i></button>
+                <button aria-label="Aumentar cantidad" onclick="changeQty('${item.uniqueId}', 1)" class="w-8 h-8 flex items-center justify-center text-slate-300 hover:bg-blue-500 hover:text-white transition-colors"><i class="fas fa-plus text-xs"></i></button>
             </div>
         `;
         container.appendChild(itemDiv);
     });
 
     totalEl.innerText = formatearMoneda(totalMxn);
+    
+    // Actualizar badge móvil
+    const mobileFabTotal = document.getElementById('mobile-fab-total');
+    if (mobileFabTotal) mobileFabTotal.innerText = formatearMoneda(totalMxn);
 };
 
 window.submitOrder = async function() {
@@ -308,7 +337,6 @@ window.submitOrder = async function() {
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin text-2xl"></i>';
 
-    // Al guardar en BD mandamos el nombre original en Español (`s.name`) para la cocina
     const formattedCart = cart.map(item => ({
         id: item.originalId,           
         id_producto: item.originalId,  
@@ -340,7 +368,6 @@ window.submitOrder = async function() {
             showToast(window.POS_LANG.order_sent, 'success');
             const width = 400, height = 600, left = (screen.width - width) / 2, top = (screen.height - height) / 2;
             
-            // Extraemos el idioma actual para mandárselo al popup del ticket
             let ticketUrl = `/empleado/ticket/${result.order_id}`;
             if (currentLocalePOS !== 'es') {
                 ticketUrl = `/${currentLocalePOS}${ticketUrl}`;
@@ -351,6 +378,14 @@ window.submitOrder = async function() {
             cart = []; 
             if(mesaEl) mesaEl.value = ""; 
             if(clienteEl) clienteEl.value = ""; 
+            if(document.getElementById('icono-mesa')) document.getElementById('icono-mesa').className = 'fas fa-shopping-bag text-orange-500';
+            
+            // Cerrar el carrito deslizable en móvil después de cobrar
+            const panel = document.getElementById('cart-panel');
+            if (panel && !panel.classList.contains('translate-y-full')) {
+                window.toggleCartMobile(); 
+            }
+
             updateCartUI();
         } else {
             showToast('Error: ' + result.message, 'error');

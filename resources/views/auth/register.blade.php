@@ -5,7 +5,7 @@
 @section('contenido')
 <div class="min-h-[80vh] flex items-center justify-center py-10">
     
-    <div class="w-full max-w-5xl bg-slate-900 rounded-3xl shadow-2xl shadow-black/50 overflow-hidden grid grid-cols-1 md:grid-cols-2 border border-slate-700/50">
+    <div class="w-full max-w-5xl bg-slate-900 rounded-3xl shadow-2xl shadow-black/50 overflow-hidden grid grid-cols-1 md:grid-cols-2 border border-slate-300/50">
         
         <div class="hidden md:block relative group order-2 md:order-1">
             <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1000&auto=format&fit=crop" 
@@ -49,7 +49,7 @@
                         </span>
                         <input type="text" name="name" value="{{ old('name') }}" required placeholder="{{ __('auth/register.fullname_placeholder') }}"
                                class="w-full bg-slate-950/50 rounded-xl py-3.5 pl-11 pr-4 text-white placeholder-slate-600 focus:outline-none transition-all
-                                      @error('name') border border-red-500 focus:ring-red-500 @else border border-slate-700 focus:border-orange-500 focus:ring-orange-500 focus:ring-1 @enderror">
+                                      @error('name') border border-red-500 focus:ring-red-500 @else border border-slate-300 focus:border-orange-500 focus:ring-orange-500 focus:ring-1 @enderror">
                     </div>
                     @error('name') <p class="text-red-400 text-xs mt-1 ml-1 font-bold">{{ $message }}</p> @enderror
                 </div>
@@ -62,7 +62,7 @@
                         </span>
                         <input type="email" name="email" value="{{ old('email') }}" required placeholder="{{ __('auth/register.email_placeholder') }}"
                                class="w-full bg-slate-950/50 rounded-xl py-3.5 pl-11 pr-4 text-white placeholder-slate-600 focus:outline-none transition-all
-                                      @error('email') border border-red-500 focus:ring-red-500 @else border border-slate-700 focus:border-orange-500 focus:ring-orange-500 focus:ring-1 @enderror">
+                                      @error('email') border border-red-500 focus:ring-red-500 @else border border-slate-300 focus:border-orange-500 focus:ring-orange-500 focus:ring-1 @enderror">
                     </div>
                     @error('email') <p class="text-red-400 text-xs mt-1 ml-1 font-bold">{{ $message }}</p> @enderror
                 </div>
@@ -78,7 +78,7 @@
                             </span>
                             <input type="password" name="password" id="reg-password" required placeholder="{{ __('auth/register.password_placeholder') }}"
                                    class="w-full bg-slate-950/50 rounded-xl py-3.5 pl-11 pr-10 text-white placeholder-slate-600 focus:outline-none transition-all
-                                          @error('password') border border-red-500 focus:ring-red-500 @else border border-slate-700 focus:border-orange-500 focus:ring-orange-500 focus:ring-1 @enderror">
+                                          @error('password') border border-red-500 focus:ring-red-500 @else border border-slate-300 focus:border-orange-500 focus:ring-orange-500 focus:ring-1 @enderror">
                             <button type="button" onclick="togglePassword('reg-password', 'eye-icon-reg')" class="absolute right-3 top-3.5 text-slate-500 hover:text-orange-500 transition-colors focus:outline-none">
                                 <i id="eye-icon-reg" class="fas fa-eye"></i>
                             </button>
@@ -92,7 +92,7 @@
                                 <i class="fas fa-check-double"></i>
                             </span>
                             <input type="password" name="password_confirmation" id="reg-password-confirm" required placeholder="{{ __('auth/register.password_placeholder') }}"
-                                   class="w-full bg-slate-950/50 border border-slate-700 rounded-xl py-3.5 pl-11 pr-10 text-white placeholder-slate-600 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 focus:outline-none transition-all">
+                                   class="w-full bg-slate-950/50 border border-slate-300 rounded-xl py-3.5 pl-11 pr-10 text-white placeholder-slate-600 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 focus:outline-none transition-all">
                             <button type="button" onclick="togglePassword('reg-password-confirm', 'eye-icon-reg-conf')" class="absolute right-3 top-3.5 text-slate-500 hover:text-orange-500 transition-colors focus:outline-none">
                                 <i id="eye-icon-reg-conf" class="fas fa-eye"></i>
                             </button>
@@ -113,7 +113,7 @@
                 @enderror
 
                 <button type="submit" 
-                        class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-600/40 transform transition hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2 mt-6">
+                        class="w-full bg-orange-700 hover:bg-orange-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-700/40 transform transition hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2 mt-6">
                     <span>{{ __('auth/register.btn_register') }}</span>
                 </button>
             </form>

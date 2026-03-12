@@ -24,7 +24,7 @@
                     <i class="fas fa-qrcode text-slate-500 group-focus-within:text-orange-500 transition-colors"></i>
                 </div>
                 <input type="text" name="codigo" placeholder="{{ __('employee/orders/index.scan_placeholder') }}" autofocus
-                       class="block w-full pl-10 pr-12 py-3 border border-slate-700 rounded-xl leading-5 bg-slate-800 text-slate-300 placeholder-slate-500 focus:outline-none focus:bg-slate-900 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 sm:text-sm transition-all shadow-lg"
+                       class="block w-full pl-10 pr-12 py-3 border border-slate-300 rounded-xl leading-5 bg-slate-800 text-slate-300 placeholder-slate-500 focus:outline-none focus:bg-slate-900 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 sm:text-sm transition-all shadow-lg"
                        onblur="this.focus()" 
                        autocomplete="off">
                 <button type="submit" class="absolute inset-y-0 right-0 px-4 text-slate-400 hover:text-white transition-colors">
@@ -33,7 +33,7 @@
             </form>
         </div>
         
-        <div class="bg-slate-800 px-6 py-3 rounded-xl border border-slate-700 shadow-lg flex flex-col items-end min-w-[200px]">
+        <div class="bg-slate-800 px-6 py-3 rounded-xl border border-slate-300 shadow-lg flex flex-col items-end min-w-[200px]">
             <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">{{ __('employee/orders/index.sales_today') }}</span>
             
             @php
@@ -195,7 +195,7 @@
         <div id="modal-backdrop" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity"></div>
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                <div id="modal-panel" class="relative transform overflow-hidden rounded-2xl bg-slate-900 border border-slate-700 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                <div id="modal-panel" class="relative transform overflow-hidden rounded-2xl bg-slate-900 border border-slate-300 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                     <div class="bg-slate-900 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start">
                             <div id="modal-icon-box" class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-slate-800 sm:mx-0 sm:h-10 sm:w-10">

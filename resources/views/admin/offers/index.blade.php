@@ -14,8 +14,8 @@
                         <p class="font-bold text-lg leading-tight">{{ __('admin/offers/offers.toast_success') }}</p>
                         <p class="text-xs text-emerald-300 mt-1 max-w-xs">{{ session('success') }}</p>
                     </div>
-                    <button onclick="document.getElementById('toast-notification').remove()" class="ml-2 text-emerald-600 hover:text-emerald-400 transition">
-                        <i class="fas fa-times"></i>
+                    <button aria-label="Cerrar notificación" onclick="document.getElementById('toast-notification').remove()" class="ml-2 text-emerald-600 hover:text-emerald-400 transition">
+                        <i class="fas fa-times pointer-events-none"></i>
                     </button>
                 </div>
             @endif
@@ -27,8 +27,8 @@
                         <p class="font-bold text-lg leading-tight">{{ __('admin/offers/offers.toast_error') }}</p>
                         <p class="text-xs text-red-300 mt-1 max-w-xs">{{ session('error') }}</p>
                     </div>
-                    <button onclick="document.getElementById('toast-notification').remove()" class="ml-2 text-red-600 hover:text-red-400 transition">
-                        <i class="fas fa-times"></i>
+                    <button aria-label="Cerrar notificación" onclick="document.getElementById('toast-notification').remove()" class="ml-2 text-red-600 hover:text-red-400 transition">
+                        <i class="fas fa-times pointer-events-none"></i>
                     </button>
                 </div>
             @endif
@@ -47,7 +47,7 @@
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
         
         <div class="xl:col-span-1">
-            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl sticky top-24">
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-300 shadow-xl sticky top-24">
                 <h2 class="text-xl font-black text-white mb-6 flex items-center gap-3">
                     <div class="bg-orange-500/20 p-3 rounded-xl border border-orange-500/30">
                         <i class="fas fa-fire text-orange-500"></i>
@@ -60,38 +60,38 @@
                     
                     <div class="space-y-3">
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">🇲🇽 {{ __('admin/offers/offers.promo_title') }} *</label>
-                            <input type="text" name="titulo" placeholder="{{ __('admin/offers/offers.promo_title_ph') }}" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all outline-none" required>
+                            <label for="titulo" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">🇲🇽 {{ __('admin/offers/offers.promo_title') }} *</label>
+                            <input type="text" id="titulo" name="titulo" placeholder="{{ __('admin/offers/offers.promo_title_ph') }}" class="w-full bg-slate-900 border border-slate-300 rounded-xl p-3 text-white focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all outline-none" required>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">🇲🇽 {{ __('admin/offers/offers.short_desc') }}</label>
-                            <textarea name="descripcion" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white focus:border-orange-500 transition-all outline-none"></textarea>
+                            <label for="descripcion" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">🇲🇽 {{ __('admin/offers/offers.short_desc') }}</label>
+                            <textarea id="descripcion" name="descripcion" rows="2" class="w-full bg-slate-900 border border-slate-300 rounded-xl p-3 text-white focus:border-orange-500 transition-all outline-none"></textarea>
                         </div>
                     </div>
 
                     {{-- TRADUCCIONES OCULTAS --}}
-                    <details class="bg-slate-900/50 rounded-xl border border-slate-700/50 group">
+                    <details class="bg-slate-900/50 rounded-xl border border-slate-300/50 group">
                         <summary class="p-3 text-xs font-bold text-slate-400 uppercase tracking-wider cursor-pointer flex justify-between items-center outline-none">
                             <span><i class="fas fa-language text-blue-400 mr-2"></i> {{ __('admin/offers/offers.add_translations') }}</span>
                             <i class="fas fa-chevron-down group-open:rotate-180 transition-transform"></i>
                         </summary>
-                        <div class="p-4 pt-2 space-y-4 border-t border-slate-700/50 mt-2">
+                        <div class="p-4 pt-2 space-y-4 border-t border-slate-300/50 mt-2">
                             <div class="space-y-2 border-l-2 border-blue-500 pl-3">
-                                <input type="text" name="titulo_en" value="{{ old('titulo_en', $offer->titulo_en ?? '') }}" placeholder="🇺🇸 {{ __('admin/offers/offers.title_en') }}" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white text-sm focus:border-blue-500 outline-none">
-                                <textarea name="descripcion_en" rows="1" placeholder="🇺🇸 {{ __('admin/offers/offers.desc_en') }}" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white text-sm focus:border-blue-500 outline-none">{{ old('descripcion_en', $offer->descripcion_en ?? '') }}</textarea>
+                                <input type="text" aria-label="Título de promoción en Inglés" name="titulo_en" value="{{ old('titulo_en', $offer->titulo_en ?? '') }}" placeholder="🇺🇸 {{ __('admin/offers/offers.title_en') }}" class="w-full bg-slate-900 border border-slate-300 rounded-lg p-2.5 text-white text-sm focus:border-blue-500 outline-none">
+                                <textarea aria-label="Descripción de promoción en Inglés" name="descripcion_en" rows="1" placeholder="🇺🇸 {{ __('admin/offers/offers.desc_en') }}" class="w-full bg-slate-900 border border-slate-300 rounded-lg p-2.5 text-white text-sm focus:border-blue-500 outline-none">{{ old('descripcion_en', $offer->descripcion_en ?? '') }}</textarea>
                             </div>
                             <div class="space-y-2 border-l-2 border-emerald-500 pl-3">
-                                <input type="text" name="titulo_pt" value="{{ old('titulo_pt', $offer->titulo_pt ?? '') }}" placeholder="🇧🇷 {{ __('admin/offers/offers.title_pt') }}" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white text-sm focus:border-emerald-500 outline-none">
-                                <textarea name="descripcion_pt" rows="1" placeholder="🇧🇷 {{ __('admin/offers/offers.desc_pt') }}" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white text-sm focus:border-emerald-500 outline-none">{{ old('descripcion_pt', $offer->descripcion_pt ?? '') }}</textarea>
+                                <input type="text" aria-label="Título de promoción en Portugués" name="titulo_pt" value="{{ old('titulo_pt', $offer->titulo_pt ?? '') }}" placeholder="🇧🇷 {{ __('admin/offers/offers.title_pt') }}" class="w-full bg-slate-900 border border-slate-300 rounded-lg p-2.5 text-white text-sm focus:border-emerald-500 outline-none">
+                                <textarea aria-label="Descripción de promoción en Portugués" name="descripcion_pt" rows="1" placeholder="🇧🇷 {{ __('admin/offers/offers.desc_pt') }}" class="w-full bg-slate-900 border border-slate-300 rounded-lg p-2.5 text-white text-sm focus:border-emerald-500 outline-none">{{ old('descripcion_pt', $offer->descripcion_pt ?? '') }}</textarea>
                             </div>
                         </div>
                     </details>
 
-                    <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700/50 space-y-4">
+                    <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-300/50 space-y-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.applies_to') }}</label>
-                            <select id="tipo_aplicacion" name="tipo_aplicacion" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white focus:border-orange-500 transition-all outline-none cursor-pointer">
+                            <label for="tipo_aplicacion" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.applies_to') }}</label>
+                            <select id="tipo_aplicacion" name="tipo_aplicacion" class="w-full bg-slate-900 border border-slate-300 rounded-xl p-3 text-white focus:border-orange-500 transition-all outline-none cursor-pointer">
                                 <option value="todo">{{ __('admin/offers/offers.apply_all') }}</option>
                                 <option value="categoria">{{ __('admin/offers/offers.apply_category') }}</option>
                                 <option value="producto">{{ __('admin/offers/offers.apply_product') }}</option>
@@ -99,7 +99,7 @@
                         </div>
 
                         <div id="div_categoria" class="hidden transition-all duration-300">
-                            <label class="block text-xs font-bold text-orange-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.select_category') }}</label>
+                            <label for="referencia_categoria" class="block text-xs font-bold text-orange-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.select_category') }}</label>
                             
                             @php
                                 $categoriasBd = \App\Models\Categoria::all();
@@ -119,53 +119,52 @@
                         </div>
 
                         <div id="div_producto" class="hidden transition-all duration-300">
-                            <label class="block text-xs font-bold text-orange-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.select_product') }}</label>
+                            <label for="btn_producto_seleccion" class="block text-xs font-bold text-orange-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.select_product') }}</label>
                             
-                            <input type="hidden" id="referencia_producto" name="referencia_producto" disabled>
+                            <input type="hidden" id="referencia_producto" name="referencia_producto">
                             
-                            <button type="button" onclick="window.abrirModalProductos()" class="w-full bg-slate-900 border border-orange-500/50 hover:bg-slate-800 rounded-xl p-3 text-white focus:border-orange-500 outline-none flex justify-between items-center transition-colors">
+                            <button type="button" id="btn_producto_seleccion" onclick="window.abrirModalProductos()" class="w-full bg-slate-900 border border-orange-500/50 hover:bg-slate-800 rounded-xl p-3 text-white focus:border-orange-500 outline-none flex justify-between items-center transition-colors">
                                 <span id="texto_producto_seleccionado" class="text-slate-400">{{ __('admin/offers/offers.click_choose_product') }}</span>
-                                <i class="fas fa-search text-orange-500"></i>
+                                <i class="fas fa-search text-orange-500 pointer-events-none"></i>
                             </button>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.discount_percent') }}</label>
+                            <label for="porcentaje" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.discount_percent') }}</label>
                             <div class="relative">
-                                <input type="number" name="porcentaje" value="0" min="0" max="100" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 pl-10 text-white focus:border-orange-500 outline-none">
-                                <i class="fas fa-percentage absolute left-4 top-3.5 text-slate-500"></i>
+                                <input type="number" id="porcentaje" name="porcentaje" value="0" min="0" max="100" class="w-full bg-slate-900 border border-slate-300 rounded-xl p-3 pl-10 text-white focus:border-orange-500 outline-none">
+                                <i class="fas fa-percentage absolute left-4 top-3.5 text-slate-500 pointer-events-none"></i>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.fixed_price') }}</label>
+                            <label for="precio_promo" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.fixed_price') }}</label>
                             <div class="relative">
-                                <input type="number" step="0.50" name="precio_promo" placeholder="{{ __('admin/offers/offers.optional') }}" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 pl-10 text-white focus:border-orange-500 outline-none">
-                                <i class="fas fa-dollar-sign absolute left-4 top-3.5 text-slate-500"></i>
+                                <input type="number" id="precio_promo" step="0.50" name="precio_promo" placeholder="{{ __('admin/offers/offers.optional') }}" class="w-full bg-slate-900 border border-slate-300 rounded-xl p-3 pl-10 text-white focus:border-orange-500 outline-none">
+                                <i class="fas fa-dollar-sign absolute left-4 top-3.5 text-slate-500 pointer-events-none"></i>
                             </div>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
-                        {{-- FLAT PICKR: INPUTS TEXT --}}
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.start_date') }}</label>
-                            <input type="text" name="fecha_inicio" value="{{ date('Y-m-d') }}" class="flatpickr-date w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white focus:border-orange-500 outline-none text-sm" required>
+                            <label for="fecha_inicio" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.start_date') }}</label>
+                            <input type="text" id="fecha_inicio" name="fecha_inicio" value="{{ date('Y-m-d') }}" class="flatpickr-date w-full bg-slate-900 border border-slate-300 rounded-xl p-3 text-white focus:border-orange-500 outline-none text-sm" required>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.end_date') }}</label>
-                            <input type="text" name="fecha_fin" class="flatpickr-date w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white focus:border-orange-500 outline-none text-sm" required>
+                            <label for="fecha_fin" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.end_date') }}</label>
+                            <input type="text" id="fecha_fin" name="fecha_fin" class="flatpickr-date w-full bg-slate-900 border border-slate-300 rounded-xl p-3 text-white focus:border-orange-500 outline-none text-sm" required>
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.visual_banner') }}</label>
-                        <input type="file" name="imagen" class="w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-700 file:text-white hover:file:bg-slate-600 transition-colors cursor-pointer border border-slate-700 rounded-xl bg-slate-900">
+                        <label for="imagen" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{{ __('admin/offers/offers.visual_banner') }}</label>
+                        <input type="file" id="imagen" name="imagen" class="w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-700 file:text-white hover:file:bg-slate-600 transition-colors cursor-pointer border border-slate-300 rounded-xl bg-slate-900">
                     </div>
 
-                    <button type="submit" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-black py-3.5 rounded-xl transition-all shadow-[0_0_15px_rgba(234,88,12,0.3)] hover:shadow-[0_0_25px_rgba(234,88,12,0.5)] transform hover:-translate-y-0.5">
-                        <i class="fas fa-rocket mr-2"></i> {{ __('admin/offers/offers.btn_launch') }}
+                    <button type="submit" class="w-full bg-orange-700 hover:bg-orange-500 text-white font-black py-3.5 rounded-xl transition-all shadow-[0_0_15px_rgba(234,88,12,0.3)] hover:shadow-[0_0_25px_rgba(234,88,12,0.5)] transform hover:-translate-y-0.5">
+                        <i class="fas fa-rocket mr-2 pointer-events-none"></i> {{ __('admin/offers/offers.btn_launch') }}
                     </button>
                 </form>
             </div>
@@ -191,11 +190,11 @@
                         }
                     @endphp
 
-                    <div class="bg-slate-800 rounded-2xl overflow-hidden border {{ $isExpired ? 'border-red-500/30 opacity-75' : 'border-slate-700' }} shadow-lg flex flex-col transition-all hover:border-orange-500/50">
+                    <div class="bg-slate-800 rounded-2xl overflow-hidden border {{ $isExpired ? 'border-red-500/30 opacity-75' : 'border-slate-300' }} shadow-lg flex flex-col transition-all hover:border-orange-500/50">
                         
                         <div class="h-32 bg-slate-900 relative overflow-hidden group">
                             @if($offer->imagen_url)
-                                <img src="{{ asset('storage/' . $offer->imagen_url) }}" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500">
+                                <img src="{{ asset('storage/' . $offer->imagen_url) }}" alt="{{ $offer->titulo_traducido }}" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500">
                             @else
                                 <div class="w-full h-full flex items-center justify-center bg-slate-900 text-slate-700">
                                     <i class="fas fa-tags text-5xl"></i>
@@ -231,10 +230,9 @@
 
                         <div class="p-5 flex-1 flex flex-col">
                             <div class="flex justify-between items-start mb-2 gap-4">
-                                {{-- APLICAMOS EL ACCESOR DE TRADUCCIÓN AQUÍ --}}
                                 <h3 class="text-lg font-bold text-white leading-tight">{{ $offer->titulo_traducido }}</h3>
                                 
-                                <button type="button" onclick="window.toggleOferta({{ $offer->id }}, this, '{{ route('admin.offers.toggle', $offer->id) }}')" 
+                                <button aria-label="Activar o desactivar oferta" type="button" onclick="window.toggleOferta({{ $offer->id }}, this, '{{ route('admin.offers.toggle', $offer->id) }}')" 
                                     class="shrink-0 flex items-center justify-center w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none {{ $offer->activa ? 'bg-emerald-500' : 'bg-slate-600' }}"
                                     title="Activar / Desactivar">
                                     <span class="w-4 h-4 rounded-full bg-white shadow transform transition-transform duration-300 {{ $offer->activa ? 'translate-x-2.5' : '-translate-x-2.5' }}"></span>
@@ -251,7 +249,7 @@
                                 @endif
                             </div>
 
-                            <div class="flex items-center gap-3 text-xs font-mono text-slate-400 mt-auto pt-4 border-t border-slate-700/50">
+                            <div class="flex items-center gap-3 text-xs font-mono text-slate-400 mt-auto pt-4 border-t border-slate-300/50">
                                 @php
                                     $formatoFecha = app()->getLocale() == 'en' ? 'M d, Y' : 'd M, Y';
                                 @endphp
@@ -263,7 +261,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-4 pt-4 border-t border-slate-700/50 flex gap-2">
+                            <div class="mt-4 pt-4 border-t border-slate-300/50 flex gap-2">
                                 
                                 <a href="{{ route('admin.offers.edit', $offer->id) }}" class="flex-1 py-2 rounded-xl border border-blue-500/20 text-blue-400 hover:bg-blue-500/10 hover:border-blue-500/50 transition-colors text-sm font-bold flex items-center justify-center gap-2">
                                     <i class="fas fa-edit"></i> {{ __('admin/offers/offers.btn_edit') }}
@@ -272,7 +270,7 @@
                                 <form action="{{ route('admin.offers.destroy', $offer->id) }}" method="POST" id="form-delete-offer-{{ $offer->id }}" class="flex-1">
                                     @csrf @method('DELETE')
                                     <button type="button" onclick="window.confirmarBorradoOferta('form-delete-offer-{{ $offer->id }}')" class="w-full py-2 rounded-xl border border-red-500/20 text-red-400 hover:bg-red-500/10 hover:border-red-500/50 transition-colors text-sm font-bold flex items-center justify-center gap-2">
-                                        <i class="fas fa-trash-alt"></i> {{ __('admin/offers/offers.btn_delete') }}
+                                        <i class="fas fa-trash-alt pointer-events-none"></i> {{ __('admin/offers/offers.btn_delete') }}
                                     </button>
                                 </form>
 
@@ -280,7 +278,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="md:col-span-2 py-16 text-center border-2 border-dashed border-slate-700 rounded-3xl">
+                    <div class="md:col-span-2 py-16 text-center border-2 border-dashed border-slate-300 rounded-3xl">
                         <i class="fas fa-ticket-alt text-5xl text-slate-600 mb-4"></i>
                         <h3 class="text-xl font-bold text-white mb-2">{{ __('admin/offers/offers.no_active_offers') }}</h3>
                         <p class="text-slate-400">{{ __('admin/offers/offers.no_offers_desc') }}</p>
@@ -293,19 +291,19 @@
 
 {{-- MODAL INTERACTIVO DE PRODUCTOS --}}
 <div id="modal-productos" class="fixed inset-0 z-[200] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity opacity-0">
-    <div id="modal-productos-panel" class="bg-slate-900 border border-slate-700 p-6 rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col transform scale-95 transition-all">
+    <div id="modal-productos-panel" class="bg-slate-900 border border-slate-300 p-6 rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col transform scale-95 transition-all">
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-xl font-black text-white"><i class="fas fa-hamburger text-orange-500 mr-2"></i> {{ __('admin/offers/offers.modal_prod_title') }}</h3>
-            <button type="button" onclick="window.cerrarModalProductos()" class="text-slate-400 hover:text-red-400 transition-colors bg-slate-800 hover:bg-slate-700 rounded-full w-8 h-8 flex items-center justify-center">
-                <i class="fas fa-times"></i>
+            <button aria-label="Cerrar selección de productos" type="button" onclick="window.cerrarModalProductos()" class="text-slate-400 hover:text-red-400 transition-colors bg-slate-800 hover:bg-slate-700 rounded-full w-8 h-8 flex items-center justify-center">
+                <i class="fas fa-times pointer-events-none"></i>
             </button>
         </div>
         <div class="flex flex-col sm:flex-row gap-4 mb-6">
             <div class="relative flex-1">
                 <i class="fas fa-search absolute left-4 top-3 text-slate-500"></i>
-                <input type="text" id="buscador_modal" placeholder="{{ __('admin/offers/offers.search_dish') }}" class="w-full bg-slate-800 border border-slate-700 rounded-xl py-2.5 pl-11 pr-4 text-white focus:border-orange-500 outline-none text-sm placeholder-slate-500">
+                <input type="text" id="buscador_modal" aria-label="{{ __('admin/offers/offers.search_dish') }}" placeholder="{{ __('admin/offers/offers.search_dish') }}" class="w-full bg-slate-800 border border-slate-300 rounded-xl py-2.5 pl-11 pr-4 text-white focus:border-orange-500 outline-none text-sm placeholder-slate-500">
             </div>
-            <select id="filtro_categoria_modal" class="w-full sm:w-48 bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:border-orange-500 outline-none text-sm cursor-pointer">
+            <select id="filtro_categoria_modal" aria-label="{{ __('admin/offers/offers.all_categories') }}" class="w-full sm:w-48 bg-slate-800 border border-slate-300 rounded-xl px-4 py-2.5 text-white focus:border-orange-500 outline-none text-sm cursor-pointer">
                 <option value="">{{ __('admin/offers/offers.all_categories') }}</option>
                 @foreach($categoriasBd as $cat)
                     @php
@@ -320,14 +318,14 @@
         <div class="flex-1 overflow-y-auto pr-2 custom-scrollbar">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="grid_productos_modal">
                 @foreach($productos as $prod)
-                    <div class="producto-item bg-slate-800 border border-slate-700 rounded-xl p-3 flex items-center gap-4 cursor-pointer hover:border-orange-500 hover:bg-slate-750 transition-colors group"
+                    <div class="producto-item bg-slate-800 border border-slate-300 rounded-xl p-3 flex items-center gap-4 cursor-pointer hover:border-orange-500 hover:bg-slate-750 transition-colors group"
                          data-id="{{ $prod->id_producto }}" data-nombre="{{ strtolower($prod->nombre_traducido) }}" data-categoria="{{ $prod->categoria }}"
                          onclick="window.seleccionarProducto({{ $prod->id_producto }}, '{{ addslashes($prod->nombre_traducido) }}')">
                          
                         @if($prod->imagen_url)
-                            <img src="{{ asset('imagenes/' . $prod->imagen_url) }}" class="w-14 h-14 rounded-lg object-cover border border-slate-600 group-hover:border-orange-500/50">
+                            <img src="{{ asset('imagenes/' . $prod->imagen_url) }}" alt="{{ $prod->nombre_traducido }}" class="w-14 h-14 rounded-lg object-cover border border-slate-600 group-hover:border-orange-500/50">
                         @else
-                            <div class="w-14 h-14 bg-slate-900 rounded-lg flex items-center justify-center border border-slate-700"><i class="fas fa-image text-slate-600"></i></div>
+                            <div class="w-14 h-14 bg-slate-900 rounded-lg flex items-center justify-center border border-slate-300"><i class="fas fa-image text-slate-600"></i></div>
                         @endif
                         
                         <div class="flex-1">
@@ -339,7 +337,7 @@
                         </div>
                         
                         <div class="text-slate-600 group-hover:text-orange-500 transition-colors">
-                            <i class="fas fa-chevron-right text-xs"></i>
+                            <i class="fas fa-chevron-right text-xs pointer-events-none"></i>
                         </div>
                     </div>
                 @endforeach
@@ -357,7 +355,7 @@
 
 {{-- MODAL DE ELIMINACIÓN DE OFERTA --}}
 <div id="delete-modal-offer" class="fixed inset-0 z-[300] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity opacity-0">
-    <div id="delete-modal-offer-panel" class="bg-slate-900 border border-slate-700 p-6 rounded-3xl shadow-2xl w-full max-w-sm transform scale-95 transition-all text-center">
+    <div id="delete-modal-offer-panel" class="bg-slate-900 border border-slate-300 p-6 rounded-3xl shadow-2xl w-full max-w-sm transform scale-95 transition-all text-center">
         
         <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full mb-4 bg-red-500/20 text-red-500 border border-red-500/50">
             <i class="fas fa-bomb text-2xl animate-pulse"></i>
@@ -391,14 +389,12 @@
         };
         
         document.addEventListener('DOMContentLoaded', () => {
-            // Animación de los selects pre-llenados al cargar
             const selectAplicacion = document.getElementById('tipo_aplicacion');
             if(selectAplicacion) {
                 const event = new Event('change');
                 selectAplicacion.dispatchEvent(event);
             }
 
-            // INICIALIZACIÓN DE FLAT PICKR
             const idiomaActual = '{{ app()->getLocale() }}';
             const formatoVisual = idiomaActual === 'en' ? 'm/d/Y' : 'd/m/Y';
 

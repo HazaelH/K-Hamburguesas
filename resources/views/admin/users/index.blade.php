@@ -17,7 +17,7 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-lg flex items-center gap-4">
+        <div class="bg-slate-800 p-5 rounded-2xl border border-slate-300 shadow-lg flex items-center gap-4">
             <div class="h-12 w-12 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-xl border border-blue-500/30">
                 <i class="fas fa-users"></i>
             </div>
@@ -26,7 +26,7 @@
                 <p class="text-2xl font-black text-white">{{ $stats['total'] }}</p>
             </div>
         </div>
-        <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-lg flex items-center gap-4">
+        <div class="bg-slate-800 p-5 rounded-2xl border border-slate-300 shadow-lg flex items-center gap-4">
             <div class="h-12 w-12 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-xl border border-purple-500/30">
                 <i class="fas fa-user-shield"></i>
             </div>
@@ -35,7 +35,7 @@
                 <p class="text-2xl font-black text-white">{{ $stats['admins'] }}</p>
             </div>
         </div>
-        <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-lg flex items-center gap-4">
+        <div class="bg-slate-800 p-5 rounded-2xl border border-slate-300 shadow-lg flex items-center gap-4">
             <div class="h-12 w-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xl border border-emerald-500/30">
                 <i class="fas fa-user-tag"></i>
             </div>
@@ -46,17 +46,19 @@
         </div>
     </div>
 
-    <div class="bg-slate-800 p-4 rounded-2xl border border-slate-700 shadow-lg">
+    <div class="bg-slate-800 p-4 rounded-2xl border border-slate-300 shadow-lg">
         <form id="filtro-usuarios" action="{{ route('admin.users.index') }}" method="GET" class="flex flex-col md:flex-row gap-4">
             
             <div class="flex-1 relative">
                 <span class="absolute left-4 top-3 text-slate-500"><i class="fas fa-search"></i></span>
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ __('admin/users/users.search_placeholder') }}" 
+                {{-- Se agregó aria-label al buscador --}}
+                <input type="text" name="search" aria-label="{{ __('admin/users/users.search_placeholder') }}" value="{{ request('search') }}" placeholder="{{ __('admin/users/users.search_placeholder') }}" 
                        class="w-full bg-slate-900 border border-slate-600 focus:border-blue-500 text-white rounded-xl py-2.5 pl-11 pr-4 focus:outline-none transition-colors text-sm placeholder-slate-500">
             </div>
 
             <div class="w-full md:w-48 relative">
-                <select name="rol" onchange="this.form.submit()" class="w-full bg-slate-900 border border-slate-600 focus:border-blue-500 text-white rounded-xl py-2.5 px-4 appearance-none focus:outline-none transition-colors text-sm cursor-pointer">
+                {{-- Se agregó aria-label al select de rol --}}
+                <select name="rol" aria-label="Filtrar por rol de usuario" onchange="this.form.submit()" class="w-full bg-slate-900 border border-slate-600 focus:border-blue-500 text-white rounded-xl py-2.5 px-4 appearance-none focus:outline-none transition-colors text-sm cursor-pointer">
                     <option value="">{{ __('admin/users/users.all_roles') }}</option>
                     <option value="admin" {{ request('rol') == 'admin' ? 'selected' : '' }}>{{ __('admin/users/users.role_admins') }}</option>
                     <option value="cliente" {{ request('rol') == 'cliente' ? 'selected' : '' }}>{{ __('admin/users/users.role_clients') }}</option>
@@ -66,7 +68,8 @@
             </div>
 
             <div class="w-full md:w-48 relative">
-                <select name="ver_bajas" onchange="this.form.submit()" class="w-full bg-slate-900 border border-slate-600 focus:border-blue-500 text-white rounded-xl py-2.5 px-4 appearance-none focus:outline-none transition-colors text-sm cursor-pointer font-bold {{ request('ver_bajas') ? 'text-red-400 border-red-500/50' : '' }}">
+                {{-- Se agregó aria-label al select de estado --}}
+                <select name="ver_bajas" aria-label="Filtrar por estado activo o eliminado" onchange="this.form.submit()" class="w-full bg-slate-900 border border-slate-600 focus:border-blue-500 text-white rounded-xl py-2.5 px-4 appearance-none focus:outline-none transition-colors text-sm cursor-pointer font-bold {{ request('ver_bajas') ? 'text-red-400 border-red-500/50' : '' }}">
                     <option value="">{{ __('admin/users/users.active_users') }}</option>
                     <option value="1" {{ request('ver_bajas') == '1' ? 'selected' : '' }}>{{ __('admin/users/users.trashed_users') }}</option>
                 </select>
@@ -78,14 +81,15 @@
             </button>
 
             @if(request('search') || request('rol') || request('ver_bajas'))
-                <a href="{{ route('admin.users.index') }}" class="flex items-center justify-center bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white px-4 py-2 rounded-xl transition-colors border border-red-500/30" title="{{ __('admin/users/users.clear_filters') }}">
+                {{-- Se agregó aria-label al botón de limpiar --}}
+                <a href="{{ route('admin.users.index') }}" aria-label="Limpiar filtros de búsqueda" class="flex items-center justify-center bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white px-4 py-2 rounded-xl transition-colors border border-red-500/30" title="{{ __('admin/users/users.clear_filters') }}">
                     <i class="fas fa-times"></i>
                 </a>
             @endif
         </form>
     </div>
 
-    <div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-2xl">
+    <div class="bg-slate-800 rounded-2xl border border-slate-300 overflow-hidden shadow-2xl">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm text-slate-400">
                 <thead class="bg-slate-900 text-slate-300 uppercase text-[10px] font-black tracking-widest">
@@ -101,7 +105,8 @@
                     @forelse($users as $user)
                     <tr class="hover:bg-slate-700/30 transition-colors {{ $user->trashed() ? 'opacity-50 grayscale' : '' }}">
                         <td class="px-5 py-3">
-                            <img src="{{ $user->avatar_url }}" class="h-10 w-10 object-cover rounded-full border-2 border-slate-600 shadow-sm">
+                            {{-- Se agregó el atributo ALT a la imagen --}}
+                            <img src="{{ $user->avatar_url }}" alt="Avatar de {{ $user->name }}" class="h-10 w-10 object-cover rounded-full border-2 border-slate-600 shadow-sm">
                         </td>
                         
                         <td class="px-5 py-3">
@@ -136,30 +141,31 @@
                         <td class="px-5 py-3 text-right">
                             <div class="flex items-center justify-end gap-2">
                                 @if(!$user->trashed())
-                                    <a href="{{ route('admin.users.edit', $user->id) }}" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white h-8 w-8 rounded flex items-center justify-center transition-colors border border-blue-500/30" title="Editar">
+                                    {{-- Se agregaron aria-labels con el nombre del usuario para evitar enlaces idénticos --}}
+                                    <a href="{{ route('admin.users.edit', $user->id) }}" aria-label="Editar usuario {{ $user->name }}" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white h-8 w-8 rounded flex items-center justify-center transition-colors border border-blue-500/30">
                                         <i class="fas fa-edit text-xs"></i>
                                     </a>
 
                                     @if(Auth::id() != $user->id)
                                         <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" id="form-delete-{{ $user->id }}">
                                             @csrf @method('DELETE')
-                                            <button type="button" onclick="window.confirmarModal('form-delete-{{ $user->id }}', 'baja')" class="bg-orange-600/20 text-orange-400 hover:bg-orange-600 hover:text-white h-8 w-8 rounded flex items-center justify-center transition-colors border border-orange-500/30">
-                                                <i class="fas fa-user-slash text-xs"></i>
+                                            <button type="button" aria-label="Dar de baja a {{ $user->name }}" onclick="window.confirmarModal('form-delete-{{ $user->id }}', 'baja')" class="bg-orange-700/20 text-orange-400 hover:bg-orange-700 hover:text-white h-8 w-8 rounded flex items-center justify-center transition-colors border border-orange-500/30">
+                                                <i class="fas fa-user-slash text-xs pointer-events-none"></i>
                                             </button>
                                         </form>
                                     @endif
                                 @else
                                     <form action="{{ route('admin.users.restore', $user->id) }}" method="POST" class="m-0 p-0">
                                         @csrf
-                                        <button type="submit" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white h-8 w-8 rounded flex items-center justify-center transition-colors border border-blue-500/30">
-                                            <i class="fas fa-undo-alt text-xs"></i>
+                                        <button type="submit" aria-label="Restaurar a {{ $user->name }}" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white h-8 w-8 rounded flex items-center justify-center transition-colors border border-blue-500/30">
+                                            <i class="fas fa-undo-alt text-xs pointer-events-none"></i>
                                         </button>
                                     </form>
 
                                     <form action="{{ route('admin.users.forceDestroy', $user->id) }}" method="POST" id="form-force-delete-{{ $user->id }}" class="m-0 p-0">
                                         @csrf @method('DELETE')
-                                        <button type="button" onclick="window.confirmarModal('form-force-delete-{{ $user->id }}', 'eliminar')" class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white h-8 w-8 rounded flex items-center justify-center transition-colors border border-red-500/30">
-                                            <i class="fas fa-skull text-xs"></i>
+                                        <button type="button" aria-label="Eliminar permanentemente a {{ $user->name }}" onclick="window.confirmarModal('form-force-delete-{{ $user->id }}', 'eliminar')" class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white h-8 w-8 rounded flex items-center justify-center transition-colors border border-red-500/30">
+                                            <i class="fas fa-skull text-xs pointer-events-none"></i>
                                         </button>
                                     </form>
                                 @endif
@@ -169,7 +175,7 @@
                     @empty
                     <tr>
                         <td colspan="5" class="px-5 py-16 text-center text-slate-500">
-                            <div class="bg-slate-900 h-20 w-20 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-700">
+                            <div class="bg-slate-900 h-20 w-20 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-300">
                                 <i class="fas fa-users-slash text-3xl opacity-50"></i>
                             </div>
                             <p class="text-white font-bold text-lg">{{ __('admin/users/users.empty_title') }}</p>
@@ -182,7 +188,7 @@
         </div>
         
         @if($users->hasPages())
-        <div class="px-5 py-3 border-t border-slate-700 bg-slate-900">
+        <div class="px-5 py-3 border-t border-slate-300 bg-slate-900">
             {{ $users->withQueryString()->links() }} 
         </div>
         @endif
@@ -191,13 +197,14 @@
 
 {{-- MODAL DINÁMICO --}}
 <div id="dynamic-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity opacity-0">
-    <div id="dynamic-modal-panel" class="bg-slate-900 border border-slate-700 p-6 rounded-3xl shadow-2xl w-full max-w-sm transform scale-95 transition-all text-center">
+    <div id="dynamic-modal-panel" class="bg-slate-900 border border-slate-300 p-6 rounded-3xl shadow-2xl w-full max-w-sm transform scale-95 transition-all text-center">
         
         <div id="modal-icon-container" class="mx-auto flex h-16 w-16 items-center justify-center rounded-full mb-4">
             <i id="modal-icon" class="fas text-2xl animate-pulse"></i>
         </div>
         
-        <h3 id="modal-title" class="text-xl font-black text-white mb-2">...</h3>
+        {{-- Cambiado de h3 a h2 para la jerarquía correcta --}}
+        <h2 id="modal-title" class="text-xl font-black text-white mb-2">...</h2>
         <p id="modal-text" class="text-xs text-slate-400 mb-6 px-2">...</p>
         
         <div class="flex gap-3">
@@ -225,6 +232,11 @@
             </p>
             <p class="font-medium text-sm mt-0.5 leading-tight">{{ session('success') ?? session('error') }}</p>
         </div>
+        
+        {{-- Agregado botón para cerrar notificacion por accesibilidad --}}
+        <button aria-label="Cerrar notificación" onclick="document.getElementById('admin-toast').remove()" class="ml-2 text-slate-400 hover:text-white transition">
+            <i class="fas fa-times pointer-events-none"></i>
+        </button>
     </div>
 
     <script>
@@ -233,8 +245,10 @@
             if(toast) {
                 setTimeout(() => toast.classList.remove('translate-y-20', 'opacity-0'), 100);
                 setTimeout(() => {
-                    toast.classList.add('translate-y-20', 'opacity-0');
-                    setTimeout(() => toast.remove(), 500);
+                    if(document.getElementById('admin-toast')) {
+                        toast.classList.add('translate-y-20', 'opacity-0');
+                        setTimeout(() => toast.remove(), 500);
+                    }
                 }, 6000);
             }
         });

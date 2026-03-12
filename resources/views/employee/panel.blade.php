@@ -16,7 +16,7 @@
             <p class="text-2xl font-bold text-slate-200">
                 {{ app()->getLocale() == 'en' ? now()->format('h:i A') : now()->format('H:i') }}
             </p>
-            <p class="text-sm text-slate-500 uppercase tracking-wider font-bold">
+            <p class="text-sm text-slate-400 uppercase tracking-wider font-bold">
                 {{ now()->locale(app()->getLocale())->isoFormat('dddd D, MMMM') }}
             </p>
         </div>
@@ -117,7 +117,7 @@
                         <p class="text-pink-400 text-xs font-bold uppercase tracking-wider">{{ __('employee/panel.deliveries') }}</p>
                     </div>
                     <h3 class="text-2xl font-bold text-white leading-tight">{!! __('employee/panel.driver_mode') !!}</h3>
-                    <p class="text-pink-200/40 text-xs mt-1">{{ __('employee/panel.scan_qr') }}</p>
+                    <p class="text-pink-200/80 text-xs mt-1">{{ __('employee/panel.scan_qr') }}</p>
                 </div>
             </a>
 

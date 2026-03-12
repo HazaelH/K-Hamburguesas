@@ -10,6 +10,7 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
     
     <style>
         body { font-family: sans-serif; background-color: #0f172a; color: white; }
@@ -33,11 +34,11 @@
         $rol = Auth::check() ? Auth::user()->rol : __('layouts/employee.guest'); 
     @endphp
 
-    <nav class="bg-slate-900 border-b border-slate-700 h-16 shrink-0 shadow-md relative z-50">
+    <nav class="bg-slate-900 border-b border-slate-300 h-16 shrink-0 shadow-md relative z-50">
         <div class="w-full h-full px-4 md:px-6 flex justify-between items-center">
             
             <a href="{{ route('employee.panel') }}" class="flex items-center gap-3 hover:opacity-80 transition shrink-0">
-                <div class="bg-orange-600 p-2 rounded-lg shadow-lg shadow-orange-900/50">
+                <div class="bg-orange-700 p-2 rounded-lg shadow-lg shadow-orange-900/50">
                     <i class="fas fa-utensils text-white"></i>
                 </div>
                 <div>
@@ -46,7 +47,7 @@
                 </div>
             </a>
 
-            <div class="hidden lg:flex items-center gap-2 bg-slate-800 p-1 rounded-xl border border-slate-700">
+            <div class="hidden lg:flex items-center gap-2 bg-slate-800 p-1 rounded-xl border border-slate-300">
                 
                 @if($rol === 'admin')
                 <a href="{{ route('admin.dashboard') }}" class="px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap bg-slate-900 border border-slate-600 text-white hover:bg-slate-700 hover:border-slate-400 shadow-inner" title="{{ __('layouts/admin.admin_panel') }}">
@@ -68,7 +69,7 @@
                 @endif
 
                 @if(in_array($rol, ['admin', 'cocinero']))
-                <a href="{{ route('kitchen.live') }}" class="px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap {{ request()->routeIs('kitchen.live') ? 'bg-orange-600 text-white shadow' : 'text-slate-400 hover:text-white hover:bg-slate-700' }}">
+                <a href="{{ route('kitchen.live') }}" class="px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap {{ request()->routeIs('kitchen.live') ? 'bg-orange-700 text-white shadow' : 'text-slate-400 hover:text-white hover:bg-slate-700' }}">
                     <i class="fas fa-fire"></i> <span>{{ __('layouts/employee.kitchen') }}</span>
                 </a>
                 <a href="{{ route('stock.index') }}" class="px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-all whitespace-nowrap {{ request()->routeIs('stock.index') ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white hover:bg-slate-700' }}">
@@ -86,32 +87,31 @@
             <div class="hidden lg:flex items-center gap-4">
                 
                 {{-- MENU DE IDIOMAS EMPLEADO (BANDERAS) --}}
-                <div class="relative border-r border-slate-700 pr-4 mr-1">
-                    <button id="lang-btn-emp" class="flex items-center gap-1 text-2xl hover:scale-110 transition-transform bg-slate-800 p-1.5 rounded-lg border border-slate-700 focus:outline-none">
-                        @if(app()->getLocale() == 'es') 🇲🇽
-                        @elseif(app()->getLocale() == 'en') 🇺🇸
-                        @elseif(app()->getLocale() == 'pt') 🇧🇷
+                <div class="relative border-r border-slate-300 pr-4 mr-1">
+                    <button id="lang-btn-emp" class="flex items-center gap-1 text-xl hover:scale-110 transition-transform bg-slate-700/50 p-2 rounded-lg border border-slate-600 focus:outline-none">
+                        @if(app()->getLocale() == 'es') <span class="fi fi-mx rounded"></span>
+                        @elseif(app()->getLocale() == 'en') <span class="fi fi-us rounded"></span>
+                        @elseif(app()->getLocale() == 'pt') <span class="fi fi-br rounded"></span>
                         @endif
                     </button>
-                    
-                    <div id="lang-dropdown-emp" class="absolute right-0 mt-4 w-40 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl hidden z-50 overflow-hidden">
+                                                <div id="lang-dropdown-emp" class="absolute right-0 mt-2 w-40 bg-slate-800 border border-slate-300 rounded-xl shadow-2xl hidden z-50 overflow-hidden">
                         <div class="p-2 space-y-1">
                             <a href="{{ LaravelLocalization::getLocalizedURL('es', null, [], true) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 text-sm font-bold {{ app()->getLocale() == 'es' ? 'text-white bg-slate-700' : 'text-slate-400' }}">
-                                <span class="text-xl">🇲🇽</span> Español
+                                <span class="fi fi-mx rounded shadow-sm"></span> Español
                             </a>
                             <a href="{{ LaravelLocalization::getLocalizedURL('en', null, [], true) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 text-sm font-bold {{ app()->getLocale() == 'en' ? 'text-white bg-slate-700' : 'text-slate-400' }}">
-                                <span class="text-xl">🇺🇸</span> English
+                                <span class="fi fi-us rounded shadow-sm"></span> English
                             </a>
                             <a href="{{ LaravelLocalization::getLocalizedURL('pt', null, [], true) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 text-sm font-bold {{ app()->getLocale() == 'pt' ? 'text-white bg-slate-700' : 'text-slate-400' }}">
-                                <span class="text-xl">🇧🇷</span> Português
+                                <span class="fi fi-br rounded shadow-sm"></span> Português
                             </a>
-                    
                         </div>
                     </div>
                 </div>
+                
 
                 @auth
-                    <div class="flex items-center gap-3 border-r border-slate-700 pr-4 mr-1">
+                    <div class="flex items-center gap-3 border-r border-slate-300 pr-4 mr-1">
                         <span class="text-sm font-bold text-slate-300">{{ Auth::user()->name }}</span>
                         @if(Auth::user()->avatar_url)
                             <img src="{{ Auth::user()->avatar_url }}" class="h-8 w-8 rounded-full border border-slate-600 object-cover bg-slate-800">
@@ -128,23 +128,23 @@
 
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="text-slate-400 hover:text-red-500 transition" title="{{ __('layouts/employee.logout') }}">
+                        <button type="submit" aria-label="Cerrar sesión" class="text-slate-400 hover:text-red-500 transition" title="{{ __('layouts/employee.logout') }}">
                             <i class="fas fa-sign-out-alt text-xl"></i> 
                         </button>
                     </form>
                 @endauth
             </div>
 
-            <button id="mobile-menu-btn" class="lg:hidden text-slate-300 hover:text-white focus:outline-none p-2 rounded-lg border border-slate-700 bg-slate-800">
+            <button id="mobile-menu-btn" aria-label="Abrir menú de navegación" class="lg:hidden text-slate-300 hover:text-white focus:outline-none p-2 rounded-lg border border-slate-300 bg-slate-800">
                 <i class="fas fa-bars text-xl"></i>
             </button>
         </div>
 
-        <div id="mobile-menu" class="absolute top-16 left-0 w-full bg-slate-900 border-b border-slate-700 shadow-2xl lg:hidden z-40">
+        <div id="mobile-menu" class="absolute top-16 left-0 w-full bg-slate-900 border-b border-slate-300 shadow-2xl lg:hidden z-40">
             <div class="p-4 space-y-2">
                 {{-- Resto de tu menú móvil (sin cambios) --}}
                 @if($rol === 'admin')
-                <a href="{{ route('admin.dashboard') }}" class="block px-4 py-3 rounded-lg font-bold items-center gap-3 bg-slate-800 border border-slate-700 text-white mb-3 shadow-inner hover:bg-slate-700">
+                <a href="{{ route('admin.dashboard') }}" class="block px-4 py-3 rounded-lg font-bold items-center gap-3 bg-slate-800 border border-slate-300 text-white mb-3 shadow-inner hover:bg-slate-700">
                     <i class="fas fa-user-shield w-6 text-center text-orange-500"></i> {{ __('layouts/employee.admin_mode_mobile') }}
                 </a>
                 @endif
@@ -158,7 +158,7 @@
                 @endif
 
                 @if(in_array($rol, ['admin', 'cocinero']))
-                <a href="{{ route('kitchen.live') }}" class="block px-4 py-3 rounded-lg font-bold items-center gap-3 {{ request()->routeIs('kitchen.live') ? 'bg-orange-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}"><i class="fas fa-fire w-6 text-center"></i> {{ __('layouts/employee.kitchen') }}</a>
+                <a href="{{ route('kitchen.live') }}" class="block px-4 py-3 rounded-lg font-bold items-center gap-3 {{ request()->routeIs('kitchen.live') ? 'bg-orange-700 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}"><i class="fas fa-fire w-6 text-center"></i> {{ __('layouts/employee.kitchen') }}</a>
                 <a href="{{ route('stock.index') }}" class="block px-4 py-3 rounded-lg font-bold items-center gap-3 {{ request()->routeIs('stock.index') ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}"><i class="fas fa-boxes w-6 text-center"></i> {{ __('layouts/employee.stock') }}</a>
                 @endif
 
@@ -167,9 +167,9 @@
                 @endif
 
                 @auth
-                <div class="border-t border-slate-700 mt-4 pt-4">
+                <div class="border-t border-slate-300 mt-4 pt-4">
                     <div class="flex items-center gap-3 px-4 mb-4">
-                        <img src="{{ Auth::user()->avatar_url }}" class="h-10 w-10 rounded-full border border-slate-600 object-cover">
+                        <img src="{{ Auth::user()->avatar_url }}" alt="Avatar de {{ Auth::user()->name }}" class="h-10 w-10 rounded-full border border-slate-600 object-cover">
                         <div>
                             <p class="text-white font-bold">{{ Auth::user()->name }}</p>
                             <p class="text-xs text-slate-400 uppercase">{{ $rol }}</p>

@@ -10,7 +10,7 @@
             <i class="fas fa-fire text-orange-500"></i> {{ __('employee/kitchen/kitchen.active_orders') }}
         </h1>
         
-        <div class="flex items-center gap-2 bg-slate-800/50 px-3 py-1.5 rounded-full border border-slate-700/50">
+        <div class="flex items-center gap-2 bg-slate-800/50 px-3 py-1.5 rounded-full border border-slate-300/50">
             <div class="relative flex h-3 w-3">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
@@ -38,7 +38,7 @@
 
                     <div id="order-card-{{ $order->id }}" class="bg-slate-800 border-t-4 {{ $statusConfig['border'] }} rounded-2xl shadow-xl flex flex-col relative h-[420px] transition-transform hover:-translate-y-1 group">
                         
-                        <div class="p-4 border-b border-slate-700 flex justify-between items-start bg-slate-800/50 rounded-t-xl shrink-0">
+                        <div class="p-4 border-b border-slate-300 flex justify-between items-start bg-slate-800/50 rounded-t-xl shrink-0">
                             <div>
                                 <span class="text-3xl font-black text-slate-200 block leading-none">#{{ $order->id }}</span>
                                 <span class="text-[11px] font-bold text-slate-400 mt-1 block">
@@ -53,7 +53,7 @@
                                 </span>
 
                                 @if($order->status == 'pendiente' && !$esperandoAdmin)
-                                    <button onclick="cancelarOrden({{ $order->id }})" class="text-slate-500 hover:text-red-500 transition-colors text-xs flex items-center gap-1 group/cancel bg-slate-900 px-2 py-1 rounded border border-slate-700 hover:border-red-500/50">
+                                    <button onclick="cancelarOrden({{ $order->id }})" class="text-slate-500 hover:text-red-500 transition-colors text-xs flex items-center gap-1 group/cancel bg-slate-900 px-2 py-1 rounded border border-slate-300 hover:border-red-500/50">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 @endif
@@ -62,7 +62,7 @@
 
                         <div class="p-4 flex-1 overflow-y-auto space-y-3 custom-scrollbar bg-slate-800/80">
                             @foreach($order->items as $item)
-                                <div class="flex items-start gap-3 border-b border-slate-700/50 pb-3 last:border-0 last:pb-0">
+                                <div class="flex items-start gap-3 border-b border-slate-300/50 pb-3 last:border-0 last:pb-0">
                                     <span class="bg-slate-900 text-white font-black rounded-lg w-8 h-8 flex items-center justify-center text-sm shrink-0 border border-slate-600 shadow-inner">
                                         {{ $item->cantidad }}
                                     </span>
@@ -110,7 +110,7 @@
                         </div>
 
                         <div class="shrink-0 mt-auto rounded-b-xl overflow-hidden">
-                            <div class="bg-slate-900 p-3 border-t border-slate-700 flex items-center gap-3 h-16">
+                            <div class="bg-slate-900 p-3 border-t border-slate-300 flex items-center gap-3 h-16">
                                 @if(!empty($order->mesa))
                                     <div class="bg-blue-600/20 text-blue-400 w-10 h-10 flex items-center justify-center rounded-lg shrink-0"><i class="fas fa-utensils text-lg"></i></div>
                                     <div class="min-w-0">
@@ -124,7 +124,7 @@
                                         <p class="text-white text-base font-black truncate">{{ $order->cliente_nombre ?? '---' }}</p>
                                     </div>
                                 @else
-                                    <div class="bg-orange-600/20 text-orange-400 w-10 h-10 flex items-center justify-center rounded-lg shrink-0"><i class="fas fa-motorcycle text-lg"></i></div>
+                                    <div class="bg-orange-700/20 text-orange-400 w-10 h-10 flex items-center justify-center rounded-lg shrink-0"><i class="fas fa-motorcycle text-lg"></i></div>
                                     <div class="min-w-0">
                                         <p class="uppercase font-bold text-orange-400 text-[10px] leading-none mb-0.5">{{ __('employee/kitchen/kitchen.delivery') }}</p>
                                         <p class="text-slate-300 text-sm truncate font-medium">{{ $order->direccion ?? __('employee/kitchen/kitchen.see_details') }}</p>
@@ -157,7 +157,7 @@
             </div>
         @else
             <div class="flex flex-col items-center justify-center h-full text-slate-500">
-                <div class="bg-slate-800 p-8 rounded-full mb-6 shadow-2xl border border-slate-700">
+                <div class="bg-slate-800 p-8 rounded-full mb-6 shadow-2xl border border-slate-300">
                     <i class="fas fa-check-circle text-5xl text-green-500/50"></i>
                 </div>
                 <h2 class="text-3xl font-bold text-white mb-2">{{ __('employee/kitchen/kitchen.all_clear') }}</h2>
@@ -172,7 +172,7 @@
         <div class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm transition-opacity opacity-0" id="modal-backdrop"></div>
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                <div class="relative transform overflow-hidden rounded-2xl bg-slate-900 border border-slate-700 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-md scale-95 opacity-0" id="modal-panel">
+                <div class="relative transform overflow-hidden rounded-2xl bg-slate-900 border border-slate-300 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-md scale-95 opacity-0" id="modal-panel">
                     <div class="p-6">
                         <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-500/20 border border-red-500/50 mb-4">
                             <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>

@@ -1,5 +1,5 @@
 <div id="cookie-banner" class="fixed bottom-0 inset-x-0 z-[999] hidden pb-4 sm:pb-6 px-4 sm:px-6 pointer-events-none">
-    <div class="max-w-4xl mx-auto bg-slate-900/95 backdrop-blur-md border border-slate-700 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] p-5 sm:p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-5 pointer-events-auto transform translate-y-full transition-transform duration-700 ease-out" id="cookie-panel">
+    <div class="max-w-4xl mx-auto bg-slate-900/95 backdrop-blur-md border border-slate-300 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] p-5 sm:p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-5 pointer-events-auto transform translate-y-full transition-transform duration-700 ease-out" id="cookie-panel">
         
         <div class="flex-1 text-center md:text-left flex flex-col sm:flex-row items-center gap-4">
             <div class="w-12 h-12 bg-orange-500/10 rounded-full flex items-center justify-center text-orange-500 shrink-0">
@@ -14,10 +14,10 @@
         </div>
 
         <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0">
-            <button onclick="acceptCookies()" class="w-full sm:w-auto bg-orange-600 hover:bg-orange-500 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-[0_0_15px_rgba(234,88,12,0.3)] hover:shadow-[0_0_25px_rgba(234,88,12,0.5)]">
+            <button onclick="acceptCookies()" class="w-full sm:w-auto bg-orange-700 hover:bg-orange-700 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-[0_0_15px_rgba(234,88,12,0.3)] hover:shadow-[0_0_25px_rgba(234,88,12,0.5)]">
                 {{ __('client/cookies.accept') }}
             </button>
-            <button onclick="rejectCookies()" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-300 font-bold py-2.5 px-6 rounded-xl transition-all">
+            <button onclick="rejectCookies()" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-300 border border-slate-300 text-slate-300 font-bold py-2.5 px-6 rounded-xl transition-all">
                 {{ __('client/cookies.reject') }}
             </button>
         </div>

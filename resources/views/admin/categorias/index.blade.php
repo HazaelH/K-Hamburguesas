@@ -10,7 +10,7 @@
             <h1 class="text-3xl font-bold text-white"><i class="fas fa-tags text-orange-500 mr-2"></i> {{ __('admin/categorias/index.header_title') }}</h1>
             <p class="text-slate-400">{{ __('admin/categorias/index.header_subtitle') }}</p>
         </div>
-        <button onclick="abrirModalCategoria()" class="bg-orange-600 hover:bg-orange-500 text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-orange-900/20 transition transform hover:-translate-y-0.5 flex items-center gap-2">
+        <button onclick="abrirModalCategoria()" class="bg-orange-700 hover:bg-orange-500 text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-orange-900/20 transition transform hover:-translate-y-0.5 flex items-center gap-2">
             <i class="fas fa-plus"></i> {{ __('admin/categorias/index.btn_new') }}
         </button>
     </div>
@@ -53,7 +53,7 @@
         </script>
     @endif
 
-    <div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-2xl">
+    <div class="bg-slate-800 rounded-2xl border border-slate-300 overflow-hidden shadow-2xl">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm text-slate-400">
                 <thead class="bg-slate-900 text-slate-300 uppercase text-[10px] font-black tracking-widest">
@@ -108,7 +108,7 @@
 {{-- MODAL DE CREACIÓN / EDICIÓN --}}
 <div id="modal-categoria" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
     <div class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onclick="cerrarModalCategoria()"></div>
-    <div class="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-3xl p-6 sm:p-8 shadow-2xl relative z-10 transform scale-95 opacity-0 transition-all duration-300" id="modal-panel">
+    <div class="bg-slate-900 border border-slate-300 w-full max-w-lg rounded-3xl p-6 sm:p-8 shadow-2xl relative z-10 transform scale-95 opacity-0 transition-all duration-300" id="modal-panel">
         
         <h3 id="modal-title" class="text-2xl font-black text-white mb-6">Nueva Categoría</h3>
         
@@ -119,27 +119,27 @@
             <div>
                 <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2"><span class="text-xl mr-1">🇲🇽</span> {{ __('admin/categorias/index.label_es') }}</label>
                 <input type="text" name="nombre" id="input-es" required placeholder="{{ __('admin/categorias/index.ph_es') }}"
-                       class="w-full bg-slate-800 text-white border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition shadow-inner">
+                       class="w-full bg-slate-800 text-white border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:border-orange-500 transition shadow-inner">
                 @error('nombre') <p class="text-red-400 text-[10px] mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div>
                 <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2"><span class="text-xl mr-1">🇺🇸</span> {{ __('admin/categorias/index.label_en') }}</label>
                 <input type="text" name="nombre_en" id="input-en" placeholder="{{ __('admin/categorias/index.ph_en') }}"
-                       class="w-full bg-slate-800 text-white border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition shadow-inner">
+                       class="w-full bg-slate-800 text-white border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition shadow-inner">
             </div>
 
             <div>
                 <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2"><span class="text-xl mr-1">🇧🇷</span> {{ __('admin/categorias/index.label_pt') }}</label>
                 <input type="text" name="nombre_pt" id="input-pt" placeholder="{{ __('admin/categorias/index.ph_pt') }}"
-                       class="w-full bg-slate-800 text-white border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 transition shadow-inner">
+                       class="w-full bg-slate-800 text-white border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 transition shadow-inner">
             </div>
 
             <div class="flex gap-3 pt-4 border-t border-slate-800">
-                <button type="button" onclick="cerrarModalCategoria()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 rounded-xl transition-all border border-slate-700">
+                <button type="button" onclick="cerrarModalCategoria()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 rounded-xl transition-all border border-slate-300">
                     {{ __('admin/categorias/index.btn_cancel') }}
                 </button>
-                <button type="submit" class="flex-1 bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all flex justify-center items-center gap-2">
+                <button type="submit" class="flex-1 bg-orange-700 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all flex justify-center items-center gap-2">
                     <i class="fas fa-save"></i> {{ __('admin/categorias/index.btn_save') }}
                 </button>
             </div>
@@ -149,7 +149,7 @@
 
 {{-- MODAL DE CONFIRMACIÓN DE BORRADO --}}
 <div id="delete-modal" class="fixed inset-0 z-[110] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity opacity-0 p-4">
-    <div id="delete-modal-panel" class="bg-slate-900 border border-slate-700 p-6 sm:p-8 rounded-3xl shadow-2xl w-full max-w-sm transform scale-95 transition-all text-center">
+    <div id="delete-modal-panel" class="bg-slate-900 border border-slate-300 p-6 sm:p-8 rounded-3xl shadow-2xl w-full max-w-sm transform scale-95 transition-all text-center">
         
         <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full mb-5 bg-red-500/20 text-red-500 border border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.3)]">
             <i class="fas fa-exclamation-triangle text-3xl animate-pulse"></i>

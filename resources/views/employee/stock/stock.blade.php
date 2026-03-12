@@ -25,7 +25,7 @@
                 <i class="fas fa-search"></i>
             </span>
             <input type="text" id="buscador" placeholder="{{ __('employee/stock/stock.search_placeholder') }}" 
-                   class="w-full bg-slate-800 text-white border border-slate-700 rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all shadow-lg placeholder-slate-500">
+                   class="w-full bg-slate-800 text-white border border-slate-300 rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all shadow-lg placeholder-slate-500">
         </div>
     </div>
 
@@ -86,7 +86,7 @@
                         </div>
 
                         @if($alertaPendiente)
-                            <span class="text-[10px] bg-slate-800 text-slate-400 border border-slate-700 px-2 py-1 rounded flex items-center gap-1">
+                            <span class="text-[10px] bg-slate-800 text-slate-400 border border-slate-300 px-2 py-1 rounded flex items-center gap-1">
                                 <i class="fas fa-clock"></i> {{ __('employee/stock/stock.waiting_admin') }}
                             </span>
                         @else

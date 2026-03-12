@@ -9,6 +9,7 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css"/>
     
     @vite([
         'resources/css/app.css', 
@@ -26,7 +27,7 @@
                 
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center gap-3 hover:opacity-90 transition group">
-                        <div class="bg-orange-600 p-2.5 rounded-xl shadow-lg shadow-orange-900/50 group-hover:scale-105 transition-transform duration-300">
+                        <div class="bg-orange-700 p-2.5 rounded-xl shadow-lg shadow-orange-900/50 group-hover:scale-105 transition-transform duration-300">
                             <i class="fas fa-utensils text-white text-xl"></i>
                         </div>
                         <div class="hidden sm:block">
@@ -83,29 +84,29 @@
                                 </div>
                             @else
                                 <a href="{{ route('login') }}" class="text-sm font-bold text-slate-300 hover:text-white">{{ __('layouts/app.login') }}</a>
-                                <a href="{{ route('register') }}" class="bg-orange-600 hover:bg-orange-500 text-white text-sm font-bold px-5 py-2 rounded-full shadow-lg shadow-orange-900/20 transition-transform hover:-translate-y-0.5">{{ __('layouts/app.register') }}</a>
+                                <a href="{{ route('register') }}" class="bg-orange-700 hover:bg-orange-700 text-white text-sm font-bold px-5 py-2 rounded-full shadow-lg shadow-orange-900/20 transition-transform hover:-translate-y-0.5">{{ __('layouts/app.register') }}</a>
                             @endauth
                         </div>
                         
                         {{-- MENU DE IDIOMAS APP (BANDERAS) --}}
-                        <div class="relative border-l border-slate-700 pl-4 ml-2">
-                            <button id="lang-btn-app" class="flex items-center gap-1 text-2xl hover:scale-110 transition-transform focus:outline-none">
-                                @if(app()->getLocale() == 'es') 🇲🇽
-                                @elseif(app()->getLocale() == 'en') 🇺🇸
-                                @elseif(app()->getLocale() == 'pt') 🇧🇷
+                        <div class="relative border-l border-slate-300 pl-4 ml-2">
+                            <button id="lang-btn-admin" class="flex items-center gap-1 text-xl hover:scale-110 transition-transform bg-slate-700/50 p-2 rounded-lg border border-slate-600 focus:outline-none">
+                                @if(app()->getLocale() == 'es') <span class="fi fi-mx rounded"></span>
+                                @elseif(app()->getLocale() == 'en') <span class="fi fi-us rounded"></span>
+                                @elseif(app()->getLocale() == 'pt') <span class="fi fi-br rounded"></span>
                                 @endif
                             </button>
                             
-                            <div id="lang-dropdown-app" class="absolute right-0 mt-4 w-40 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl hidden z-50 overflow-hidden">
+                            <div id="lang-dropdown-admin" class="absolute right-0 mt-2 w-40 bg-slate-800 border border-slate-300 rounded-xl shadow-2xl hidden z-50 overflow-hidden">
                                 <div class="p-2 space-y-1">
                                     <a href="{{ LaravelLocalization::getLocalizedURL('es', null, [], true) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 text-sm font-bold {{ app()->getLocale() == 'es' ? 'text-white bg-slate-700' : 'text-slate-400' }}">
-                                        <span class="text-xl">🇲🇽</span> Español
+                                        <span class="fi fi-mx rounded shadow-sm"></span> Español
                                     </a>
                                     <a href="{{ LaravelLocalization::getLocalizedURL('en', null, [], true) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 text-sm font-bold {{ app()->getLocale() == 'en' ? 'text-white bg-slate-700' : 'text-slate-400' }}">
-                                        <span class="text-xl">🇺🇸</span> English
+                                        <span class="fi fi-us rounded shadow-sm"></span> English
                                     </a>
                                     <a href="{{ LaravelLocalization::getLocalizedURL('pt', null, [], true) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 text-sm font-bold {{ app()->getLocale() == 'pt' ? 'text-white bg-slate-700' : 'text-slate-400' }}">
-                                        <span class="text-xl">🇧🇷</span> Português
+                                        <span class="fi fi-br rounded shadow-sm"></span> Português
                                     </a>
                                 </div>
                             </div>
@@ -124,7 +125,7 @@
                         </a>
                         
                         {{-- MENU DE IDIOMAS (LOGIN/REGISTER) --}}
-                        <div class="relative border-r border-slate-700 pr-4 mr-2">
+                        <div class="relative border-r border-slate-300 pr-4 mr-2">
                             <button id="lang-btn-auth" class="flex items-center gap-1 text-2xl hover:scale-110 transition-transform focus:outline-none">
                                 @if(app()->getLocale() == 'es') 🇲🇽
                                 @elseif(app()->getLocale() == 'en') 🇺🇸
@@ -132,7 +133,7 @@
                                 @endif
                             </button>
                             
-                            <div id="lang-dropdown-auth" class="absolute right-0 mt-4 w-40 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl hidden z-50 overflow-hidden">
+                            <div id="lang-dropdown-auth" class="absolute right-0 mt-4 w-40 bg-slate-800 border border-slate-300 rounded-xl shadow-2xl hidden z-50 overflow-hidden">
                                 <div class="p-2 space-y-1">
                                     <a href="{{ LaravelLocalization::getLocalizedURL('es', null, [], true) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 text-sm font-bold {{ app()->getLocale() == 'es' ? 'text-white bg-slate-700' : 'text-slate-400' }}">
                                         <span class="text-xl">🇲🇽</span> Español
@@ -148,10 +149,10 @@
                         </div>
 
                         @if(request()->routeIs('login'))
-                            <a href="{{ route('register') }}" class="bg-slate-800 border border-slate-700 text-white text-sm font-bold px-4 py-2 rounded-lg hover:bg-slate-700 transition">{{ __('layouts/app.create_account') }}</a>
+                            <a href="{{ route('register') }}" class="bg-slate-800 border border-slate-300 text-white text-sm font-bold px-4 py-2 rounded-lg hover:bg-slate-700 transition">{{ __('layouts/app.create_account') }}</a>
                         @endif
                         @if(request()->routeIs('register'))
-                            <a href="{{ route('login') }}" class="bg-slate-800 border border-slate-700 text-white text-sm font-bold px-4 py-2 rounded-lg hover:bg-slate-700 transition">{{ __('layouts/app.sign_in') }}</a>
+                            <a href="{{ route('login') }}" class="bg-slate-800 border border-slate-300 text-white text-sm font-bold px-4 py-2 rounded-lg hover:bg-slate-700 transition">{{ __('layouts/app.sign_in') }}</a>
                         @endif
                     </div>
                 @endif
@@ -160,13 +161,13 @@
 
         {{-- Menú Móvil... (Igual al tuyo) --}}
         @if(!request()->routeIs('login') && !request()->routeIs('register'))
-            <div id="mobile-menu" class="md:hidden max-h-0 overflow-hidden bg-slate-800 border-t border-slate-700">
+            <div id="mobile-menu" class="md:hidden max-h-0 overflow-hidden bg-slate-800 border-t border-slate-300">
                 <div class="px-4 pt-2 pb-6 space-y-2">
                     <a href="{{ route('home') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-slate-700 hover:text-orange-400 transition"><i class="fas fa-home w-6 text-center text-slate-500"></i> {{ __('layouts/app.home') }}</a>
                     <a href="{{ route('menu') }}" class="block px-3 py-3 rounded-md text-base font-bold text-slate-300 hover:bg-slate-700 hover:text-orange-400 transition"><i class="fas fa-hamburger w-6 text-center text-slate-500"></i> {{ __('layouts/app.full_menu') }}</a>
                     <a href="{{ route('offers.index') }}" class="block px-3 py-3 rounded-md text-base font-bold text-slate-300 hover:bg-slate-700 hover:text-orange-400 transition"><i class="fas fa-tag w-6 text-center text-slate-500"></i> {{ __('layouts/app.offers_client') }}</a>
 
-                    <div class="border-t border-slate-700 my-2"></div>
+                    <div class="border-t border-slate-300 my-2"></div>
 
                     @auth
                         <div class="px-3 py-3">
@@ -198,7 +199,7 @@
                     @else
                         <div class="grid grid-cols-2 gap-4 px-3 mt-4">
                             <a href="{{ route('login') }}" class="text-center py-2 border border-slate-600 rounded-lg text-white font-bold hover:bg-slate-700">{{ __('layouts/app.login') }}</a>
-                            <a href="{{ route('register') }}" class="text-center py-2 bg-orange-600 rounded-lg text-white font-bold hover:bg-orange-500">{{ __('layouts/app.register') }}</a>
+                            <a href="{{ route('register') }}" class="text-center py-2 bg-orange-700 rounded-lg text-white font-bold hover:bg-orange-500">{{ __('layouts/app.register') }}</a>
                         </div>
                     @endauth
                 </div>
@@ -219,7 +220,7 @@
                 
                 <div class="space-y-4">
                     <div class="flex items-center gap-3">
-                        <div class="bg-orange-600 p-2 rounded-lg shadow-lg shadow-orange-900/50">
+                        <div class="bg-orange-700 p-2 rounded-lg shadow-lg shadow-orange-900/50">
                             <i class="fas fa-utensils text-white"></i>
                         </div>
                         <span class="font-bold text-lg text-white tracking-wide">{{ __('layouts/app.k_hamburguesas') }}</span>
@@ -230,7 +231,7 @@
                 </div>
 
                 <div class="space-y-4">
-                    <h3 class="text-white font-bold text-lg border-b border-slate-700 pb-2 inline-block">Contacto</h3>
+                    <h3 class="text-white font-bold text-lg border-b border-slate-300 pb-2 inline-block">Contacto</h3>
                     <ul class="space-y-3">
                         <li class="flex items-start gap-3">
                             <i class="fas fa-map-marker-alt text-orange-500 mt-1"></i>
@@ -250,8 +251,8 @@
                 </div>
 
                 <div class="space-y-4">
-                    <h3 class="text-white font-bold text-lg border-b border-slate-700 pb-2 inline-block">{{ __('layouts/app.footer_hours_title') }}</h3>
-                    <div class="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50">
+                    <h3 class="text-white font-bold text-lg border-b border-slate-300 pb-2 inline-block">{{ __('layouts/app.footer_hours_title') }}</h3>
+                    <div class="bg-slate-800/50 rounded-xl p-4 border border-slate-300/50">
                         <div class="flex justify-between items-center mb-2">
                             <span class="font-bold text-slate-300"><i class="far fa-clock text-orange-500 mr-2"></i>{{ __('layouts/app.footer_mon_sun') }}</span>
                         </div>

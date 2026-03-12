@@ -16,7 +16,7 @@
         </a>
     </div>
 
-    <div class="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-8">
+    <div class="bg-slate-800 rounded-2xl shadow-xl border border-slate-300 p-8">
         <form action="{{ route('admin.users.update', $user->id) }}" method="POST" enctype="multipart/form-data" class="space-y-8">
             @csrf
             @method('PUT')
@@ -91,9 +91,9 @@
                     </div>
                 </div>
 
-                <div class="border-t lg:border-t-0 lg:border-l border-slate-700 pt-8 lg:pt-0 lg:pl-10 space-y-8">
+                <div class="border-t lg:border-t-0 lg:border-l border-slate-300 pt-8 lg:pt-0 lg:pl-10 space-y-8">
                     
-                    <div class="flex items-center gap-4 p-4 bg-slate-900/50 rounded-xl border border-slate-700">
+                    <div class="flex items-center gap-4 p-4 bg-slate-900/50 rounded-xl border border-slate-300">
                         <div class="w-16 h-16 rounded-full bg-slate-700 border border-slate-500 overflow-hidden relative shrink-0">
                             <img id="preview-avatar" src="{{ $user->avatar_url }}" class="w-full h-full object-cover">
                             <div id="icon-avatar" class="w-full h-full flex items-center justify-center text-slate-500 hidden">
@@ -136,7 +136,7 @@
                     <div>
                         <div class="relative">
                             <input type="file" name="foto_custom" id="foto_custom" accept="image/*"
-                                   class="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-slate-700 file:text-white hover:file:bg-slate-600 cursor-pointer border border-slate-700 rounded-lg bg-slate-900 focus:outline-none">
+                                   class="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-slate-700 file:text-white hover:file:bg-slate-600 cursor-pointer border border-slate-300 rounded-lg bg-slate-900 focus:outline-none">
                         </div>
                         <p class="text-[10px] text-slate-500 mt-2 text-right">{{ __('admin/users/users.upload_formats') }}</p>
                     </div>
@@ -144,9 +144,9 @@
                 </div>
             </div> 
 
-            <div class="border-t border-slate-700 pt-6">
+            <div class="border-t border-slate-300 pt-6">
                 <button type="submit" 
-                        class="w-full md:w-auto md:float-right bg-orange-600 hover:bg-orange-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg transform transition hover:scale-[1.01]">
+                        class="w-full md:w-auto md:float-right bg-orange-700 hover:bg-orange-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg transform transition hover:scale-[1.01]">
                     <i class="fas fa-sync-alt mr-2"></i> {{ __('admin/users/users.btn_update_user') }}
                 </button>
             </div>

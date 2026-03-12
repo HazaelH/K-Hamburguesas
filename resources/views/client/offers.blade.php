@@ -5,7 +5,7 @@
 @section('contenido')
 <div class="pb-20 min-h-screen bg-slate-900 relative overflow-hidden">
 
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-orange-600/20 blur-[120px] rounded-full pointer-events-none z-0"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-orange-700/20 blur-[120px] rounded-full pointer-events-none z-0"></div>
 
     <div class="text-center py-12 animate-fade-in-down relative z-10">
         <span class="bg-orange-500/10 text-orange-400 border border-orange-500/30 px-5 py-1.5 rounded-full text-xs font-black uppercase tracking-[0.2em] mb-6 inline-block shadow-[0_0_15px_rgba(249,115,22,0.2)]">
@@ -35,7 +35,7 @@
 
                     {{-- APLICAMOS ACCESORES A LOS DATA-ATTRIBUTES --}}
                     <div onclick="window.abrirModalOferta(this)"
-                         class="oferta-card cursor-pointer relative bg-slate-800 rounded-3xl overflow-hidden group hover:-translate-y-2 transition-all duration-300 shadow-xl shadow-black/50 border border-slate-700 hover:border-orange-500/50 hover:shadow-[0_10px_30px_rgba(249,115,22,0.15)] flex flex-col h-full"
+                         class="oferta-card cursor-pointer relative bg-slate-800 rounded-3xl overflow-hidden group hover:-translate-y-2 transition-all duration-300 shadow-xl shadow-black/50 border border-slate-300 hover:border-orange-500/50 hover:shadow-[0_10px_30px_rgba(249,115,22,0.15)] flex flex-col h-full"
                          data-titulo="{{ $oferta->titulo_traducido }}"
                          data-desc="{{ $oferta->descripcion_traducida }}"
                          data-img="{{ $oferta->imagen_url ? asset('storage/' . $oferta->imagen_url) : '' }}"
@@ -74,14 +74,14 @@
 
                         <div class="relative bg-slate-800 px-6 pt-8 pb-6 flex-1 flex flex-col pointer-events-none">
                             <div class="absolute top-0 left-4 right-4 border-t-2 border-dashed border-slate-600"></div>
-                            <div class="absolute -top-3 -left-3 w-6 h-6 bg-slate-900 rounded-full z-10 border-b border-r border-slate-700"></div>
-                            <div class="absolute -top-3 -right-3 w-6 h-6 bg-slate-900 rounded-full z-10 border-b border-l border-slate-700"></div>
+                            <div class="absolute -top-3 -left-3 w-6 h-6 bg-slate-900 rounded-full z-10 border-b border-r border-slate-300"></div>
+                            <div class="absolute -top-3 -right-3 w-6 h-6 bg-slate-900 rounded-full z-10 border-b border-l border-slate-300"></div>
 
                             {{-- APLICAMOS ACCESORES VISUALES --}}
                             <h3 class="text-2xl font-black text-white mb-3 leading-tight group-hover:text-orange-400 transition-colors">{{ $oferta->titulo_traducido }}</h3>
                             <p class="text-slate-400 text-sm line-clamp-2 mb-6 flex-1">{{ $oferta->descripcion_traducida }}</p>
 
-                            <div class="flex justify-between items-center bg-slate-900/80 p-4 rounded-2xl border border-slate-700/50">
+                            <div class="flex justify-between items-center bg-slate-900/80 p-4 rounded-2xl border border-slate-300/50">
                                 <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500 animate-pulse">
                                         <i class="fas fa-hourglass-half"></i>
@@ -98,13 +98,13 @@
                 @endforeach
             </div>
         @else
-            <div class="text-center py-24 bg-slate-800/30 rounded-3xl border border-dashed border-slate-700 max-w-2xl mx-auto backdrop-blur-sm">
+            <div class="text-center py-24 bg-slate-800/30 rounded-3xl border border-dashed border-slate-300 max-w-2xl mx-auto backdrop-blur-sm">
                 <div class="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">
                     <i class="fas fa-ticket-alt text-5xl text-slate-500"></i>
                 </div>
                 <h2 class="text-3xl font-black text-white mb-3">{{ __('client/offers.no_offers') }}</h2>
                 <p class="text-slate-400 mb-8 max-w-md mx-auto">{{ __('client/offers.no_offers_desc') }}</p>
-                <a href="{{ route('menu') }}" class="bg-orange-600 hover:bg-orange-500 text-white px-8 py-3.5 rounded-xl font-black transition-all shadow-lg hover:shadow-orange-500/30 transform hover:-translate-y-0.5">
+                <a href="{{ route('menu') }}" class="bg-orange-700 hover:bg-orange-500 text-white px-8 py-3.5 rounded-xl font-black transition-all shadow-lg hover:shadow-orange-500/30 transform hover:-translate-y-0.5">
                     {{ __('client/offers.go_to_menu') }}
                 </a>
             </div>
@@ -115,7 +115,7 @@
 <div id="modal-oferta" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 sm:p-6" aria-modal="true">
     <div class="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity" id="modal-overlay" onclick="window.cerrarModalOferta()"></div>
 
-    <div id="modal-oferta-panel" class="relative w-full max-w-2xl bg-slate-800 rounded-3xl shadow-2xl border border-slate-700 overflow-hidden transform scale-95 opacity-0 transition-all duration-300 flex flex-col max-h-[90vh]">
+    <div id="modal-oferta-panel" class="relative w-full max-w-2xl bg-slate-800 rounded-3xl shadow-2xl border border-slate-300 overflow-hidden transform scale-95 opacity-0 transition-all duration-300 flex flex-col max-h-[90vh]">
         
         <button id="btn-cerrar-modal" onclick="window.cerrarModalOferta()" class="absolute top-4 right-4 z-50 w-10 h-10 bg-black/50 hover:bg-red-500 text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-colors border border-white/10">
             <i class="fas fa-times text-lg"></i>
@@ -137,7 +137,7 @@
 
             <h3 class="text-3xl sm:text-4xl font-black text-white mb-4 leading-tight shadow-black drop-shadow-lg" id="modal-titulo">Título</h3>
             
-            <div class="bg-slate-900/50 border border-slate-700 rounded-2xl p-5 mb-6">
+            <div class="bg-slate-900/50 border border-slate-300 rounded-2xl p-5 mb-6">
                 <p class="text-slate-300 text-sm sm:text-base leading-relaxed whitespace-pre-line" id="modal-desc">Descripción...</p>
             </div>
 
@@ -146,19 +146,19 @@
                     <i class="fas fa-stopwatch"></i> {{ __('client/offers.offer_ends_in') }}
                 </p>
                 <div class="flex gap-3 sm:gap-4 text-center">
-                    <div class="bg-slate-900 border border-slate-700 rounded-xl p-3 flex-1 shadow-inner">
+                    <div class="bg-slate-900 border border-slate-300 rounded-xl p-3 flex-1 shadow-inner">
                         <span id="count-days" class="block text-2xl sm:text-3xl font-black text-white">00</span>
                         <span class="text-[10px] text-slate-500 uppercase font-bold">{{ __('client/offers.days') }}</span>
                     </div>
-                    <div class="bg-slate-900 border border-slate-700 rounded-xl p-3 flex-1 shadow-inner">
+                    <div class="bg-slate-900 border border-slate-300 rounded-xl p-3 flex-1 shadow-inner">
                         <span id="count-hours" class="block text-2xl sm:text-3xl font-black text-white">00</span>
                         <span class="text-[10px] text-slate-500 uppercase font-bold">{{ __('client/offers.hours') }}</span>
                     </div>
-                    <div class="bg-slate-900 border border-slate-700 rounded-xl p-3 flex-1 shadow-inner">
+                    <div class="bg-slate-900 border border-slate-300 rounded-xl p-3 flex-1 shadow-inner">
                         <span id="count-mins" class="block text-2xl sm:text-3xl font-black text-white">00</span>
                         <span class="text-[10px] text-slate-500 uppercase font-bold">{{ __('client/offers.mins') }}</span>
                     </div>
-                    <div class="bg-slate-900 border border-slate-700 rounded-xl p-3 flex-1 shadow-inner">
+                    <div class="bg-slate-900 border border-slate-300 rounded-xl p-3 flex-1 shadow-inner">
                         <span id="count-secs" class="block text-2xl sm:text-3xl font-black text-orange-400">00</span>
                         <span class="text-[10px] text-slate-500 uppercase font-bold">{{ __('client/offers.secs') }}</span>
                     </div>
@@ -166,7 +166,7 @@
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 items-center justify-end mt-auto">
-                <a id="modal-btn-pedir" href="{{ route('menu') }}" class="w-full flex-1 text-center bg-orange-600 hover:bg-orange-500 text-white font-black py-4 px-8 rounded-xl transition-all shadow-[0_0_20px_rgba(234,88,12,0.4)] hover:shadow-[0_0_30px_rgba(234,88,12,0.6)] transform hover:-translate-y-1 flex items-center justify-center gap-2 text-lg group">
+                <a id="modal-btn-pedir" href="{{ route('menu') }}" class="w-full flex-1 text-center bg-orange-700 hover:bg-orange-500 text-white font-black py-4 px-8 rounded-xl transition-all shadow-[0_0_20px_rgba(234,88,12,0.4)] hover:shadow-[0_0_30px_rgba(234,88,12,0.6)] transform hover:-translate-y-1 flex items-center justify-center gap-2 text-lg group">
                     <i class="fas fa-shopping-cart group-hover:animate-bounce"></i> {{ __('client/offers.go_to_buy') }}
                 </a>
             </div>

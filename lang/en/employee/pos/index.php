@@ -8,8 +8,8 @@ return [
     // Cuenta
     'current_account' => 'Current Order',
     'clear' => 'Clear',
-    'takeout' => '🛍️ Takeout',
-    'table' => '🍽️ Table :number',
+    'takeout' => 'Takeout',
+    'table' => 'Table :number',
     'client_name' => 'Customer name (Optional)',
     'empty_account' => 'The order is empty',
     'empty_account_desc' => 'Tap a product from the menu<br>to add it here.',

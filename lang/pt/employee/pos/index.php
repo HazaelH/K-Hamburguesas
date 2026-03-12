@@ -9,8 +9,8 @@ return [
     // Conta
     'current_account' => 'Conta Atual',
     'clear' => 'Limpar',
-    'takeout' => '🛍️ Para Levar',
-    'table' => '🍽️ Mesa :number',
+    'takeout' => 'Para Levar',
+    'table' => 'Mesa :number',
     'client_name' => 'Nome do cliente (Opcional)',
     'empty_account' => 'A conta está vazia',
     'empty_account_desc' => 'Toque em um produto do menu<br>para adicioná-lo aqui.',
