@@ -5,7 +5,7 @@
 @section('contenido')
 
     {{-- HERO SECTION --}}
-    <section class="relative bg-slate-900 rounded-3xl overflow-hidden shadow-2xl mb-16 border border-slate-800">
+    <section class="relative bg-slate-900 rounded-3xl overflow-hidden shadow-2xl mb-16 border border-slate-300">
         <div class="absolute inset-0">
             <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?ixlib=rb-1.2.1&auto=format&fit=crop&w=1951&q=80" 
                  class="w-full h-full object-cover opacity-20" 
@@ -52,7 +52,7 @@
     {{-- SECCIÓN: OFERTAS FLASH --}}
     @if($ofertas->count() > 0)
     <section class="mb-20 animate-fade-in-up">
-        <div class="flex items-center justify-between mb-8 border-b border-slate-800 pb-4">
+        <div class="flex items-center justify-between mb-8 border-b border-slate-300 pb-4">
             <h2 class="text-3xl font-black text-white flex items-center gap-3">
                 <i class="fas fa-bolt text-yellow-500 animate-pulse"></i> {{ __('client/home.special_offers') }}
             </h2>
@@ -88,7 +88,7 @@
 
     {{-- SECCIÓN: NUESTROS FAVORITOS --}}
     <section class="mb-20">
-        <div class="flex items-center justify-between mb-8 border-b border-slate-800 pb-4">
+        <div class="flex items-center justify-between mb-8 border-b border-slate-300 pb-4">
             <h2 class="text-3xl font-black text-white flex items-center gap-3">
                 <i class="fas fa-fire text-orange-500"></i> {{ __('client/home.favorites') }}
             </h2>
@@ -133,7 +133,7 @@
                             </p>
                         </div>
                         
-                        <button onclick="window.abrirModalHome({{ json_encode($producto) }}, '{{ app()->getLocale() }}')" class="w-full bg-slate-700 hover:bg-orange-700 text-white font-bold py-3 rounded-xl transition-colors duration-300 flex items-center justify-center gap-2 mt-auto border border-slate-600 hover:border-orange-500">
+                        <button onclick="window.abrirModalHome({{ json_encode($producto) }}, '{{ app()->getLocale() }}')" class="w-full bg-slate-700 hover:bg-orange-700 text-white font-bold py-3 rounded-xl transition-colors duration-300 flex items-center justify-center gap-2 mt-auto border border-slate-300 hover:border-orange-500">
                             <i class="fas fa-plus"></i> {{ __('client/home.add_to_order') }}
                         </button>
                     </div>
@@ -216,7 +216,7 @@
                     </div>
                 </div>
 
-                <a href="https://maps.google.com/?cid=1657466745896358562&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNl" target="_blank" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 border border-slate-600 hover:border-orange-500 mt-6 shadow-lg">
+                <a href="https://maps.google.com/?cid=1657466745896358562&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNl" target="_blank" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 border border-slate-300 hover:border-orange-500 mt-6 shadow-lg">
                     <i class="fas fa-location-arrow text-orange-500"></i> {{ __('client/home.how_to_arrive') }}
                 </a>
             </div>

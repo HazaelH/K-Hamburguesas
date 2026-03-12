@@ -26,7 +26,7 @@
             <div class="flex h-20 justify-between items-center">
                 
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('home') }}" class="flex items-center gap-3 hover:opacity-90 transition group">
+                    <a href="{{ route('home') }}" aria-label="Ir al inicio" class="flex items-center gap-3 hover:opacity-90 transition group">
                         <div class="bg-orange-700 p-2.5 rounded-xl shadow-lg shadow-orange-900/50 group-hover:scale-105 transition-transform duration-300">
                             <i class="fas fa-utensils text-white text-xl"></i>
                         </div>
@@ -52,10 +52,23 @@
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <a href="{{ route('cart.index') }}" class="relative p-2 text-slate-300 hover:text-white transition-colors group">
+                        <a href="{{ route('cart.index') }}" aria-label="Ver carrito de compras" class="relative p-2 text-slate-300 hover:text-white transition-colors group">
                             <i class="fas fa-shopping-cart text-xl group-hover:animate-wiggle"></i>
-                            <span id="cart-count" class="absolute top-0 right-0 -mt-1 -mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white animate-pulse">
-                                {{ count(session('cart', [])) }}
+                            
+                            @php 
+                                // Calculamos cuántos items hay realmente en la sesión de Laravel
+                                $miCarrito = session('carrito', session('cart', []));
+                                $cartCount = 0;
+                                if(is_array($miCarrito)) {
+                                    foreach($miCarrito as $item) {
+                                        $cartCount += isset($item['cantidad']) ? $item['cantidad'] : (isset($item['qty']) ? $item['qty'] : 1);
+                                    }
+                                }
+                            @endphp
+                            
+                            {{-- Si el carrito está vacío en la sesión de Laravel, lo ocultamos. Si no, lo mostramos --}}
+                            <span id="cart-count" class="absolute top-0 right-0 -mt-1 -mr-1 h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white transition-all duration-300 {{ $cartCount > 0 ? 'flex animate-pulse' : 'hidden' }}">
+                                {{ $cartCount }}
                             </span>
                         </a>
 
@@ -69,16 +82,16 @@
                                         <p class="text-[10px] text-orange-400 uppercase font-bold">{{ Auth::user()->rol }}</p>
                                     </div>
                                     
-                                    <img src="{{ Auth::user()->avatar_url }}" alt="{{ Auth::user()->name }}" class="h-10 w-10 rounded-full border border-slate-600 object-cover bg-slate-800 shadow-inner">
+                                    <img src="{{ Auth::user()->avatar_url }}" alt="Avatar de {{ Auth::user()->name }}" class="h-10 w-10 rounded-full border border-slate-600 object-cover bg-slate-800 shadow-inner">
 
-                                    <a href="{{ route('profile.edit') }}" class="text-slate-400 hover:text-orange-400 transition p-2" title="{{ __('layouts/app.my_profile') }}">
-                                        <i class="fas fa-user-circle text-lg"></i>
+                                    <a href="{{ route('profile.edit') }}" aria-label="Ir a mi perfil" class="text-slate-400 hover:text-orange-400 transition p-2" title="{{ __('layouts/app.my_profile') }}">
+                                        <i class="fas fa-user-circle text-lg pointer-events-none"></i>
                                     </a>
 
                                     <form action="{{ route('logout') }}" method="POST">
                                         @csrf
-                                        <button type="submit" class="text-slate-400 hover:text-red-500 transition p-2" title="{{ __('layouts/app.logout') }}">
-                                            <i class="fas fa-sign-out-alt"></i>
+                                        <button type="submit" aria-label="Cerrar sesión" class="text-slate-400 hover:text-red-500 transition p-2" title="{{ __('layouts/app.logout') }}">
+                                            <i class="fas fa-sign-out-alt pointer-events-none"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -88,16 +101,15 @@
                             @endauth
                         </div>
                         
-                        {{-- MENU DE IDIOMAS APP (BANDERAS) --}}
                         <div class="relative border-l border-slate-300 pl-4 ml-2">
-                            <button id="lang-btn-admin" class="flex items-center gap-1 text-xl hover:scale-110 transition-transform bg-slate-700/50 p-2 rounded-lg border border-slate-600 focus:outline-none">
-                                @if(app()->getLocale() == 'es') <span class="fi fi-mx rounded"></span>
-                                @elseif(app()->getLocale() == 'en') <span class="fi fi-us rounded"></span>
-                                @elseif(app()->getLocale() == 'pt') <span class="fi fi-br rounded"></span>
+                            <button id="lang-btn-app" aria-label="Cambiar idioma" class="flex items-center gap-1 text-xl hover:scale-110 transition-transform bg-slate-700/50 p-2 rounded-lg border border-slate-600 focus:outline-none">
+                                @if(app()->getLocale() == 'es') <span class="fi fi-mx rounded pointer-events-none"></span>
+                                @elseif(app()->getLocale() == 'en') <span class="fi fi-us rounded pointer-events-none"></span>
+                                @elseif(app()->getLocale() == 'pt') <span class="fi fi-br rounded pointer-events-none"></span>
                                 @endif
                             </button>
                             
-                            <div id="lang-dropdown-admin" class="absolute right-0 mt-2 w-40 bg-slate-800 border border-slate-300 rounded-xl shadow-2xl hidden z-50 overflow-hidden">
+                            <div id="lang-dropdown-app" class="absolute right-0 mt-2 w-40 bg-slate-800 border border-slate-300 rounded-xl shadow-2xl hidden z-50 overflow-hidden">
                                 <div class="p-2 space-y-1">
                                     <a href="{{ LaravelLocalization::getLocalizedURL('es', null, [], true) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 text-sm font-bold {{ app()->getLocale() == 'es' ? 'text-white bg-slate-700' : 'text-slate-400' }}">
                                         <span class="fi fi-mx rounded shadow-sm"></span> Español
@@ -113,8 +125,8 @@
                         </div>
 
                         <div class="md:hidden">
-                            <button id="mobile-menu-btn" class="text-slate-300 hover:text-white p-2 focus:outline-none">
-                                <i class="fas fa-bars text-2xl" id="menu-icon"></i>
+                            <button id="mobile-menu-btn" aria-label="Abrir menú de navegación" class="text-slate-300 hover:text-white p-2 focus:outline-none">
+                                <i class="fas fa-bars text-2xl pointer-events-none" id="menu-icon"></i>
                             </button>
                         </div>
                     </div>
@@ -124,25 +136,24 @@
                             <i class="fas fa-arrow-left mr-1"></i> {{ __('layouts/app.back_to_home') }}
                         </a>
                         
-                        {{-- MENU DE IDIOMAS (LOGIN/REGISTER) --}}
                         <div class="relative border-r border-slate-300 pr-4 mr-2">
-                            <button id="lang-btn-auth" class="flex items-center gap-1 text-2xl hover:scale-110 transition-transform focus:outline-none">
-                                @if(app()->getLocale() == 'es') 🇲🇽
-                                @elseif(app()->getLocale() == 'en') 🇺🇸
-                                @elseif(app()->getLocale() == 'pt') 🇧🇷
+                            <button id="lang-btn-auth" aria-label="Cambiar idioma" class="flex items-center gap-1 text-2xl hover:scale-110 transition-transform focus:outline-none">
+                                @if(app()->getLocale() == 'es') <span class="fi fi-mx rounded pointer-events-none text-base"></span>
+                                @elseif(app()->getLocale() == 'en') <span class="fi fi-us rounded pointer-events-none text-base"></span>
+                                @elseif(app()->getLocale() == 'pt') <span class="fi fi-br rounded pointer-events-none text-base"></span>
                                 @endif
                             </button>
                             
                             <div id="lang-dropdown-auth" class="absolute right-0 mt-4 w-40 bg-slate-800 border border-slate-300 rounded-xl shadow-2xl hidden z-50 overflow-hidden">
                                 <div class="p-2 space-y-1">
                                     <a href="{{ LaravelLocalization::getLocalizedURL('es', null, [], true) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 text-sm font-bold {{ app()->getLocale() == 'es' ? 'text-white bg-slate-700' : 'text-slate-400' }}">
-                                        <span class="text-xl">🇲🇽</span> Español
+                                        <span class="fi fi-mx rounded shadow-sm"></span> Español
                                     </a>
                                     <a href="{{ LaravelLocalization::getLocalizedURL('en', null, [], true) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 text-sm font-bold {{ app()->getLocale() == 'en' ? 'text-white bg-slate-700' : 'text-slate-400' }}">
-                                        <span class="text-xl">🇺🇸</span> English
+                                        <span class="fi fi-us rounded shadow-sm"></span> English
                                     </a>
                                     <a href="{{ LaravelLocalization::getLocalizedURL('pt', null, [], true) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 text-sm font-bold {{ app()->getLocale() == 'pt' ? 'text-white bg-slate-700' : 'text-slate-400' }}">
-                                        <span class="text-xl">🇧🇷</span> Português
+                                        <span class="fi fi-br rounded shadow-sm"></span> Português
                                     </a>
                                 </div>
                             </div>
@@ -159,9 +170,9 @@
             </div>
         </div>
 
-        {{-- Menú Móvil... (Igual al tuyo) --}}
+        {{-- Menú Móvil --}}
         @if(!request()->routeIs('login') && !request()->routeIs('register'))
-            <div id="mobile-menu" class="md:hidden max-h-0 overflow-hidden bg-slate-800 border-t border-slate-300">
+            <div id="mobile-menu" class="md:hidden max-h-0 overflow-hidden bg-slate-800 border-t border-slate-300 transition-all duration-300 ease-in-out">
                 <div class="px-4 pt-2 pb-6 space-y-2">
                     <a href="{{ route('home') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-slate-700 hover:text-orange-400 transition"><i class="fas fa-home w-6 text-center text-slate-500"></i> {{ __('layouts/app.home') }}</a>
                     <a href="{{ route('menu') }}" class="block px-3 py-3 rounded-md text-base font-bold text-slate-300 hover:bg-slate-700 hover:text-orange-400 transition"><i class="fas fa-hamburger w-6 text-center text-slate-500"></i> {{ __('layouts/app.full_menu') }}</a>
@@ -172,7 +183,7 @@
                     @auth
                         <div class="px-3 py-3">
                             <div class="flex items-center gap-3 mb-3">
-                                <img src="{{ Auth::user()->avatar_url }}" alt="{{ Auth::user()->name }}" class="h-10 w-10 rounded-full border border-slate-600 object-cover bg-slate-700">
+                                <img src="{{ Auth::user()->avatar_url }}" alt="Avatar de {{ Auth::user()->name }}" class="h-10 w-10 rounded-full border border-slate-600 object-cover bg-slate-700">
                                 <div>
                                     <p class="text-white font-bold">{{ Auth::user()->name }}</p>
                                     <p class="text-xs text-orange-400">{{ Auth::user()->email }}</p>
@@ -211,10 +222,8 @@
         @yield('contenido')
     </main>
 
-    
-
     {{-- FOOTER ACTUALIZADO --}}
-    <footer class="bg-slate-900 border-t border-slate-800 pt-12 pb-6 text-sm text-slate-400">
+    <footer class="bg-slate-900 border-t border-slate-800 pt-12 pb-6 text-sm text-slate-400 mt-auto">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-8">
                 
@@ -231,7 +240,7 @@
                 </div>
 
                 <div class="space-y-4">
-                    <h3 class="text-white font-bold text-lg border-b border-slate-300 pb-2 inline-block">Contacto</h3>
+                    <h2 class="text-white font-bold text-lg border-b border-slate-300 pb-2 inline-block">Contacto</h2>
                     <ul class="space-y-3">
                         <li class="flex items-start gap-3">
                             <i class="fas fa-map-marker-alt text-orange-500 mt-1"></i>
@@ -251,7 +260,7 @@
                 </div>
 
                 <div class="space-y-4">
-                    <h3 class="text-white font-bold text-lg border-b border-slate-300 pb-2 inline-block">{{ __('layouts/app.footer_hours_title') }}</h3>
+                    <h2 class="text-white font-bold text-lg border-b border-slate-300 pb-2 inline-block">{{ __('layouts/app.footer_hours_title') }}</h2>
                     <div class="bg-slate-800/50 rounded-xl p-4 border border-slate-300/50">
                         <div class="flex justify-between items-center mb-2">
                             <span class="font-bold text-slate-300"><i class="far fa-clock text-orange-500 mr-2"></i>{{ __('layouts/app.footer_mon_sun') }}</span>
@@ -277,7 +286,6 @@
     {{-- Script de Dropdowns de Idioma --}}
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Lógica para botones de idioma App/Auth
             const setupLangDropdown = (btnId, dropId) => {
                 const btn = document.getElementById(btnId);
                 const drop = document.getElementById(dropId);

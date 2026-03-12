@@ -29,7 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'ok') { 
-                    updateNavbarCounter(data.total_items);
+                    // Atrapa el número sin importar cómo lo devuelva el controlador
+                    const conteo = data.cart_count || data.total_items || data.cantidad_total || 1;
+                    updateNavbarCounter(conteo);
                     showToast(window.K_TRANSLATIONS?.client?.cart?.success_title || 'Éxito', data.mensaje, 'success');
                 } else {
                     showToast('Error', window.K_TRANSLATIONS?.client?.cart?.denied || 'Acción denegada', 'error');
@@ -48,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // =========================================================
-// FUNCIONES AUXILIARES DE MONEDA (NUEVO)
+// FUNCIONES AUXILIARES DE MONEDA
 // =========================================================
 function formatearMoneda(cantidadEnPesos) {
     const rate = window.MENU_LANG?.exchangeRate || 1;
@@ -177,22 +179,38 @@ function updateGlobalTotals(data) {
     updateNavbarCounter(data.cart_count);
 }
 
+// =========================================================
+// 5. ACTUALIZAR CONTADOR VISUAL DE LA BURBUJA
+// =========================================================
 function updateNavbarCounter(count) {
     const badge = document.getElementById('cart-count'); 
     if(badge) {
-        badge.innerText = count;
-        badge.classList.remove('animate-pulse');
-        badge.classList.add('scale-150', 'bg-green-500'); 
+        // Forzamos a que sea un número entero
+        const val = parseInt(count) || 0;
+        badge.innerText = val;
         
-        setTimeout(() => {
-            badge.classList.remove('scale-150', 'bg-green-500');
-            badge.classList.add('animate-pulse');
-        }, 300);
+        // Magia de visibilidad: Ocultar o Mostrar
+        if (val > 0) {
+            badge.classList.remove('hidden');
+            badge.classList.add('flex');
+            
+            // Efecto de rebote verde
+            badge.classList.remove('animate-pulse');
+            badge.classList.add('scale-150', 'bg-green-500'); 
+            
+            setTimeout(() => {
+                badge.classList.remove('scale-150', 'bg-green-500');
+                badge.classList.add('animate-pulse');
+            }, 300);
+        } else {
+            badge.classList.add('hidden');
+            badge.classList.remove('flex', 'animate-pulse');
+        }
     }
 }
 
 // =========================================================
-// 5. SISTEMA DE TOASTS
+// 6. SISTEMA DE TOASTS
 // =========================================================
 window.showToast = function(title, msg, type = 'success') {
     const container = document.getElementById('toast-container');
