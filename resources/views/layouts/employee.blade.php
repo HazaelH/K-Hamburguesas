@@ -19,25 +19,43 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
         
+        /* CORRECCIÓN MENÚ MÓVIL */
         #mobile-menu {
             transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
             max-height: 0;
             opacity: 0;
-            overflow: hidden;
+            overflow-y: auto; /* Permite el scroll interno */
         }
-        #mobile-menu.open { max-height: 500px; opacity: 1; }
+        #mobile-menu.open { 
+            max-height: calc(100dvh - 64px); /* Toma el alto de la pantalla menos la barra superior */
+            opacity: 1; 
+        }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden bg-slate-950">
 
     @php 
         $rol = Auth::check() ? Auth::user()->rol : __('layouts/employee.guest'); 
+        
+        // Asignar ruta de inicio (home) dependiendo del rol del empleado
+        $rutaLogo = route('employee.panel'); // Por defecto (Admin)
+        
+        if ($rol === 'mesero') {
+            $rutaLogo = route('employee.pos');
+        } elseif ($rol === 'cajero') {
+            $rutaLogo = route('employee.orders.index');
+        } elseif ($rol === 'cocinero') {
+            $rutaLogo = route('kitchen.live');
+        } elseif ($rol === 'repartidor') {
+            $rutaLogo = route('delivery.scan');
+        }
     @endphp
 
     <nav class="bg-slate-900 border-b border-slate-300 h-16 shrink-0 shadow-md relative z-50">
         <div class="w-full h-full px-4 md:px-6 flex justify-between items-center">
-            
-            <a href="{{ route('employee.panel') }}" class="flex items-center gap-3 hover:opacity-80 transition shrink-0">
+
+            {{-- LOGO CON REDIRECCIÓN DINÁMICA --}}
+            <a href="{{ $rutaLogo }}" class="flex items-center gap-3 hover:opacity-80 transition shrink-0" aria-label="Ir a mi panel principal">
                 <div class="bg-orange-700 p-2 rounded-lg shadow-lg shadow-orange-900/50">
                     <i class="fas fa-utensils text-white"></i>
                 </div>
@@ -84,9 +102,10 @@
                 @endif
             </div>
 
+            {{-- BOTONES DE PC (Idiomas, Perfil, Salir) --}}
             <div class="hidden lg:flex items-center gap-4">
                 
-                {{-- MENU DE IDIOMAS EMPLEADO (BANDERAS) --}}
+                {{-- MENU DE IDIOMAS EMPLEADO (BANDERAS PC) --}}
                 <div class="relative border-r border-slate-300 pr-4 mr-1">
                     <button id="lang-btn-emp" class="flex items-center gap-1 text-xl hover:scale-110 transition-transform bg-slate-700/50 p-2 rounded-lg border border-slate-600 focus:outline-none">
                         @if(app()->getLocale() == 'es') <span class="fi fi-mx rounded"></span>
@@ -94,7 +113,7 @@
                         @elseif(app()->getLocale() == 'pt') <span class="fi fi-br rounded"></span>
                         @endif
                     </button>
-                                                <div id="lang-dropdown-emp" class="absolute right-0 mt-2 w-40 bg-slate-800 border border-slate-300 rounded-xl shadow-2xl hidden z-50 overflow-hidden">
+                    <div id="lang-dropdown-emp" class="absolute right-0 mt-2 w-40 bg-slate-800 border border-slate-300 rounded-xl shadow-2xl hidden z-50 overflow-hidden">
                         <div class="p-2 space-y-1">
                             <a href="{{ LaravelLocalization::getLocalizedURL('es', null, [], true) }}" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 text-sm font-bold {{ app()->getLocale() == 'es' ? 'text-white bg-slate-700' : 'text-slate-400' }}">
                                 <span class="fi fi-mx rounded shadow-sm"></span> Español
@@ -108,13 +127,12 @@
                         </div>
                     </div>
                 </div>
-                
 
                 @auth
                     <div class="flex items-center gap-3 border-r border-slate-300 pr-4 mr-1">
                         <span class="text-sm font-bold text-slate-300">{{ Auth::user()->name }}</span>
                         @if(Auth::user()->avatar_url)
-                            <img src="{{ Auth::user()->avatar_url }}" class="h-8 w-8 rounded-full border border-slate-600 object-cover bg-slate-800">
+                            <img src="{{ Auth::user()->avatar_url }}" alt="Avatar de {{ Auth::user()->name }}" class="h-8 w-8 rounded-full border border-slate-600 object-cover bg-slate-800">
                         @else
                             <div class="h-8 w-8 rounded-full bg-slate-700 flex items-center justify-center border border-slate-600 text-xs font-bold text-white">
                                 {{ substr(Auth::user()->name, 0, 1) }}
@@ -122,7 +140,7 @@
                         @endif
                     </div>
                     
-                    <a href="{{ route('profile.edit') }}" class="text-slate-400 hover:text-orange-500 transition" title="{{ __('layouts/employee.my_profile') }}">
+                    <a href="{{ route('profile.edit') }}" aria-label="Ir a mi perfil" class="text-slate-400 hover:text-orange-500 transition" title="{{ __('layouts/employee.my_profile') }}">
                         <i class="fas fa-user-circle text-xl"></i>
                     </a>
 
@@ -136,13 +154,31 @@
             </div>
 
             <button id="mobile-menu-btn" aria-label="Abrir menú de navegación" class="lg:hidden text-slate-300 hover:text-white focus:outline-none p-2 rounded-lg border border-slate-300 bg-slate-800">
-                <i class="fas fa-bars text-xl"></i>
+                <i class="fas fa-bars text-xl pointer-events-none"></i>
             </button>
         </div>
 
+        {{-- MENÚ MÓVIL DESPLEGABLE --}}
         <div id="mobile-menu" class="absolute top-16 left-0 w-full bg-slate-900 border-b border-slate-300 shadow-2xl lg:hidden z-40">
-            <div class="p-4 space-y-2">
-                {{-- Resto de tu menú móvil (sin cambios) --}}
+            {{-- Añadido pb-10 para asegurar que el contenido final no se pegue al borde --}}
+            <div class="p-4 space-y-2 pb-10">
+                
+                {{-- SELECTOR DE IDIOMA PARA MÓVIL --}}
+                <div class="flex justify-center gap-3 mb-4 pb-4 border-b border-slate-700">
+                    <a href="{{ LaravelLocalization::getLocalizedURL('es', null, [], true) }}" class="flex-1 flex flex-col items-center justify-center py-2 rounded-lg border {{ app()->getLocale() == 'es' ? 'bg-slate-700 border-slate-400 text-white' : 'border-slate-700 text-slate-500 hover:bg-slate-800' }}">
+                        <span class="fi fi-mx text-2xl rounded shadow-sm mb-1"></span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest">ES</span>
+                    </a>
+                    <a href="{{ LaravelLocalization::getLocalizedURL('en', null, [], true) }}" class="flex-1 flex flex-col items-center justify-center py-2 rounded-lg border {{ app()->getLocale() == 'en' ? 'bg-slate-700 border-slate-400 text-white' : 'border-slate-700 text-slate-500 hover:bg-slate-800' }}">
+                        <span class="fi fi-us text-2xl rounded shadow-sm mb-1"></span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest">EN</span>
+                    </a>
+                    <a href="{{ LaravelLocalization::getLocalizedURL('pt', null, [], true) }}" class="flex-1 flex flex-col items-center justify-center py-2 rounded-lg border {{ app()->getLocale() == 'pt' ? 'bg-slate-700 border-slate-400 text-white' : 'border-slate-700 text-slate-500 hover:bg-slate-800' }}">
+                        <span class="fi fi-br text-2xl rounded shadow-sm mb-1"></span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest">PT</span>
+                    </a>
+                </div>
+
                 @if($rol === 'admin')
                 <a href="{{ route('admin.dashboard') }}" class="block px-4 py-3 rounded-lg font-bold items-center gap-3 bg-slate-800 border border-slate-300 text-white mb-3 shadow-inner hover:bg-slate-700">
                     <i class="fas fa-user-shield w-6 text-center text-orange-500"></i> {{ __('layouts/employee.admin_mode_mobile') }}
@@ -182,7 +218,7 @@
 
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="w-full text-left px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 font-bold flex items-center gap-3 transition">
+                        <button type="submit" class="w-full text-left px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 font-bold flex items-center gap-3 transition border border-transparent hover:border-red-500/30">
                             <i class="fas fa-sign-out-alt w-6 text-center"></i> {{ __('layouts/employee.logout') }}
                         </button>
                     </form>
@@ -202,15 +238,17 @@
         document.addEventListener('DOMContentLoaded', () => {
             const btn = document.getElementById('mobile-menu-btn');
             const menu = document.getElementById('mobile-menu');
+            
             if(btn && menu) {
-                btn.addEventListener('click', () => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
                     menu.classList.toggle('open');
                     const icon = btn.querySelector('i');
                     icon.classList.toggle('fa-bars');
                     icon.classList.toggle('fa-times');
                 });
                 
-                // Lógica Dropdown Idioma Empleado
+                // Lógica Dropdown Idioma Empleado (PC)
                 const langBtn = document.getElementById('lang-btn-emp');
                 const langDrop = document.getElementById('lang-dropdown-emp');
                 if(langBtn && langDrop) {
@@ -220,6 +258,7 @@
                     });
                 }
 
+                // Cierra los menús si haces clic fuera de ellos
                 document.addEventListener('click', (e) => {
                     if (!menu.contains(e.target) && !btn.contains(e.target) && menu.classList.contains('open')) {
                         menu.classList.remove('open');

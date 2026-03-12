@@ -53,12 +53,12 @@
                 <span class="absolute left-4 top-3 text-slate-500"><i class="fas fa-search"></i></span>
                 {{-- Se agregó aria-label al buscador --}}
                 <input type="text" name="search" aria-label="{{ __('admin/users/users.search_placeholder') }}" value="{{ request('search') }}" placeholder="{{ __('admin/users/users.search_placeholder') }}" 
-                       class="w-full bg-slate-900 border border-slate-600 focus:border-blue-500 text-white rounded-xl py-2.5 pl-11 pr-4 focus:outline-none transition-colors text-sm placeholder-slate-500">
+                       class="w-full bg-slate-900 border border-slate-300 focus:border-blue-500 text-white rounded-xl py-2.5 pl-11 pr-4 focus:outline-none transition-colors text-sm placeholder-slate-500">
             </div>
 
             <div class="w-full md:w-48 relative">
                 {{-- Se agregó aria-label al select de rol --}}
-                <select name="rol" aria-label="Filtrar por rol de usuario" onchange="this.form.submit()" class="w-full bg-slate-900 border border-slate-600 focus:border-blue-500 text-white rounded-xl py-2.5 px-4 appearance-none focus:outline-none transition-colors text-sm cursor-pointer">
+                <select name="rol" aria-label="Filtrar por rol de usuario" onchange="this.form.submit()" class="w-full bg-slate-900 border border-slate-300 focus:border-blue-500 text-white rounded-xl py-2.5 px-4 appearance-none focus:outline-none transition-colors text-sm cursor-pointer">
                     <option value="">{{ __('admin/users/users.all_roles') }}</option>
                     <option value="admin" {{ request('rol') == 'admin' ? 'selected' : '' }}>{{ __('admin/users/users.role_admins') }}</option>
                     <option value="cliente" {{ request('rol') == 'cliente' ? 'selected' : '' }}>{{ __('admin/users/users.role_clients') }}</option>
@@ -69,7 +69,7 @@
 
             <div class="w-full md:w-48 relative">
                 {{-- Se agregó aria-label al select de estado --}}
-                <select name="ver_bajas" aria-label="Filtrar por estado activo o eliminado" onchange="this.form.submit()" class="w-full bg-slate-900 border border-slate-600 focus:border-blue-500 text-white rounded-xl py-2.5 px-4 appearance-none focus:outline-none transition-colors text-sm cursor-pointer font-bold {{ request('ver_bajas') ? 'text-red-400 border-red-500/50' : '' }}">
+                <select name="ver_bajas" aria-label="Filtrar por estado activo o eliminado" onchange="this.form.submit()" class="w-full bg-slate-900 border border-slate-300 focus:border-blue-500 text-white rounded-xl py-2.5 px-4 appearance-none focus:outline-none transition-colors text-sm cursor-pointer font-bold {{ request('ver_bajas') ? 'text-red-400 border-red-500/50' : '' }}">
                     <option value="">{{ __('admin/users/users.active_users') }}</option>
                     <option value="1" {{ request('ver_bajas') == '1' ? 'selected' : '' }}>{{ __('admin/users/users.trashed_users') }}</option>
                 </select>
@@ -106,7 +106,7 @@
                     <tr class="hover:bg-slate-700/30 transition-colors {{ $user->trashed() ? 'opacity-50 grayscale' : '' }}">
                         <td class="px-5 py-3">
                             {{-- Se agregó el atributo ALT a la imagen --}}
-                            <img src="{{ $user->avatar_url }}" alt="Avatar de {{ $user->name }}" class="h-10 w-10 object-cover rounded-full border-2 border-slate-600 shadow-sm">
+                            <img src="{{ $user->avatar_url }}" alt="Avatar de {{ $user->name }}" class="h-10 w-10 object-cover rounded-full border-2 border-slate-300 shadow-sm">
                         </td>
                         
                         <td class="px-5 py-3">
@@ -208,7 +208,7 @@
         <p id="modal-text" class="text-xs text-slate-400 mb-6 px-2">...</p>
         
         <div class="flex gap-3">
-            <button onclick="window.cerrarModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl transition-all border border-slate-600 text-sm">
+            <button onclick="window.cerrarModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl transition-all border border-slate-300 text-sm">
                 {{ __('admin/users/users.cancel') }}
             </button>
             <button id="modal-confirm-btn" class="flex-1 text-white font-bold py-3 rounded-xl shadow-lg transition-all text-sm">

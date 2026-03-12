@@ -174,7 +174,7 @@
 
                                             <button type="button" 
                                                     onclick="openConfirmModal('cancel', {{ $order->id }})"
-                                                    class="bg-slate-700 hover:bg-red-600 text-slate-300 hover:text-white font-bold py-2 px-3 rounded-lg border border-slate-600 hover:border-red-500 transition-all hover:scale-105"
+                                                    class="bg-slate-700 hover:bg-red-600 text-slate-300 hover:text-white font-bold py-2 px-3 rounded-lg border border-slate-300 hover:border-red-500 transition-all hover:scale-105"
                                                     title="{{ __('employee/orders/index.btn_cancel') }}">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>

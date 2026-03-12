@@ -71,7 +71,7 @@
                             @else
                                 <div class="w-full h-full flex items-center justify-center text-slate-700 text-3xl"><i class="fas fa-hamburger"></i></div>
                             @endif
-                            <div class="absolute bottom-2 right-2 bg-slate-900/90 backdrop-blur-md rounded-lg px-2.5 py-1 text-white text-sm font-black border border-slate-300 shadow-lg">
+                            <div class="absolute bottom-2 right-2 bg-orange-700 backdrop-blur-md rounded-lg px-2.5 py-1 text-white text-sm font-black border border-slate-300 shadow-lg">
                                 {{ formatCurrency($producto->precio) }}
                             </div>
                         </div>

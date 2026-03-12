@@ -15,7 +15,8 @@
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
             </div>
-            <span class="text-slate-400 text-xs font-bold uppercase tracking-wider ml-1">{{ __('employee/kitchen/kitchen.live_indicator') }}</span>
+            {{-- Accesibilidad: text-slate-400 subido a text-slate-300 para mejor contraste --}}
+            <span class="text-slate-300 text-xs font-bold uppercase tracking-wider ml-1">{{ __('employee/kitchen/kitchen.live_indicator') }}</span>
         </div>
     </div>
 
@@ -29,10 +30,11 @@
                         $esperandoAdmin = isset($datosJSON['solicita_cancelacion']) && $datosJSON['solicita_cancelacion'] === true;
 
                         $statusConfig = match($order->status) {
-                            'pendiente', 'pagado' => ['border' => 'border-red-500', 'badge' => 'bg-red-500', 'text' => __('employee/kitchen/kitchen.status_new')],
+                            'pendiente', 'pagado' => ['border' => 'border-red-500', 'badge' => 'bg-red-500 text-white', 'text' => __('employee/kitchen/kitchen.status_new')],
                             'cocinando', 'preparando' => ['border' => 'border-yellow-500', 'badge' => 'bg-yellow-500 text-black', 'text' => __('employee/kitchen/kitchen.status_cooking')],
-                            'en_camino', 'listo' => ['border' => 'border-green-500', 'badge' => 'bg-green-500', 'text' => __('employee/kitchen/kitchen.status_ready')],
-                            default => ['border' => 'border-gray-500', 'badge' => 'bg-gray-500', 'text' => strtoupper($order->status_traducido ?? $order->status)]
+                            'en_camino', 'listo' => ['border' => 'border-green-500', 'badge' => 'bg-green-500 text-white', 'text' => __('employee/kitchen/kitchen.status_ready')],
+                            // Accesibilidad: Se declaró text-white en el default
+                            default => ['border' => 'border-slate-500', 'badge' => 'bg-slate-600 text-white', 'text' => strtoupper($order->status_traducido ?? $order->status)]
                         };
                     @endphp
 
@@ -41,20 +43,22 @@
                         <div class="p-4 border-b border-slate-300 flex justify-between items-start bg-slate-800/50 rounded-t-xl shrink-0">
                             <div>
                                 <span class="text-3xl font-black text-slate-200 block leading-none">#{{ $order->id }}</span>
-                                <span class="text-[11px] font-bold text-slate-400 mt-1 block">
+                                {{-- Accesibilidad: Opacidad removida, colores ajustados --}}
+                                <span class="text-[11px] font-bold text-slate-300 mt-1 block">
                                     {{ $order->created_at->format(app()->getLocale() == 'en' ? 'h:i A' : 'H:i') }} 
-                                    <span class="font-normal opacity-70">({{ $order->created_at->diffForHumans(null, true, true) }})</span>
+                                    <span class="font-normal text-slate-400">({{ $order->created_at->diffForHumans(null, true, true) }})</span>
                                 </span>
                             </div>
 
                             <div class="flex flex-col items-end gap-2">
-                                <span class="{{ $statusConfig['badge'] }} text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg">
+                                <span class="{{ $statusConfig['badge'] }} text-[10px] font-bold px-2 py-1 rounded shadow-lg">
                                     {{ $statusConfig['text'] }}
                                 </span>
 
                                 @if($order->status == 'pendiente' && !$esperandoAdmin)
-                                    <button onclick="cancelarOrden({{ $order->id }})" class="text-slate-500 hover:text-red-500 transition-colors text-xs flex items-center gap-1 group/cancel bg-slate-900 px-2 py-1 rounded border border-slate-300 hover:border-red-500/50">
-                                        <i class="fas fa-trash-alt"></i>
+                                    {{-- Accesibilidad: aria-label agregado, px y py aumentados para mejorar el 'Touch Target' --}}
+                                    <button aria-label="Cancelar orden {{ $order->id }}" onclick="cancelarOrden({{ $order->id }})" class="text-slate-400 hover:text-red-400 transition-colors text-sm flex items-center gap-1 group/cancel bg-slate-900 px-3 py-2 rounded-lg border border-slate-500 hover:border-red-500/50">
+                                        <i class="fas fa-trash-alt pointer-events-none"></i>
                                     </button>
                                 @endif
                             </div>
@@ -63,7 +67,7 @@
                         <div class="p-4 flex-1 overflow-y-auto space-y-3 custom-scrollbar bg-slate-800/80">
                             @foreach($order->items as $item)
                                 <div class="flex items-start gap-3 border-b border-slate-300/50 pb-3 last:border-0 last:pb-0">
-                                    <span class="bg-slate-900 text-white font-black rounded-lg w-8 h-8 flex items-center justify-center text-sm shrink-0 border border-slate-600 shadow-inner">
+                                    <span class="bg-slate-900 text-white font-black rounded-lg w-8 h-8 flex items-center justify-center text-sm shrink-0 border border-slate-300 shadow-inner">
                                         {{ $item->cantidad }}
                                     </span>
                                     <div class="min-w-0 flex-1">
@@ -76,7 +80,6 @@
                                                 <div class="mt-1.5 flex flex-wrap gap-1">
                                                     @foreach($opciones as $opcion)
                                                         @php
-                                                            // Traducción dinámica de los extras
                                                             $valorOriginal = is_array($opcion) ? ($opcion['valor'] ?? '') : $opcion;
                                                             $textoOpcion = $valorOriginal;
 
@@ -134,7 +137,7 @@
 
                             <div class="p-3 bg-slate-900 border-t border-slate-800">
                                 @if($esperandoAdmin)
-                                    <button disabled class="w-full bg-slate-700 text-slate-300 font-black py-3 rounded-xl flex justify-center items-center gap-2 cursor-not-allowed opacity-80 border border-slate-600">
+                                    <button disabled class="w-full bg-slate-700 text-slate-300 font-black py-3 rounded-xl flex justify-center items-center gap-2 cursor-not-allowed opacity-80 border border-slate-300">
                                         <i class="fas fa-lock text-red-400"></i> {{ __('employee/kitchen/kitchen.status_waiting_admin') }}
                                     </button>
                                 @elseif($order->status == 'pendiente' || $order->status == 'pagado')
@@ -156,7 +159,8 @@
                 @endforeach
             </div>
         @else
-            <div class="flex flex-col items-center justify-center h-full text-slate-500">
+            {{-- Accesibilidad: Contraste ajustado a text-slate-400 --}}
+            <div class="flex flex-col items-center justify-center h-full text-slate-400">
                 <div class="bg-slate-800 p-8 rounded-full mb-6 shadow-2xl border border-slate-300">
                     <i class="fas fa-check-circle text-5xl text-green-500/50"></i>
                 </div>
@@ -178,7 +182,8 @@
                             <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
                         </div>
                         <h3 class="text-2xl font-black text-center text-white mb-2">{{ __('employee/kitchen/kitchen.modal_cancel_title') }}</h3>
-                        <p class="text-sm text-center text-slate-400 mb-6" id="modal-desc-container"></p>
+                        {{-- Accesibilidad: Contraste ajustado a text-slate-300 --}}
+                        <p class="text-sm text-center text-slate-300 mb-6" id="modal-desc-container"></p>
                         
                         <div class="flex gap-3">
                             <button type="button" onclick="closeModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl transition-all">{{ __('employee/kitchen/kitchen.btn_go_back') }}</button>
