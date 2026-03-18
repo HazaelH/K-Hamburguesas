@@ -18,7 +18,7 @@ class AdminController extends Controller
     // =========================================================================
     public function index(Request $request)
     {
-        // 1. Determinar el rango de fechas basado en el filtro de la URL
+        // 1. Determinar el rango de fechas basado en el filtro de la URL o AJAX
         $filter = $request->query('filter', 'month');
         
         $startDate = match($filter) {
@@ -57,18 +57,35 @@ class AdminController extends Controller
         $chartLabels = [];
         $chartData = [];
         try {
-            $ventasHistoricas = Order::select(
-                    DB::raw('DATE_FORMAT(created_at, "%Y-%m") as mes_anio'),
-                    DB::raw('SUM(total) as total_ventas')
-                )
-                ->where('status', '!=', 'cancelado')
-                ->where('created_at', '>=', now()->subMonths(6)->startOfMonth())
-                ->groupBy('mes_anio')
-                ->orderBy('mes_anio', 'asc')
-                ->get();
+            // Adaptamos la gráfica lineal dependiendo del filtro para que tenga sentido visualmente
+            if ($filter == 'today') {
+                $ventasHistoricas = Order::select(
+                        DB::raw('DATE_FORMAT(created_at, "%H:00") as tiempo'),
+                        DB::raw('SUM(total) as total_ventas')
+                    )
+                    ->where('status', '!=', 'cancelado')
+                    ->whereBetween('created_at', [$startDate, $endDate])
+                    ->groupBy('tiempo')
+                    ->orderBy('tiempo', 'asc')
+                    ->get();
+            } else {
+                $ventasHistoricas = Order::select(
+                        DB::raw('DATE_FORMAT(created_at, "%Y-%m") as tiempo'),
+                        DB::raw('SUM(total) as total_ventas')
+                    )
+                    ->where('status', '!=', 'cancelado')
+                    ->where('created_at', '>=', now()->subMonths(6)->startOfMonth())
+                    ->groupBy('tiempo')
+                    ->orderBy('tiempo', 'asc')
+                    ->get();
+            }
 
             foreach ($ventasHistoricas as $venta) {
-                $chartLabels[] = Carbon::createFromFormat('Y-m', $venta->mes_anio)->translatedFormat('M Y');
+                if ($filter == 'today') {
+                    $chartLabels[] = $venta->tiempo;
+                } else {
+                    $chartLabels[] = Carbon::createFromFormat('Y-m', $venta->tiempo)->translatedFormat('M Y');
+                }
                 $chartData[] = convertCurrencyValue($venta->total_ventas);
             }
         } catch (\Exception $e) {
@@ -139,7 +156,26 @@ class AdminController extends Controller
             $recentOrders = Order::latest()->take(5)->get();
         } catch (\Exception $e) { }
 
-        // AQUÍ ESTABA EL ERROR: Faltaba pasar peakHoursLabels y peakHoursValues a la vista
+        // =================================================================
+        // ✨ EL TRUCO AJAX ✨
+        // Si la petición vino desde nuestro Fetch (JS), devolvemos JSON
+        // =================================================================
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'ingresosMensuales' => number_format($ingresosMensuales, 2),
+                'pedidosPendientes' => $pedidosPendientes,
+                'totalProductos'    => $totalProductos,
+                'totalClientes'     => $totalClientes,
+                'chartLabels'       => $chartLabels,
+                'chartData'         => $chartData,
+                'topProductsLabels' => $topProductsLabels,
+                'topProductsValues' => $topProductsValues,
+                'peakHoursLabels'   => $peakHoursLabels,
+                'peakHoursValues'   => $peakHoursValues,
+            ]);
+        }
+
+        // Si es una visita normal al Dashboard (recarga de página F5), devolvemos la vista
         return view('admin.dashboard', compact(
             'ingresosMensuales',
             'pedidosPendientes',
@@ -192,19 +228,14 @@ class AdminController extends Controller
             $datos = $o->datos_entrega;
             if (is_string($datos)) {
                 $datos = json_decode($datos, true);
-                // Si tras decodificar sigue siendo un string, lo decodificamos de nuevo
                 if (is_string($datos)) { 
                     $datos = json_decode($datos, true); 
                 }
             }
             $datos = $datos ?? [];
             
-            // Verificamos si existe la solicitud
             if(isset($datos['solicita_cancelacion']) && ($datos['solicita_cancelacion'] === true || $datos['solicita_cancelacion'] === 'true')) {
-                
-                // Extraemos el motivo para que el Admin sepa por qué se quiere cancelar
                 $motivo = $datos['motivo_cancelacion'] ?? 'Sin motivo especificado';
-                
                 $alertas[] = [
                     'tipo' => 'cancelacion',
                     'id' => $o->id,
@@ -269,7 +300,6 @@ class AdminController extends Controller
             'detalle' => $mensajeLog
         ]);
 
-        // Apagamos la alerta
         $datos['solicita_cancelacion'] = false;
         
         $order->datos_entrega = json_encode($datos);

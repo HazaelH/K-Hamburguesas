@@ -2,6 +2,11 @@
 
 @section('titulo', __('admin/dashboard.title'))
 
+{{-- DEFINIMOS EL SÍMBOLO DE MONEDA SEGÚN EL IDIOMA --}}
+@php
+    $currencySymbol = app()->getLocale() == 'pt' ? 'R$' : '$';
+@endphp
+
 @section('contenido')
 <div class="space-y-8 max-w-7xl mx-auto">
 
@@ -16,25 +21,23 @@
         </div>
         
         <div class="flex flex-wrap items-center gap-3 relative z-10 w-full lg:w-auto">
-            <div class="hidden sm:flex bg-slate-900 border border-slate-300 p-1 rounded-xl">
+            {{-- BOTONES DE FILTRO AJAX --}}
+            <div class="hidden sm:flex bg-slate-900 border border-slate-300 p-1 rounded-xl" id="filter-container">
                 @php
-                    $currentFilter = request('filter', 'month'); // Por defecto 'month'
+                    $currentFilter = request('filter', 'month');
                 @endphp
                 
-                <a href="{{ route('admin.dashboard', ['filter' => 'today']) }}" 
-                   class="px-4 py-1.5 text-xs font-bold transition rounded-lg {{ $currentFilter == 'today' ? 'text-white bg-orange-700 shadow' : 'text-slate-300 hover:text-white hover:bg-slate-800' }}">
-                   {{ __('admin/dashboard.filter_today') }}
-                </a>
+                <button data-filter="today" class="filter-btn px-4 py-1.5 text-xs font-bold transition rounded-lg {{ $currentFilter == 'today' ? 'text-white bg-orange-700 shadow active' : 'text-slate-300 hover:text-white hover:bg-slate-800' }}">
+                    {{ __('admin/dashboard.filter_today') }}
+                </button>
                 
-                <a href="{{ route('admin.dashboard', ['filter' => 'month']) }}" 
-                   class="px-4 py-1.5 text-xs font-bold transition rounded-lg {{ $currentFilter == 'month' ? 'text-white bg-orange-700 shadow' : 'text-slate-300 hover:text-white hover:bg-slate-800' }}">
-                   {{ __('admin/dashboard.filter_month') }}
-                </a>
+                <button data-filter="month" class="filter-btn px-4 py-1.5 text-xs font-bold transition rounded-lg {{ $currentFilter == 'month' ? 'text-white bg-orange-700 shadow active' : 'text-slate-300 hover:text-white hover:bg-slate-800' }}">
+                    {{ __('admin/dashboard.filter_month') }}
+                </button>
                 
-                <a href="{{ route('admin.dashboard', ['filter' => 'year']) }}" 
-                   class="px-4 py-1.5 text-xs font-bold transition rounded-lg {{ $currentFilter == 'year' ? 'text-white bg-orange-700 shadow' : 'text-slate-300 hover:text-white hover:bg-slate-800' }}">
-                   {{ __('admin/dashboard.filter_year') }}
-                </a>
+                <button data-filter="year" class="filter-btn px-4 py-1.5 text-xs font-bold transition rounded-lg {{ $currentFilter == 'year' ? 'text-white bg-orange-700 shadow active' : 'text-slate-300 hover:text-white hover:bg-slate-800' }}">
+                    {{ __('admin/dashboard.filter_year') }}
+                </button>
             </div>
 
             <div class="h-8 w-px bg-slate-700 mx-2 hidden lg:block"></div>
@@ -56,7 +59,8 @@
             <div class="flex justify-between items-start mb-4">
                 <div>
                     <p class="text-slate-300 text-[10px] font-bold uppercase tracking-widest mb-1">{{ __('admin/dashboard.revenue_month') }}</p>
-                    <h2 class="text-3xl font-black text-white">${{ number_format($ingresosMensuales, 2) }}</h2>
+                    {{-- USO DEL SÍMBOLO DINÁMICO --}}
+                    <h2 class="text-3xl font-black text-white" id="metric-revenue">{{ $currencySymbol }}{{ number_format($ingresosMensuales, 2) }}</h2>
                 </div>
                 <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg transform group-hover:rotate-12 transition-transform shadow-inner">
                     <i class="fas fa-wallet"></i>
@@ -72,7 +76,7 @@
             <div class="flex justify-between items-start mb-4">
                 <div>
                     <p class="text-slate-300 text-[10px] font-bold uppercase tracking-widest mb-1">{{ __('admin/dashboard.pending_orders') }}</p>
-                    <h2 class="text-3xl font-black text-white">{{ $pedidosPendientes }}</h2>
+                    <h2 class="text-3xl font-black text-white" id="metric-pending">{{ $pedidosPendientes }}</h2>
                 </div>
                 <div class="w-10 h-10 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-lg transform group-hover:-rotate-12 transition-transform shadow-inner">
                     <i class="fas fa-fire"></i>
@@ -87,7 +91,7 @@
             <div class="flex justify-between items-start mb-4">
                 <div>
                     <p class="text-slate-300 text-[10px] font-bold uppercase tracking-widest mb-1">{{ __('admin/dashboard.active_menu') }}</p>
-                    <h2 class="text-3xl font-black text-white">{{ $totalProductos }}</h2>
+                    <h2 class="text-3xl font-black text-white" id="metric-products">{{ $totalProductos }}</h2>
                 </div>
                 <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg transform group-hover:scale-110 transition-transform shadow-inner">
                     <i class="fas fa-hamburger"></i>
@@ -102,7 +106,7 @@
             <div class="flex justify-between items-start mb-4">
                 <div>
                     <p class="text-slate-300 text-[10px] font-bold uppercase tracking-widest mb-1">{{ __('admin/dashboard.registered_clients') }}</p>
-                    <h2 class="text-3xl font-black text-white">{{ $totalClientes }}</h2>
+                    <h2 class="text-3xl font-black text-white" id="metric-clients">{{ $totalClientes }}</h2>
                 </div>
                 <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg transform group-hover:scale-110 transition-transform shadow-inner">
                     <i class="fas fa-users"></i>
@@ -223,7 +227,8 @@
                                     <span class="font-bold text-slate-200">{{ $order->cliente_nombre ?? __('admin/dashboard.guest') }}</span>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 font-mono font-bold text-emerald-400">${{ number_format($order->total, 2) }}</td>
+                            {{-- USO DEL SÍMBOLO DINÁMICO EN LA TABLA --}}
+                            <td class="px-6 py-4 font-mono font-bold text-emerald-400">{{ $currencySymbol }}{{ number_format($order->total, 2) }}</td>
                             <td class="px-6 py-4">
                                 @php
                                     $statusColor = match($order->status) {
@@ -313,7 +318,8 @@
         <div class="bg-slate-800 p-6 border-t border-slate-300 shadow-[0_-10px_20px_rgba(0,0,0,0.2)]">
             <div class="flex justify-between items-end mb-4">
                 <span class="text-slate-300 font-bold uppercase tracking-wider">{{ __('admin/dashboard.modal_total') }}</span>
-                <p class="text-3xl font-black text-emerald-400 font-mono">$<span id="modal-total">0.00</span></p>
+                {{-- USO DEL SÍMBOLO DINÁMICO EN EL MODAL --}}
+                <p class="text-3xl font-black text-emerald-400 font-mono">{{ $currencySymbol }}<span id="modal-total">0.00</span></p>
             </div>
             <a href="#" id="modal-link-completo" class="w-full block text-center bg-orange-700 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-orange-900/30">
                 {{ __('admin/dashboard.modal_view_full') }}
@@ -323,8 +329,9 @@
 </div>
 
 <script>
-    // Variables para JS
+    // PASAMOS EL SÍMBOLO DE MONEDA A JAVASCRIPT
     window.ADMIN_LANG = {
+        currency_symbol: `{{ $currencySymbol }}`,
         revenue_mxn: `{{ __('admin/dashboard.js_revenue_mxn') }}`,
         loading_ticket: `{{ __('admin/dashboard.js_loading_ticket') }}`,
         server_error: `{{ __('admin/dashboard.js_server_error') }}`,

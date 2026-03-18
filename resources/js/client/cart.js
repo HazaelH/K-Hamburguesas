@@ -49,16 +49,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// =========================================================
-// FUNCIONES AUXILIARES DE MONEDA
-// =========================================================
 function formatearMoneda(cantidadEnPesos) {
     const rate = window.MENU_LANG?.exchangeRate || 1;
     const symbol = window.MENU_LANG?.currencySymbol || '$';
     const code = window.MENU_LANG?.currencyCode || '';
     
-    const cantidadConvertida = (cantidadEnPesos / rate).toFixed(2);
-    return `${symbol}${cantidadConvertida}${code}`;
+    // 1. Limpiar el valor: Si Laravel envía "1,250.00", le quitamos la coma 
+    // para convertirlo en un número matemático puro (1250.00)
+    let valorNumerico = cantidadEnPesos;
+    if (typeof cantidadEnPesos === 'string') {
+        valorNumerico = parseFloat(cantidadEnPesos.replace(/,/g, ''));
+    }
+    
+    // 2. Aplicamos el tipo de cambio (USD, BRL, MXN)
+    const cantidadConvertida = valorNumerico / rate;
+    
+    // 3. Formateamos de vuelta agregando las comas de los miles automáticamente
+    const cantidadFormateada = cantidadConvertida.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+    return `${symbol}${cantidadFormateada}${code}`;
 }
 
 // =========================================================
