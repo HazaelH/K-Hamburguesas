@@ -8,4 +8,5 @@ return [
     'force_delete_success' => 'Usuário excluído definitivamente do sistema.',
     'force_delete_error_fk' => 'Você não pode excluir definitivamente este usuário porque ele possui histórico de pedidos. Mantenha-o em "Baixas" para não afetar a contabilidade.',
     'force_delete_error_db' => 'Ocorreu um erro no banco de dados ao tentar excluir o usuário.',
+    'name_regex' => 'O nome só pode conter letras e espaços.',
 ];

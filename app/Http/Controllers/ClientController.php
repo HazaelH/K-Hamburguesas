@@ -161,9 +161,20 @@ class ClientController extends Controller
 
         session(['carrito' => $carrito]);
 
+        // 1. Detectamos el idioma actual y elegimos la columna correcta
+        $idioma = app()->getLocale();
+        $nombreProducto = $product->nombre; // Español por defecto
+
+        if ($idioma === 'en' && !empty($product->nombre_en)) {
+            $nombreProducto = $product->nombre_en;
+        } elseif ($idioma === 'pt' && !empty($product->nombre_pt)) {
+            $nombreProducto = $product->nombre_pt;
+        }
+
+        // 2. Pasamos el nombre ya traducido a tu archivo de mensajes
         return response()->json([
             'status' => 'ok',
-            'mensaje' => __('client/messages.item_added', ['product' => $product->nombre]),
+            'mensaje' => __('client/messages.item_added', ['product' => $nombreProducto]),
             'total_items' => count($carrito)
         ]);
     }
@@ -287,6 +298,7 @@ class ClientController extends Controller
             'estado' => 'nullable|string',    
             'metodo_pago' => 'required|in:efectivo,tarjeta_entrega,stripe',
             'referencias' => 'nullable|string',
+            'referencia_tarjeta' => 'nullable|string|max:4',
             'guardar_direccion' => 'nullable|boolean' 
         ]);
 
@@ -340,7 +352,8 @@ class ClientController extends Controller
                     'metodo_pago' => $request->metodo_pago,
                     'datos_entrega' => [
                         'costo_envio_cobrado' => $costoEnvio,
-                        'origen' => 'web'
+                        'origen' => 'web',
+                        'terminal_ref' => $request->referencia_tarjeta 
                     ]
                 ]);
 

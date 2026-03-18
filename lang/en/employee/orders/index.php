@@ -42,12 +42,17 @@ return [
     'modal_cancel' => 'Cancel',
     'modal_confirm' => 'Confirm',
 
+    // Motivo Cancelación
+    'reason_label' => 'Reason for cancellation:',
+    'reason_ph' => 'E.g., Customer left before paying...',
+
     // JS Traducciones
     'js_charge_title' => 'Charge Order #:id?',
     'js_charge_desc' => 'Confirm that <span class="text-emerald-400 font-bold text-lg">$:total</span> entered the register.',
     'js_charge_btn' => 'Yes, Charge',
     
-    'js_cancel_title' => 'Cancel Order #:id?',
-    'js_cancel_desc' => 'This action <span class="text-red-400 font-bold">cannot be undone</span>. The order will be voided.',
-    'js_cancel_btn' => 'Yes, Cancel',
+    'js_cancel_title' => 'Request Cancellation #:id?',
+    'js_cancel_desc' => 'This order will be paused until a manager authorizes it.',
+    'js_cancel_btn' => 'Request Cancellation',
+    'cancel_request_sent' => 'Cancellation request sent to the administrator.'
 ];

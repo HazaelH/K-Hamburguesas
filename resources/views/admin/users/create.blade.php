@@ -28,8 +28,8 @@
                         <label for="name" class="block text-sm font-bold text-slate-300 mb-2">{{ __('admin/users/users.label_name') }}</label>
                         <div class="relative">
                             <span class="absolute left-3 top-3 text-slate-500"><i class="fas fa-user"></i></span>
-                            {{-- Accesibilidad: Agregado id --}}
                             <input type="text" id="name" name="name" value="{{ old('name') }}" required placeholder="{{ __('admin/users/users.placeholder_name') }}"
+                                   oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]/g, '');" 
                                    class="w-full bg-slate-900 text-white border border-slate-300 rounded-lg p-3 pl-10 focus:outline-none focus:border-blue-500 transition">
                         </div>
                         @error('name') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror

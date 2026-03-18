@@ -11,6 +11,7 @@ return [
     'save_battery' => 'Economize bateria mantendo-a desligada',
     'manual_code_placeholder' => 'A lente falhou? Código manual',
     'btn_validate' => 'VALIDAR',
+    'notified' => 'Notificado',
     
     'available_to_pickup' => 'Disponíveis para Retirada',
     'order_number' => 'Pedido #:id',

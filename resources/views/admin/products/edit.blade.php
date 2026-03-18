@@ -15,7 +15,7 @@
     </div>
 
     <div class="bg-gray-800 rounded-2xl shadow-2xl border border-gray-300 p-8">
-        <form action="{{ route('admin.products.update', $producto->id_producto) }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+        <form id="form-edit-product" action="{{ route('admin.products.update', $producto->id_producto) }}" method="POST" enctype="multipart/form-data" class="space-y-8">
             @csrf
             @method('PUT') 
             
@@ -209,7 +209,7 @@
             </div>
 
             <div class="border-t border-gray-300 pt-6 mt-6">
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-lg transform transition hover:scale-[1.01] text-lg">
+                <button type="submit" id="btn-update-product" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-lg transform transition hover:scale-[1.01] text-lg">
                     <i class="fas fa-sync-alt mr-2"></i> {{ __('admin/products/products.btn_update') }}
                 </button>
             </div>

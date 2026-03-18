@@ -11,6 +11,7 @@ return [
     'save_battery' => 'Save battery by keeping it off',
     'manual_code_placeholder' => 'Lens failing? Manual code',
     'btn_validate' => 'VALIDATE',
+    'notified' => 'Notified',
     
     'available_to_pickup' => 'Available for Pickup',
     'order_number' => 'Order #:id',

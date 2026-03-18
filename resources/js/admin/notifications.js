@@ -45,6 +45,10 @@ window.cerrarModalAdmin = function() {
         document.getElementById('admin-pin-input').value = '';
         const errorElement = document.getElementById('admin-pin-error');
         if(errorElement) errorElement.classList.add('hidden');
+        
+        // AGREGAR ESTA LÍNEA PARA LIMPIAR LA CAJA ROJA
+        const motivoBox = document.getElementById('admin-auth-motivo-box');
+        if(motivoBox) motivoBox.classList.add('hidden');
     }, 300);
 };
 
@@ -57,10 +61,33 @@ window.abrirModalResolucion = function(index) {
 
     if(alerta.tipo === 'cancelacion') {
         currentAlertOrderId = alerta.id;
-        document.getElementById('admin-auth-order').innerText = alerta.mensaje;
+        
+        // --- NUEVA LÓGICA: SEPARAR EL TÍTULO DEL MOTIVO ---
+        let mensajePrincipal = alerta.mensaje;
+        let motivoExtra = null;
+        
+        // Verificamos si el mensaje trae el texto ' - Motivo: "'
+        if (alerta.mensaje.includes(' - Motivo: "')) {
+            const partes = alerta.mensaje.split(' - Motivo: "');
+            mensajePrincipal = partes[0]; // "El cajero solicita cancelar la orden #50"
+            motivoExtra = partes[1].replace('"', ''); // "El cliente se fue"
+        }
+
+        // Llenar el modal
+        document.getElementById('admin-auth-order').innerText = mensajePrincipal;
         document.getElementById('admin-pin-input').classList.remove('hidden');
         document.getElementById('admin-auth-panel').querySelector('h3').innerHTML = `<i class="fas fa-shield-alt text-red-500"></i> ${LANG.kitchen_request}`;
         
+        // Manejar la caja roja del Motivo
+        const motivoBox = document.getElementById('admin-auth-motivo-box');
+        const motivoText = document.getElementById('admin-auth-mensaje');
+        if (motivoBox && motivoText && motivoExtra) {
+            motivoText.innerText = `"${motivoExtra}"`;
+            motivoBox.classList.remove('hidden');
+        } else if (motivoBox) {
+            motivoBox.classList.add('hidden');
+        }
+
         document.getElementById('admin-auth-panel').querySelector('.flex.gap-3').innerHTML = `
             <button onclick="resolverAlerta('rechazar')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 rounded-xl transition-all">${LANG.reject}</button>
             <button onclick="resolverAlerta('aprobar')" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all">${LANG.approve}</button>
@@ -72,9 +99,14 @@ window.abrirModalResolucion = function(index) {
         setTimeout(() => { panelCocina.classList.remove('opacity-0', 'scale-95'); }, 10);
         
     } else if (alerta.tipo === 'stock') {
+        // ... (El código de stock se queda exactamente igual) ...
         document.getElementById('admin-auth-order').innerText = alerta.mensaje;
         document.getElementById('admin-pin-input').classList.add('hidden');
         document.getElementById('admin-auth-panel').querySelector('h3').innerHTML = `<i class="fas fa-boxes text-amber-500"></i> ${LANG.stock_request}`;
+        
+        // Ocultar caja de motivo si estaba abierta de otra alerta
+        const motivoBox = document.getElementById('admin-auth-motivo-box');
+        if (motivoBox) motivoBox.classList.add('hidden');
         
         document.getElementById('admin-auth-panel').querySelector('.flex.gap-3').innerHTML = `
             <button onclick="resolverStock(${alerta.id}, 'rechazar')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 rounded-xl transition-all">${LANG.reject}</button>
@@ -87,6 +119,7 @@ window.abrirModalResolucion = function(index) {
         setTimeout(() => { panelStock.classList.remove('opacity-0', 'scale-95'); }, 10);
         
     } else if (alerta.tipo === 'sos_repartidor') {
+        // ... (El código SOS se queda exactamente igual) ...
         currentAlertOrderId = alerta.id;
         document.getElementById('admin-sos-order').innerText = `#${alerta.id}`;
         
@@ -105,6 +138,7 @@ window.abrirModalResolucion = function(index) {
         }
     }
 };
+
 
 window.cerrarModalSOSAdmin = function() {
     const modal = document.getElementById('admin-sos-modal');
@@ -136,7 +170,8 @@ window.enviarResolucionSOS = async function() {
         
         if (response.ok) {
             window.cerrarModalSOSAdmin();
-            setTimeout(() => { window.location.reload(); }, 300); 
+            // ¡CORRECCIÓN UX! Actualizamos la campanita sin recargar la página
+            setTimeout(() => { if(window.actualizarAlertasAdmin) window.actualizarAlertasAdmin(); }, 300); 
         } else {
             alert(LANG.error_sending);
             btn.innerHTML = originalText;
@@ -165,7 +200,8 @@ window.resolverStock = async function(id, decision) {
         
         if (response.ok) {
             window.cerrarModalAdmin();
-            setTimeout(() => { window.location.reload(); }, 300); 
+            // ¡CORRECCIÓN UX! Actualizamos la campanita sin recargar la página
+            setTimeout(() => { if(window.actualizarAlertasAdmin) window.actualizarAlertasAdmin(); }, 300); 
         }
     } catch(e) {
         btn.innerHTML = originalText;
@@ -199,18 +235,93 @@ window.resolverAlerta = async function(accion) {
         
         if (response.ok && data.success) {
             window.cerrarModalAdmin();
-            setTimeout(() => { window.location.reload(); }, 300);
+            // ¡CORRECCIÓN UX! Actualizamos la campanita sin recargar la página
+            setTimeout(() => { if(window.actualizarAlertasAdmin) window.actualizarAlertasAdmin(); }, 300);
         } else {
             const errorElement = document.getElementById('admin-pin-error');
             if(errorElement) {
                 errorElement.innerText = data.message || 'Error al validar';
                 errorElement.classList.remove('hidden');
             }
+            btn.innerHTML = originalText;
+            btn.disabled = false;
         }
     } catch (e) {
         btn.innerHTML = originalText;
         btn.disabled = false;
     }
+};
+
+// =========================================================================
+// MOTOR DE ALERTAS EN TIEMPO REAL (Extraído para poder llamarlo a voluntad)
+// =========================================================================
+window.actualizarAlertasAdmin = async function() {
+    const checkAlertsUrl = window.K_ADMIN_CONFIG ? window.K_ADMIN_CONFIG.checkAlertsUrl : '/admin/api/alertas';
+    try {
+        const response = await fetch(checkAlertsUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+        if(!response.ok) return;
+
+        const data = await response.json();
+        alertasGlobales = data.alertas || [];
+        
+        const badge = document.getElementById('admin-alert-badge');
+        const countText = document.getElementById('notificaciones-count');
+        const lista = document.getElementById('notificaciones-lista');
+
+        if (alertasGlobales.length > 0) {
+            badge.innerText = alertasGlobales.length;
+            countText.innerText = alertasGlobales.length;
+            badge.classList.remove('hidden');
+            
+            // Sonido solo si hay una notificación NUEVA que no estaba antes
+            if (lista.children.length < alertasGlobales.length) {
+                new Audio('https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg').play().catch(e=>{});
+            }
+
+            lista.innerHTML = '';
+            alertasGlobales.forEach((alerta, index) => {
+                let icon, title, bgHover;
+                
+                if (alerta.tipo === 'cancelacion') {
+                    icon = '<i class="fas fa-shield-alt text-red-500"></i>';
+                    title = LANG.alert_cancel;
+                    bgHover = 'hover:bg-red-900/20';
+                } else if (alerta.tipo === 'stock') {
+                    icon = '<i class="fas fa-boxes text-amber-500"></i>';
+                    title = LANG.alert_stock;
+                    bgHover = 'hover:bg-amber-900/20';
+                } else if (alerta.tipo === 'sos_repartidor') {
+                    icon = '<i class="fas fa-motorcycle text-blue-500"></i>';
+                    title = LANG.alert_sos;
+                    bgHover = 'hover:bg-blue-900/20';
+                }
+                
+                lista.innerHTML += `
+                    <div onclick="abrirModalResolucion(${index})" class="p-4 border-b border-slate-700/50 cursor-pointer transition-colors flex gap-3 group ${bgHover}">
+                        <div class="mt-1 bg-slate-900 p-2 rounded-lg h-8 w-8 flex items-center justify-center border border-slate-600 group-hover:border-slate-400">
+                            ${icon}
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">${title}</h4>
+                            <p class="text-xs text-slate-400 mt-1">${alerta.mensaje}</p>
+                            ${alerta.tipo === 'sos_repartidor' ? `<p class="text-[10px] font-bold text-blue-400 mt-2 uppercase tracking-widest"><i class="fas fa-check"></i> ${LANG.click_to_resolve}</p>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+        } else {
+            badge.classList.add('hidden');
+            lista.innerHTML = '';
+            
+            // Si procesaste la última notificación y ya no hay más, mostramos el globo de "Todo bien"
+            const dropdown = document.getElementById('notificaciones-dropdown');
+            if(dropdown && !dropdown.classList.contains('hidden')) {
+                dropdown.classList.add('hidden');
+                if(window.mostrarNotificacionVacia) window.mostrarNotificacionVacia();
+            }
+        }
+    } catch (e) {}
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -291,6 +402,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (e) {}
     }, 4000);
+
+    window.actualizarAlertasAdmin();
+    setInterval(window.actualizarAlertasAdmin, 4000);
 
     const relojContenedor = document.getElementById('reloj-en-vivo');
     

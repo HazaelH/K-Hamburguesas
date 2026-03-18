@@ -23,9 +23,8 @@
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <i class="fas fa-qrcode text-slate-500 group-focus-within:text-orange-500 transition-colors"></i>
                 </div>
-                <input type="text" name="codigo" placeholder="{{ __('employee/orders/index.scan_placeholder') }}" autofocus
+                <input type="text" name="codigo" id="scanner-input" placeholder="{{ __('employee/orders/index.scan_placeholder') }}" autofocus
                        class="block w-full pl-10 pr-12 py-3 border border-slate-300 rounded-xl leading-5 bg-slate-800 text-slate-300 placeholder-slate-500 focus:outline-none focus:bg-slate-900 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 sm:text-sm transition-all shadow-lg"
-                       onblur="this.focus()" 
                        autocomplete="off">
                 <button type="submit" class="absolute inset-y-0 right-0 px-4 text-slate-400 hover:text-white transition-colors">
                     <i class="fas fa-arrow-right"></i>
@@ -71,6 +70,13 @@
                     <tbody class="divide-y divide-slate-800/50">
                         @foreach($orders as $order)
                             <tr class="hover:bg-slate-800/40 transition group">
+
+                                @php
+                                    $datos = is_string($order->datos_entrega) ? json_decode($order->datos_entrega, true) : ($order->datos_entrega ?? []);
+                                    $yaPago = ($order->status == 'pagado' || $order->status == 'entregado') || !empty($datos['pagado']);
+                                    // NUEVO: Verificamos si ya hay una cancelación en proceso
+                                    $solicitaCancelacion = isset($datos['solicita_cancelacion']) && ($datos['solicita_cancelacion'] === true || $datos['solicita_cancelacion'] === 'true');
+                                @endphp
                                 
                                 @php
                                     $datos = is_string($order->datos_entrega) ? json_decode($order->datos_entrega, true) : ($order->datos_entrega ?? []);
@@ -86,20 +92,33 @@
                                 
                                 <td class="px-6 py-4">
                                     <div class="flex flex-col">
-                                        @if($order->mesa || $order->tipo_servicio == 'para_llevar' || $order->tipo_servicio == 'comedor')
+                                        {{-- Verificamos si es Mesa o Llevar (usando los términos viejos y nuevos) --}}
+                                        @if($order->mesa || in_array($order->tipo_servicio, ['para_llevar', 'llevar', 'comedor', 'mesa']))
+                                            
                                             @if($order->mesa)
+                                                {{-- Es en comedor y TIENE número de mesa --}}
                                                 <span class="text-blue-400 font-bold flex items-center gap-2 text-sm">
                                                     <i class="fas fa-chair"></i> {{ __('employee/orders/index.table', ['number' => $order->mesa]) }}
                                                 </span>
+                                            @elseif(in_array($order->tipo_servicio, ['comedor', 'mesa']))
+                                                {{-- Es en comedor pero NO le pusieron número de mesa --}}
+                                                <span class="text-blue-400 font-bold flex items-center gap-2 text-sm">
+                                                    <i class="fas fa-utensils"></i> Comedor
+                                                </span>
                                             @else
+                                                {{-- Es para llevar --}}
                                                 <span class="text-purple-400 font-bold flex items-center gap-2 text-sm">
                                                     <i class="fas fa-shopping-bag"></i> {{ __('employee/orders/index.takeout') }}
                                                 </span>
                                             @endif
+                                            
+                                            {{-- Nombre del cliente del POS --}}
                                             <span class="text-xs text-slate-500 font-medium">
                                                 {{ $order->cliente_nombre ?? __('employee/orders/index.casual_client') }}
                                             </span>
+
                                         @else
+                                            {{-- Si no es nada de lo anterior, entonces es a Domicilio (Web) --}}
                                             <span class="text-orange-400 font-bold flex items-center gap-2 text-sm">
                                                 <i class="fas fa-motorcycle"></i> {{ __('employee/orders/index.web_delivery') }}
                                             </span>
@@ -172,12 +191,21 @@
                                                 <i class="fas fa-check"></i> <span class="hidden md:inline">{{ __('employee/orders/index.btn_charge') }}</span>
                                             </button>
 
-                                            <button type="button" 
-                                                    onclick="openConfirmModal('cancel', {{ $order->id }})"
-                                                    class="bg-slate-700 hover:bg-red-600 text-slate-300 hover:text-white font-bold py-2 px-3 rounded-lg border border-slate-300 hover:border-red-500 transition-all hover:scale-105"
-                                                    title="{{ __('employee/orders/index.btn_cancel') }}">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
+                                            {{-- Lógica del botón de cancelar --}}
+                                            @if($solicitaCancelacion)
+                                                <button type="button" disabled
+                                                        class="bg-orange-500/10 text-orange-400 font-bold py-2 px-3 rounded-lg border border-orange-500/30 cursor-not-allowed flex items-center gap-2"
+                                                        title="Cancelación en proceso...">
+                                                    <i class="fas fa-hourglass-half animate-pulse"></i>
+                                                </button>
+                                            @else
+                                                <button type="button" 
+                                                        onclick="openConfirmModal('cancel', {{ $order->id }})"
+                                                        class="bg-slate-700 hover:bg-red-600 text-slate-300 hover:text-white font-bold py-2 px-3 rounded-lg border border-slate-300 hover:border-red-500 transition-all hover:scale-105"
+                                                        title="{{ __('employee/orders/index.btn_cancel') }}">
+                                                    <i class="fas fa-hand-paper"></i>
+                                                </button>
+                                            @endif
                                         @endif
                                     </div>
                                 </td>
@@ -196,29 +224,40 @@
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div id="modal-panel" class="relative transform overflow-hidden rounded-2xl bg-slate-900 border border-slate-300 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                    <div class="bg-slate-900 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                        <div class="sm:flex sm:items-start">
-                            <div id="modal-icon-box" class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-slate-800 sm:mx-0 sm:h-10 sm:w-10">
-                                <i id="modal-icon" class="fas fa-question text-slate-400"></i>
-                            </div>
-                            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                <h3 class="text-xl font-bold leading-6 text-white" id="modal-title"></h3>
-                                <div class="mt-2">
-                                    <p class="text-sm text-slate-400" id="modal-desc"></p>
+                    
+                    {{-- ¡CORRECCIÓN! El FORM ahora envuelve todo (Textarea y Botones) --}}
+                    <form id="form-modal-action" method="POST">
+                        @csrf
+                        <div class="bg-slate-900 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                            <div class="sm:flex sm:items-start">
+                                <div id="modal-icon-box" class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-slate-800 sm:mx-0 sm:h-10 sm:w-10">
+                                    <i id="modal-icon" class="fas fa-question text-slate-400"></i>
+                                </div>
+                                <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
+                                    <h3 class="text-xl font-bold leading-6 text-white" id="modal-title"></h3>
+                                    <div class="mt-2">
+                                        <p class="text-sm text-slate-400" id="modal-desc"></p>
+                                    </div>
+                                    
+                                    {{-- Ahora este Textarea sí se enviará al backend --}}
+                                    <div id="modal-reason-container" class="mt-4 hidden w-full">
+                                        <label for="motivo_cancelacion" class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">{{ __('employee/orders/index.reason_label') }}</label>
+                                        <textarea name="motivo" id="motivo_cancelacion" rows="2" placeholder="{{ __('employee/orders/index.reason_ph') }}"
+                                                  class="w-full bg-slate-950 border border-slate-700 text-white rounded-xl p-3 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-colors resize-none"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="bg-slate-800/50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-3">
-                        <form id="form-modal-action" method="POST" class="w-full sm:w-auto">
-                            @csrf
+                        <div class="bg-slate-800/50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-3">
                             <button type="submit" id="btn-confirm-action" class="inline-flex w-full justify-center rounded-lg bg-emerald-600 px-3 py-2 text-sm font-bold text-white shadow-sm hover:bg-emerald-500 sm:w-auto transition-colors">
-                                </button>
-                        </form>
-                        <button type="button" onclick="closeModal()" class="mt-3 inline-flex w-full justify-center rounded-lg bg-slate-800 px-3 py-2 text-sm font-bold text-slate-300 shadow-sm ring-1 ring-inset ring-slate-700 hover:bg-slate-700 sm:mt-0 sm:w-auto transition-colors">
-                            {{ __('employee/orders/index.modal_cancel') }}
-                        </button>
-                    </div>
+                            </button>
+                            <button type="button" onclick="closeModal()" class="mt-3 inline-flex w-full justify-center rounded-lg bg-slate-800 px-3 py-2 text-sm font-bold text-slate-300 shadow-sm ring-1 ring-inset ring-slate-700 hover:bg-slate-700 sm:mt-0 sm:w-auto transition-colors">
+                                {{ __('employee/orders/index.modal_cancel') }}
+                            </button>
+                        </div>
+                    </form>
+                    {{-- FIN DEL FORM --}}
+
                 </div>
             </div>
         </div>
@@ -227,6 +266,9 @@
 
 <script>
     window.CAJA_LANG = {
+        // AGREGAMOS ESTA LÍNEA PARA MANDAR LA RUTA CON EL IDIOMA CORRECTO:
+        baseUrl: `{{ route('employee.orders.index') }}`,
+        
         charge_title: `{{ __('employee/orders/index.js_charge_title') }}`,
         charge_desc: `{!! __('employee/orders/index.js_charge_desc') !!}`,
         charge_btn: `{{ __('employee/orders/index.js_charge_btn') }}`,
@@ -242,6 +284,18 @@
         @if(session('error'))
             if(window.showToast) window.showToast("{{ session('error') }}", 'error');
         @endif
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const scannerInput = document.getElementById('scanner-input');
+        if (scannerInput) {
+            scannerInput.addEventListener('blur', () => {
+                const modal = document.getElementById('custom-modal');
+                if (modal && modal.classList.contains('hidden')) {
+                    scannerInput.focus();
+                }
+            });
+        }
     });
 </script>
 @endsection

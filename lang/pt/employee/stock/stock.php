@@ -11,8 +11,15 @@ return [
     'waiting_admin' => 'Aguardando Admin',
     'req_block' => 'Solicitar Bloqueio',
     'req_activate' => 'Solicitar Ativação',
+    'req_sent_out_of_stock' => 'Solicitação para ESGOTAR enviada ao gerente.',
+    'req_sent_activate' => 'Solicitação para ATIVAR enviada ao gerente.',
     
     'no_results' => 'Não encontramos esse produto.',
+
+    'filter_all' => 'Todos',
+    'filter_active' => 'Disponíveis',
+    'filter_inactive' => 'Esgotados',
+    'filter_pending' => 'Pendentes',
 
     // JS Traduções
     'js_conn_error' => 'Erro de conexão',

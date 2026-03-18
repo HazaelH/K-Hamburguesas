@@ -71,4 +71,28 @@ return [
     'status_en_camino' => 'En Camino',
     'status_entregado' => 'Entregado',
     'status_cancelado' => 'Cancelado',
+
+    'payment_method' => 'Método de Pago',
+    'pay_terminal' => 'Terminal Bancaria',
+    'verify_digits' => 'Verificar 4 dígitos:',
+    'no_reference' => 'Sin referencia capturada',
+    'pay_online' => 'Pago en Línea',
+    'payment_authorized' => 'Cobro autorizado',
+    'pay_cash' => 'Pago en Efectivo',
+    'collect_cash' => 'Cobrar al momento de la entrega.',
+
+    'confirm_delivery_title' => '¿Marcar como Entregado?',
+    'confirm_delivery_desc' => 'El pedido cambiará de estado a finalizado y se sumará a los ingresos del día.',
+    'btn_cancel_modal' => 'Cancelar',
+    'btn_confirm_delivery' => 'Sí, Entregar',
+
+    'filter_search_placeholder' => 'Buscar por ID, Cliente o Teléfono...',
+    'filter_any_status' => 'Cualquier Estado',
+    'filter_any_type' => 'Cualquier Tipo',
+    'filter_any_payment' => 'Cualquier Pago',
+    'filter_btn' => 'Filtrar',
+    'filter_clear' => 'Limpiar Filtros',
+    'col_payment' => 'Pago',
+    'filter_date_start' => 'Inicio',
+    'filter_date_end' => 'Fin',
 ];

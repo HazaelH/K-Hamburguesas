@@ -83,10 +83,10 @@
             <span class="font-bold uppercase border-black">
                 @if($order->mesa)
                     {{ __('employee/pos/ticket.table', ['number' => $order->mesa]) }}
-                @elseif($order->tipo_servicio == 'para_llevar')
+                @elseif($order->tipo_servicio == 'mesa')
+                    {{ __('employee/pos/ticket.dine_in') }}
+                @elseif($order->tipo_servicio == 'llevar')
                     {{ __('employee/pos/ticket.takeout') }}
-                @else
-                    {{ __('employee/pos/ticket.delivery') }}
                 @endif
             </span>
         </div>

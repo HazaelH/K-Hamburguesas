@@ -27,7 +27,6 @@ class PosController extends Controller
     {
         $request->validate([
             'items' => 'required|array|min:1',
-            'total' => 'required|numeric',
             'mesa' => 'nullable',
             'cliente' => 'nullable|string',
             'metodo_pago' => 'required|in:efectivo,tarjeta' 
@@ -36,24 +35,75 @@ class PosController extends Controller
         try {
             DB::beginTransaction();
 
-            $clienteGenerico = User::firstOrCreate(
-                ['email' => 'mostrador@tuempresa.com'], 
-                [
-                    'name' => __('employee/pos/messages.counter_sale'),
-                    'password' => bcrypt('sistema_pos_123'),
-                ]
-            );
+            $granTotalCalculado = 0;
+            $itemsParaGuardar = [];
 
-            $nombreCliente = $request->cliente ?: __('employee/pos/messages.casual_client');
-            $tipoServicio = !empty($request->mesa) ? 'comedor' : 'para_llevar';
+            foreach ($request->items as $item) {
+                $producto = Product::where('id_producto', $item['id'])->firstOrFail();
+                
+                $precioBase = floatval($producto->precio);
+                $costoExtras = 0;
+                $opcionesSeguras = [];
+
+                // CORRECCIÓN 1: Leer 'modificaciones' (como lo manda el JS)
+                $modificaciones = $item['modificaciones'] ?? [];
+
+                if (!empty($modificaciones) && is_array($modificaciones)) {
+                    $opcionesBD = is_string($producto->opciones_personalizacion) 
+                        ? json_decode($producto->opciones_personalizacion, true) 
+                        : ($producto->opciones_personalizacion ?? []);
+
+                    foreach ($modificaciones as $opFront) {
+                        $precioRealExtra = 0;
+                        $nombreOpcionFront = $opFront['valor'] ?? '';
+
+                        if (is_array($opcionesBD)) {
+                            foreach ($opcionesBD as $opBd) {
+                                $nombreBD = is_array($opBd) ? ($opBd['nombre'] ?? '') : $opBd;
+                                $precioBD = is_array($opBd) ? ($opBd['precio'] ?? 0) : 0;
+
+                                if (strtolower($nombreBD) === strtolower($nombreOpcionFront)) {
+                                    $precioRealExtra = floatval($precioBD);
+                                    break;
+                                }
+                            }
+                        }
+
+                        $costoExtras += $precioRealExtra;
+                        // CORRECCIÓN 2: Guardar como 'nombre' para que el Ticket lo pueda leer
+                        $opcionesSeguras[] = [
+                            'nombre' => $nombreOpcionFront,
+                            'precio' => $precioRealExtra
+                        ];
+                    }
+                }
+
+                $precioFinalItem = $precioBase + $costoExtras;
+                $cantidad = max(1, (int)$item['qty']); 
+                $subtotalItem = $precioFinalItem * $cantidad;
+                
+                $granTotalCalculado += $subtotalItem;
+
+                $itemsParaGuardar[] = [
+                    'product_id' => $producto->id_producto,
+                    'cantidad' => $cantidad,
+                    'precio_unitario' => $precioFinalItem,
+                    'subtotal' => $subtotalItem,
+                    'opciones' => empty($opcionesSeguras) ? null : json_encode($opcionesSeguras)
+                ];
+            }
+
+            $nombreCliente = $request->cliente ?: (__('employee/pos/messages.casual_client', [], 'es') ?? 'Cliente Casual');
+            $tipoServicio = !empty($request->mesa) ? 'mesa' : 'llevar';
             
             $order = Order::create([
-                'user_id' => $clienteGenerico->id, 
+                // CORRECCIÓN 3: El 'user_id' debe ser el del Empleado (Auth::id())
+                'user_id' => Auth::id(), 
                 'cliente_nombre' => $nombreCliente,
                 'mesa' => $request->mesa,
                 'tipo_servicio' => $tipoServicio,
                 'status' => 'pendiente', 
-                'total' => $request->total,
+                'total' => $granTotalCalculado,
                 'metodo_pago' => $request->metodo_pago, 
                 'datos_entrega' => [
                     'atendido_por' => Auth::user()->name,
@@ -61,16 +111,14 @@ class PosController extends Controller
                 ]
             ]);
 
-            foreach ($request->items as $item) {
-                $opcionesJson = !empty($item['opciones']) ? json_encode($item['opciones']) : null;
-
+            foreach ($itemsParaGuardar as $itemSeguro) {
                 OrderItem::create([
                     'order_id' => $order->id,
-                    'product_id' => $item['id'],
-                    'cantidad' => $item['qty'],
-                    'precio_unitario' => $item['price'],
-                    'subtotal' => $item['qty'] * $item['price'], 
-                    'opciones' => $opcionesJson 
+                    'product_id' => $itemSeguro['product_id'],
+                    'cantidad' => $itemSeguro['cantidad'],
+                    'precio_unitario' => $itemSeguro['precio_unitario'],
+                    'subtotal' => $itemSeguro['subtotal'], 
+                    'opciones' => $itemSeguro['opciones'] 
                 ]);
             }
 
@@ -84,7 +132,7 @@ class PosController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['success' => false, 'message' => __('employee/pos/messages.error', ['message' => $e->getMessage()])], 500);
+            return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()], 500);
         }
     }
 

@@ -1,7 +1,9 @@
-// resources/js/employee/orders/index.js
+// resources/js/employee/caja.js
+
+// --- CANDADO MAESTRO ANTI-SPAM ---
+let isProcessingAction = false;
 
 // 1. SISTEMA DE TOASTS
-// Al usar window.showToast lo hacemos público y accesible desde cualquier lado
 window.showToast = function(message, type = 'success') {
     const container = document.getElementById('toast-container');
     if(!container) return;
@@ -26,9 +28,10 @@ window.showToast = function(message, type = 'success') {
 };
 
 // 2. SISTEMA DE MODAL DE CONFIRMACIÓN
-
-// Enganchamos la función a window para que el onclick del HTML la pueda ver
 window.openConfirmModal = function(type, orderId, total = 0) {
+    // 2.1 QUITAR CANDADO AL ABRIR
+    isProcessingAction = false;
+    
     const modal = document.getElementById('custom-modal');
     const modalTitle = document.getElementById('modal-title');
     const modalDesc = document.getElementById('modal-desc');
@@ -37,10 +40,25 @@ window.openConfirmModal = function(type, orderId, total = 0) {
     const btnConfirm = document.getElementById('btn-confirm-action');
     const formAction = document.getElementById('form-modal-action');
     
+    // Elementos del motivo de cancelación
+    const reasonContainer = document.getElementById('modal-reason-container');
+    const reasonInput = document.getElementById('motivo_cancelacion');
+    
     if(!modal) return; 
 
-    // Aquí debes asegurarte de que esta sea la ruta real en tu web (ej. /empleado/ordenes o /empleado/caja)
-    const baseUrl = '/empleado/caja'; 
+    // Restaurar botón a su estado normal (por si se cerró antes a la mitad)
+    btnConfirm.disabled = false;
+    btnConfirm.style.pointerEvents = 'auto';
+    btnConfirm.classList.remove('opacity-75', 'cursor-not-allowed');
+
+    // 2.2 REINICIAR CAJA DE MOTIVO (Oculta por defecto)
+    if (reasonContainer && reasonInput) {
+        reasonContainer.classList.add('hidden');
+        reasonInput.required = false;
+        reasonInput.value = '';
+    }
+
+    const baseUrl = window.CAJA_LANG.baseUrl || '/empleado/caja';
     
     if (type === 'pay') {
         let title = window.CAJA_LANG.charge_title.replace(':id', orderId);
@@ -58,19 +76,26 @@ window.openConfirmModal = function(type, orderId, total = 0) {
         formAction.action = `${baseUrl}/${orderId}/pagar`;
 
     } else {
-        let title = window.CAJA_LANG.cancel_title.replace(':id', orderId);
-        let desc = window.CAJA_LANG.cancel_desc; 
+        // En lugar de Cancelar, es Solicitar Cancelación
+        let title = window.CAJA_LANG.cancel_title ? window.CAJA_LANG.cancel_title.replace(':id', orderId) : `Solicitar Cancelación #${orderId}`;
+        let desc = window.CAJA_LANG.cancel_desc || 'Esta orden se pondrá en pausa hasta que un gerente la autorice.'; 
         
         modalTitle.innerText = title;
         modalDesc.innerHTML = desc;
         
         modalIconBox.className = "mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-900/30 sm:mx-0 sm:h-10 sm:w-10";
-        modalIcon.className = "fas fa-exclamation-triangle text-red-500 text-lg";
+        modalIcon.className = "fas fa-hand-paper text-red-500 text-lg";
         
         btnConfirm.className = "inline-flex w-full justify-center rounded-lg bg-red-600 px-3 py-2 text-sm font-bold text-white shadow-sm hover:bg-red-500 sm:w-auto transition-colors flex items-center gap-2";
-        btnConfirm.innerHTML = `<i class="fas fa-trash-alt"></i> ${window.CAJA_LANG.cancel_btn}`;
+        btnConfirm.innerHTML = `<i class="fas fa-paper-plane"></i> ${window.CAJA_LANG.cancel_btn || 'Enviar Solicitud'}`;
         
         formAction.action = `${baseUrl}/${orderId}/cancelar`;
+
+        // 2.3 MOSTRAR CAJA DE MOTIVO AL CANCELAR
+        if (reasonContainer && reasonInput) {
+            reasonContainer.classList.remove('hidden');
+            reasonInput.required = true; // Hacemos que sea obligatorio escribir el porqué
+        }
     }
 
     modal.classList.remove('hidden');
@@ -80,7 +105,6 @@ window.openConfirmModal = function(type, orderId, total = 0) {
     }, 10);
 };
 
-// Enganchamos la función de cerrar a window
 window.closeModal = function() {
     const modal = document.getElementById('custom-modal');
     if(!modal) return;
@@ -91,3 +115,33 @@ window.closeModal = function() {
         modal.classList.add('hidden');
     }, 300);
 };
+
+// =========================================================
+// 3. BLINDAJE DEL FORMULARIO (ANTI-DOBLE CLIC)
+// =========================================================
+document.addEventListener('DOMContentLoaded', () => {
+    const formAction = document.getElementById('form-modal-action');
+    
+    if (formAction) {
+        formAction.addEventListener('submit', function(e) {
+            // Si el candado está activo, bloqueamos cualquier intento
+            if (isProcessingAction) {
+                e.preventDefault();
+                return;
+            }
+
+            // Validamos que el empleado haya escrito el motivo si es cancelación
+            if (this.checkValidity()) {
+                isProcessingAction = true; // CERRAMOS EL CANDADO
+                
+                const btn = document.getElementById('btn-confirm-action');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.style.pointerEvents = 'none';
+                    btn.classList.add('opacity-75', 'cursor-not-allowed');
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+                }
+            }
+        });
+    }
+});

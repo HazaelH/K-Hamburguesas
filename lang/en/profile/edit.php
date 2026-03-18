@@ -46,4 +46,33 @@ return [
     'delete_modal_desc' => 'This action will deactivate your account and log you out permanently. Your personal data will be hidden according to our privacy policy.',
     'delete_modal_cancel' => 'Keep my account',
     'delete_modal_confirm' => 'Yes, delete account',
+
+    // --- NUEVO: LIBRETA DE DIRECCIONES ---
+    'my_addresses' => 'My Addresses',
+    'add_address_btn' => 'Add Address',
+    'default_badge' => 'Default',
+    'edit' => 'Edit',
+    'delete' => 'Delete',
+    'make_default' => 'Set Default',
+    'no_addresses' => 'No addresses saved',
+    'no_addresses_desc' => 'Add a delivery address to checkout faster.',
+    'delete_confirm' => 'Are you sure you want to delete this address?',
+    
+    // Modal de Dirección
+    'add_address_title' => 'New Delivery Address',
+    'alias' => 'Alias (Ex. Home, Work)',
+    'alias_placeholder' => 'Ex. My House',
+    'street' => 'Street',
+    'ext_num' => 'Ext. Number',
+    'zip_code' => 'Zip Code',
+    'neighborhood' => 'Neighborhood',
+    'municipality' => 'Municipality / City',
+    'state' => 'State',
+    'references' => 'References (Optional)',
+    'save_address' => 'Save Address',
+
+    // Mensajes del Controlador
+    'address_added' => 'Address added successfully.',
+    'address_deleted' => 'Address deleted',
+    'address_default' => 'Address marked as principal.',
 ];

@@ -11,6 +11,7 @@ return [
     'save_battery' => 'Ahorra batería al mantenerla apagada',
     'manual_code_placeholder' => '¿Falla el lente? Código manual',
     'btn_validate' => 'VALIDAR',
+    'notified' => 'Notificado',
     
     'available_to_pickup' => 'Disponibles para Recoger',
     'order_number' => 'Orden #:id',

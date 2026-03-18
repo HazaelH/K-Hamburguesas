@@ -9,24 +9,42 @@
         <div class="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-emerald-600/10 rounded-full blur-[120px]"></div>
     </div>
 
-    <div class="p-6 md:p-8 z-10 flex flex-col md:flex-row justify-between items-end gap-6 border-b border-white/5 bg-slate-900/50 backdrop-blur-md sticky top-0">
-        <div>
-            <h1 class="text-3xl font-bold text-white flex items-center gap-3 mb-2">
-                <span class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
-                    <i class="fas fa-boxes text-lg text-white"></i>
+    <div class="p-6 md:p-8 z-10 flex flex-col gap-5 border-b border-white/5 bg-slate-900/50 backdrop-blur-md sticky top-0">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 w-full">
+            <div>
+                <h1 class="text-3xl font-bold text-white flex items-center gap-3 mb-2">
+                    <span class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                        <i class="fas fa-boxes text-lg text-white"></i>
+                    </span>
+                    {{ __('employee/stock/stock.heading') }}
+                </h1>
+                <p class="text-slate-400 text-sm">{{ __('employee/stock/stock.subtitle') }}</p>
+            </div>
+            
+            <div class="relative w-full md:w-96 group">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 group-focus-within:text-emerald-500 transition-colors">
+                    <i class="fas fa-search"></i>
                 </span>
-                {{ __('employee/stock/stock.heading') }}
-            </h1>
-            <p class="text-slate-400 text-sm">{{ __('employee/stock/stock.subtitle') }}</p>
+                <input type="text" id="buscador" aria-label="{{ __('employee/stock/stock.search_placeholder') }}" placeholder="{{ __('employee/stock/stock.search_placeholder') }}" 
+                       class="w-full bg-slate-800 text-white border border-slate-300 rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all shadow-lg placeholder-slate-400">
+            </div>
         </div>
-        
-        <div class="relative w-full md:w-96 group">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 group-focus-within:text-emerald-500 transition-colors">
-                <i class="fas fa-search"></i>
-            </span>
-            {{-- Accesibilidad: Agregado aria-label al buscador --}}
-            <input type="text" id="buscador" aria-label="{{ __('employee/stock/stock.search_placeholder') }}" placeholder="{{ __('employee/stock/stock.search_placeholder') }}" 
-                   class="w-full bg-slate-800 text-white border border-slate-300 rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all shadow-lg placeholder-slate-400">
+
+        {{-- NUEVO: FILTROS RÁPIDOS (CHIPS) --}}
+        {{-- FILTROS RÁPIDOS (CHIPS) INTERNACIONALIZADOS --}}
+        <div class="flex flex-wrap gap-2 pt-2 border-t border-white/5" id="stock-filters">
+            <button onclick="setFilter('all', this)" class="filter-btn px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold transition-all shadow-lg shadow-emerald-500/30 border border-emerald-500 flex items-center gap-2">
+                <i class="fas fa-layer-group"></i> {{ __('employee/stock/stock.filter_all') }}
+            </button>
+            <button onclick="setFilter('active', this)" class="filter-btn px-4 py-2 bg-slate-800 text-slate-300 hover:text-white rounded-lg text-xs font-bold transition-all border border-slate-600 hover:border-emerald-500 flex items-center gap-2">
+                <i class="fas fa-check-circle text-emerald-500"></i> {{ __('employee/stock/stock.filter_active') }}
+            </button>
+            <button onclick="setFilter('inactive', this)" class="filter-btn px-4 py-2 bg-slate-800 text-slate-300 hover:text-white rounded-lg text-xs font-bold transition-all border border-slate-600 hover:border-red-500 flex items-center gap-2">
+                <i class="fas fa-times-circle text-red-500"></i> {{ __('employee/stock/stock.filter_inactive') }}
+            </button>
+            <button onclick="setFilter('pending', this)" class="filter-btn px-4 py-2 bg-slate-800 text-slate-300 hover:text-white rounded-lg text-xs font-bold transition-all border border-slate-600 hover:border-amber-500 flex items-center gap-2">
+                <i class="fas fa-clock text-amber-500"></i> {{ __('employee/stock/stock.filter_pending') }}
+            </button>
         </div>
     </div>
 
@@ -41,7 +59,7 @@
                 
                 @if($categoriaActual != $producto->categoria)
                     @php $categoriaActual = $producto->categoria; @endphp
-                    <div class="col-span-full mt-4 mb-2 flex items-center gap-4">
+                    <div class="col-span-full mt-4 mb-2 flex items-center gap-4 category-header">
                         <h2 class="text-lg font-bold text-emerald-400 uppercase tracking-widest">
                             {{ $producto->categoria_traducida }}
                         </h2>
@@ -50,7 +68,10 @@
                 @endif
 
                 <div class="product-card group relative bg-slate-800/40 backdrop-blur-sm border border-white/5 rounded-2xl p-4 transition-all duration-300 hover:bg-slate-800 shadow-lg {{ $alertaPendiente ? 'opacity-70' : '' }}"
-                     id="card-{{ $producto->id_producto }}" data-nombre="{{ strtolower($producto->nombre_traducido) }}">
+                     id="card-{{ $producto->id_producto }}" 
+                     data-nombre="{{ strtolower($producto->nombre_traducido) }}"
+                     data-status="{{ $producto->is_active ? 'active' : 'inactive' }}"
+                     data-pending="{{ $alertaPendiente ? 'true' : 'false' }}">
                     
                     <div class="flex items-start justify-between gap-4">
                         <div class="flex items-center gap-4">
@@ -72,9 +93,10 @@
                         </div>
 
                         {{-- Accesibilidad: Etiqueta SR-only para el checkbox visual --}}
-                        <label class="relative inline-flex items-center cursor-pointer opacity-80">
+                        <label class="relative inline-flex items-center cursor-default opacity-80 pointer-events-none">
                             <span class="sr-only">Estado de {{ $producto->nombre_traducido }}</span>
-                            <input type="checkbox" class="sr-only peer" {{ $producto->is_active ? 'checked' : '' }} {{ $alertaPendiente ? 'disabled' : '' }} tabindex="-1">
+                            {{-- Ponemos el input siempre en 'disabled' para que no reaccione --}}
+                            <input type="checkbox" class="sr-only peer" {{ $producto->is_active ? 'checked' : '' }} disabled tabindex="-1">
                             <div class="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:bg-emerald-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-slate-300 after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-3 peer-checked:after:bg-white peer-checked:after:border-white shadow-inner"></div>
                         </label>
                     </div>
@@ -114,6 +136,10 @@
 
 <script>
     window.STOCK_LANG = {
+        // Usamos la URL actual en lugar del nombre de la ruta. 
+        // Esto imprimirá dinámicamente: http://tu-sitio.com/en/empleado/stock
+        baseUrl: `{{ url()->current() }}`,
+        
         conn_error: `{{ __('employee/stock/stock.js_conn_error') }}`
     };
 </script>

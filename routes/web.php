@@ -132,6 +132,10 @@ Route::group([
         Route::put('/perfil', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile/destroy', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::get('/profile/confirm-delete/{id}', [App\Http\Controllers\ProfileController::class, 'confirmDeletion'])->name('profile.confirm_delete');
+        Route::post('/perfil/direccion', [App\Http\Controllers\ProfileController::class, 'storeAddress'])->name('profile.address.store');
+        Route::delete('/perfil/direccion/{id}', [App\Http\Controllers\ProfileController::class, 'destroyAddress'])->name('profile.address.destroy');
+        Route::patch('/perfil/direccion/{id}/default', [App\Http\Controllers\ProfileController::class, 'setDefaultAddress'])->name('profile.address.default');
+        Route::put('/perfil/direccion/{id}', [App\Http\Controllers\ProfileController::class, 'updateAddress'])->name('profile.address.update');
     });
 
     /*

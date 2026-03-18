@@ -8,4 +8,5 @@ return [
     'force_delete_success' => 'User permanently deleted from the system.',
     'force_delete_error_fk' => 'You cannot permanently delete this user because they have order history. Keep them in "Trashed" to avoid affecting accounting.',
     'force_delete_error_db' => 'A database error occurred while trying to delete the user.',
+    'name_regex' => 'The name may only contain letters and spaces.',
 ];

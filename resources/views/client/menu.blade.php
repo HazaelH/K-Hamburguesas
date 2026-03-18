@@ -64,12 +64,14 @@
                 </div>
 
                 <div class="hidden md:flex flex-wrap gap-3 pb-2 items-center justify-center">
+                    {{-- Botón de "Todas" --}}
                     <button onclick="cambiarCategoria('Todas', this)" 
-                            class="filter-btn active px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-orange-700 text-white shadow-[0_4px_15px_rgba(234,88,12,0.3)] border border-orange-500 transform hover:-translate-y-1"
+                            class="filter-btn active px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-orange-700 text-white shadow-[0_4px_15px_rgba(234,88,12,0.3)] border border-orange-500 transform hover:scale-105"
                             data-category="Todas">
                         <i class="fas fa-star text-orange-200 mr-1"></i> {{ __('client/menu.all_menu') }}
                     </button>
 
+                    {{-- Botones dinámicos de la BD --}}
                     @foreach($categoriasBd as $cat)
                         @php
                             $nombreMostrar = $cat->nombre;
@@ -77,7 +79,7 @@
                             if (app()->getLocale() == 'pt' && !empty($cat->nombre_pt)) $nombreMostrar = $cat->nombre_pt;
                         @endphp
                         <button onclick="cambiarCategoria('{{ $cat->nombre }}', this)" 
-                                class="filter-btn px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white border border-gray-300 hover:shadow-lg transform hover:-translate-y-1"
+                                class="filter-btn px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white border border-gray-300 hover:shadow-lg transform hover:scale-105"
                                 data-category="{{ $cat->nombre }}">
                             {{ $nombreMostrar }}
                         </button>

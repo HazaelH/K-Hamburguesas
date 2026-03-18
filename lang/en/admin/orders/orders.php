@@ -71,4 +71,28 @@ return [
     'status_en_camino' => 'On the Way',
     'status_entregado' => 'Delivered',
     'status_cancelado' => 'Cancelled',
+
+    'payment_method' => 'Payment Method',
+    'pay_terminal' => 'Bank Terminal',
+    'verify_digits' => 'Verify 4 digits:',
+    'no_reference' => 'No reference captured',
+    'pay_online' => 'Online Payment',
+    'payment_authorized' => 'Payment authorized',
+    'pay_cash' => 'Cash Payment',
+    'collect_cash' => 'Collect payment upon delivery.',
+
+    'confirm_delivery_title' => 'Mark as Delivered?',
+    'confirm_delivery_desc' => 'The order status will change to finished and it will be added to today\'s income.',
+    'btn_cancel_modal' => 'Cancel',
+    'btn_confirm_delivery' => 'Yes, Deliver',
+
+    'filter_search_placeholder' => 'Search by ID, Client or Phone...',
+    'filter_any_status' => 'Any Status',
+    'filter_any_type' => 'Any Type',
+    'filter_any_payment' => 'Any Payment',
+    'filter_btn' => 'Filter',
+    'filter_clear' => 'Clear Filters',
+    'col_payment' => 'Payment',
+    'filter_date_start' => 'Start',
+    'filter_date_end' => 'End',
 ];

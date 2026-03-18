@@ -38,7 +38,7 @@
                         };
                     @endphp
 
-                    <div id="order-card-{{ $order->id }}" class="bg-slate-800 border-t-4 {{ $statusConfig['border'] }} rounded-2xl shadow-xl flex flex-col relative h-[420px] transition-transform hover:-translate-y-1 group">
+                    <div id="order-card-{{ $order->id }}" class="bg-slate-800 border-t-4 {{ $statusConfig['border'] }} rounded-2xl shadow-xl flex flex-col relative h-[420px] transition-transform hover:-translate-y-1 group before:absolute before:-inset-3 before:content-[''] before:z-[-1]">
                         
                         <div class="p-4 border-b border-slate-300 flex justify-between items-start bg-slate-800/50 rounded-t-xl shrink-0">
                             <div>
@@ -80,7 +80,8 @@
                                                 <div class="mt-1.5 flex flex-wrap gap-1">
                                                     @foreach($opciones as $opcion)
                                                         @php
-                                                            $valorOriginal = is_array($opcion) ? ($opcion['valor'] ?? '') : $opcion;
+                                                            // EL BLINDAJE: Ahora busca 'nombre' (POS/Ticket) o 'valor' (Web antigua)
+                                                            $valorOriginal = is_array($opcion) ? ($opcion['nombre'] ?? $opcion['valor'] ?? '') : $opcion;
                                                             $textoOpcion = $valorOriginal;
 
                                                             if ($item->product && !empty($item->product->opciones_personalizacion)) {
@@ -100,9 +101,14 @@
                                                                 }
                                                             }
                                                         @endphp
-                                                        <span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase truncate max-w-full">
-                                                            {{ $textoOpcion }}
-                                                        </span>
+                                                        
+                                                        {{-- Solo imprimimos si realmente hay un texto que mostrar --}}
+                                                        @if(!empty($textoOpcion))
+                                                            <span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase truncate max-w-full">
+                                                                {{ $textoOpcion }}
+                                                            </span>
+                                                        @endif
+                                                        
                                                     @endforeach
                                                 </div>
                                             @endif

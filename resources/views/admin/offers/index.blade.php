@@ -5,8 +5,10 @@
 @section('contenido')
 <div class="relative space-y-6 py-4">
 
-    @if(session('success') || session('error'))
+    @if(session('success') || session('error') || $errors->any())
         <div id="toast-notification" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-3 shadow-2xl transform transition-all duration-500 translate-y-0 opacity-100">
+            
+            {{-- ÉXITO --}}
             @if(session('success'))
                 <div class="bg-emerald-950/90 border border-emerald-500 text-emerald-400 px-6 py-4 rounded-2xl flex items-center gap-4 backdrop-blur-md shadow-[0_0_20px_rgba(16,185,129,0.2)]">
                     <i class="fas fa-check-circle text-2xl animate-bounce"></i>
@@ -14,12 +16,13 @@
                         <p class="font-bold text-lg leading-tight">{{ __('admin/offers/offers.toast_success') }}</p>
                         <p class="text-xs text-emerald-300 mt-1 max-w-xs">{{ session('success') }}</p>
                     </div>
-                    <button aria-label="Cerrar notificación" onclick="document.getElementById('toast-notification').remove()" class="ml-2 text-emerald-600 hover:text-emerald-400 transition">
+                    <button aria-label="Cerrar notificación" onclick="this.closest('.bg-emerald-950\\/90').remove()" class="ml-2 text-emerald-600 hover:text-emerald-400 transition">
                         <i class="fas fa-times pointer-events-none"></i>
                     </button>
                 </div>
             @endif
 
+            {{-- ERROR DE SESIÓN --}}
             @if(session('error'))
                 <div class="bg-red-950/90 border border-red-500 text-red-400 px-6 py-4 rounded-2xl flex items-center gap-4 backdrop-blur-md shadow-[0_0_20px_rgba(239,68,68,0.2)]">
                     <i class="fas fa-shield-alt text-2xl animate-pulse"></i>
@@ -27,12 +30,31 @@
                         <p class="font-bold text-lg leading-tight">{{ __('admin/offers/offers.toast_error') }}</p>
                         <p class="text-xs text-red-300 mt-1 max-w-xs">{{ session('error') }}</p>
                     </div>
-                    <button aria-label="Cerrar notificación" onclick="document.getElementById('toast-notification').remove()" class="ml-2 text-red-600 hover:text-red-400 transition">
+                    <button aria-label="Cerrar notificación" onclick="this.closest('.bg-red-950\\/90').remove()" class="ml-2 text-red-600 hover:text-red-400 transition">
+                        <i class="fas fa-times pointer-events-none"></i>
+                    </button>
+                </div>
+            @endif
+
+            {{-- NUEVO: ERRORES DE VALIDACIÓN (Como el unique del título) --}}
+            @if($errors->any())
+                <div class="bg-red-950/90 border border-red-500 text-red-400 px-6 py-4 rounded-2xl flex items-center gap-4 backdrop-blur-md shadow-[0_0_20px_rgba(239,68,68,0.2)]">
+                    <i class="fas fa-exclamation-triangle text-2xl animate-pulse"></i>
+                    <div>
+                        <p class="font-bold text-lg leading-tight">{{ __('admin/offers/offers.toast_error') }}</p>
+                        <ul class="text-xs text-red-300 mt-1 max-w-xs list-disc list-inside">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <button aria-label="Cerrar notificación" onclick="this.closest('.bg-red-950\\/90').remove()" class="ml-2 text-red-600 hover:text-red-400 transition">
                         <i class="fas fa-times pointer-events-none"></i>
                     </button>
                 </div>
             @endif
         </div>
+        
         <script>
             setTimeout(() => {
                 const toast = document.getElementById('toast-notification');
@@ -40,7 +62,7 @@
                     toast.classList.add('translate-y-10', 'opacity-0');
                     setTimeout(() => toast.remove(), 500);
                 }
-            }, 6000);
+            }, 6000); // 6 Segundos
         </script>
     @endif
 
@@ -55,7 +77,7 @@
                     {{ __('admin/offers/offers.create_promo') }}
                 </h2>
 
-                <form action="{{ route('admin.offers.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+                <form id="form-create-offer" action="{{ route('admin.offers.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
                     @csrf
                     
                     <div class="space-y-3">
@@ -163,7 +185,7 @@
                         <input type="file" id="imagen" name="imagen" class="w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-700 file:text-white hover:file:bg-slate-600 transition-colors cursor-pointer border border-slate-300 rounded-xl bg-slate-900">
                     </div>
 
-                    <button type="submit" class="w-full bg-orange-700 hover:bg-orange-500 text-white font-black py-3.5 rounded-xl transition-all shadow-[0_0_15px_rgba(234,88,12,0.3)] hover:shadow-[0_0_25px_rgba(234,88,12,0.5)] transform hover:-translate-y-0.5">
+                    <button type="submit" id="btn-submit-offer" class="w-full bg-orange-700 hover:bg-orange-500 text-white font-black py-3.5 rounded-xl transition-all shadow-[0_0_15px_rgba(234,88,12,0.3)] hover:shadow-[0_0_25px_rgba(234,88,12,0.5)] transform hover:-translate-y-0.5">
                         <i class="fas fa-rocket mr-2 pointer-events-none"></i> {{ __('admin/offers/offers.btn_launch') }}
                     </button>
                 </form>

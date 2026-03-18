@@ -42,12 +42,17 @@ return [
     'modal_cancel' => 'Cancelar',
     'modal_confirm' => 'Confirmar',
 
+    // Motivo Cancelación
+    'reason_label' => 'Motivo de cancelación:',
+    'reason_ph' => 'Ej: El cliente se retiró antes de pagar...',
+
     // JS Traducciones
     'js_charge_title' => '¿Cobrar Orden #:id?',
     'js_charge_desc' => 'Confirmas que ingresaron <span class="text-emerald-400 font-bold text-lg">$:total</span> a la caja.',
     'js_charge_btn' => 'Sí, Cobrar',
     
-    'js_cancel_title' => '¿Cancelar Orden #:id?',
-    'js_cancel_desc' => 'Esta acción <span class="text-red-400 font-bold">no se puede deshacer</span>. La orden quedará anulada.',
-    'js_cancel_btn' => 'Sí, Cancelar',
+    'js_cancel_title' => '¿Solicitar Cancelación #:id?',
+    'js_cancel_desc' => 'Esta orden se pondrá en pausa hasta que un gerente la autorice.',
+    'js_cancel_btn' => 'Enviar Solicitud',
+    'cancel_request_sent' => 'Solicitud de cancelación enviada al administrador.'
 ];

@@ -73,7 +73,9 @@
             data-msg-consent-title="{{ __('client/checkout.error_consent_title') }}"
             data-msg-consent="{{ __('client/checkout.error_consent_msg') }}"
             data-msg-addr-loaded="{{ __('client/checkout.address_loaded_title') }}"
-            data-msg-addr-filled="{{ __('client/checkout.address_loaded_msg') }}">
+            data-msg-addr-filled="{{ __('client/checkout.address_loaded_msg') }}"
+            data-msg-terminal-title="{{ __('client/checkout.terminal_req_title') }}"
+            data-msg-terminal-req="{{ __('client/checkout.terminal_req_msg') }}">
             @csrf
 
             <div class="lg:col-span-7 space-y-8">
@@ -102,6 +104,8 @@
                         <input type="hidden" name="codigo_pais" id="codigo_pais_final" value="{{ old('codigo_pais', '+52') }}">
                         <div class="relative w-full">
                             <input type="tel" name="telefono" id="telefono_input" value="{{ old('telefono', Auth::check() ? Auth::user()->telefono : '') }}" placeholder="{{ __('client/checkout.cellphone_placeholder') }}"
+                                maxlength="12"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                                 class="w-full bg-gray-900 text-white rounded-xl py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all shadow-inner
                                 @error('telefono') border-red-500 @enderror">
                         </div>
@@ -230,6 +234,17 @@
                             <i class="fas fa-check-circle check-icon absolute top-3 right-3 text-orange-500 text-lg transition-opacity duration-300 {{ old('metodo_pago') == 'stripe' ? 'opacity-100' : 'opacity-0' }}"></i>
                         </label>
                     </div>
+                    
+                    <div id="terminal-container" class="mt-6 p-5 bg-gray-900 rounded-xl border border-blue-500/30 hidden transition-all">
+                        <label class="block text-gray-400 text-xs font-bold uppercase tracking-wider mb-3">
+                            <i class="fas fa-credit-card text-blue-400 mr-1"></i> {{ __('client/checkout.last_4_digits') }}
+                        </label>
+                        <input type="text" name="referencia_tarjeta" maxlength="4" placeholder="{{ __('client/checkout.terminal_placeholder') }}" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                               class="w-full sm:w-1/2 bg-gray-800 text-white rounded-xl px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-inner">
+                        <p class="text-[10px] text-gray-500 mt-2 font-bold uppercase tracking-wider">
+                            <i class="fas fa-info-circle text-blue-400"></i> {{ __('client/checkout.terminal_security_warning') }}
+                        </p>
+                    </div>
 
                     <div id="stripe-container" class="mt-6 p-5 bg-gray-900 rounded-xl border border-purple-500/30 hidden transition-all">
                         <label class="block text-gray-400 text-xs font-bold uppercase tracking-wider mb-3">
@@ -282,9 +297,10 @@
                         
                         <div class="border-t border-gray-300 border-dashed my-3"></div>
 
+                        {{-- EL TOTAL CORREGIDO (Color naranja sólido) --}}
                         <div class="flex justify-between items-end">
                             <span class="text-gray-400 font-bold uppercase tracking-wider text-xs">{{ __('client/checkout.total_to_pay') }}</span>
-                            <span class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-700">
+                            <span class="text-2xl font-black text-orange-500">
                                 {{ formatCurrency($totalFinal) }}
                             </span>
                         </div>

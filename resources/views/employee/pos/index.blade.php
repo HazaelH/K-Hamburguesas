@@ -224,6 +224,20 @@
     </div>
 </div>
 
+<div id="clear-cart-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+    <div id="clear-cart-panel" class="bg-slate-900 border border-slate-700 p-6 md:p-8 rounded-3xl shadow-2xl max-w-sm w-full transform scale-95 transition-transform duration-300 text-center">
+        <div class="w-20 h-20 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-5 border border-red-500/30">
+            <i class="fas fa-trash-alt"></i>
+        </div>
+        <h3 class="text-2xl font-black text-white mb-2 tracking-tight">{{ __('employee/pos/index.clear_q') }}</h3>
+        <p class="text-slate-400 text-sm mb-8 leading-relaxed">{{ __('employee/pos/index.clear_account_desc') }}</p>
+        <div class="flex gap-3">
+            <button type="button" onclick="closeClearModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 rounded-xl transition-all">{{ __('employee/pos/index.cancel') }}</button>
+            <button type="button" onclick="confirmClearCart()" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all">{{ __('employee/pos/index.yes_clear') }}</button>
+        </div>
+    </div>
+</div>
+
 <div id="toast-container" class="fixed top-20 right-4 lg:right-8 z-[100] flex flex-col gap-3 pointer-events-none w-72 md:w-80"></div>
 
 <script>

@@ -1,4 +1,5 @@
 <?php
+
 return [
     'action_out_of_stock' => 'ESGOTAR',
     'action_activate' => 'ATIVAR',

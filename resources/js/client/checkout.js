@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ======================================================
     const paymentRadios = document.querySelectorAll('.payment-radio');
     const stripeContainer = document.getElementById('stripe-container');
+    const terminalContainer = document.getElementById('terminal-container'); // <--- NUEVO
     
     function updatePaymentVisuals() {
         const selectedMethod = document.querySelector('.payment-radio:checked');
@@ -62,11 +63,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // Mostrar/Ocultar Stripe
         if (stripeContainer) {
             if (selectedValue === 'stripe') {
                 stripeContainer.classList.remove('hidden');
             } else {
                 stripeContainer.classList.add('hidden');
+            }
+        }
+
+        // Mostrar/Ocultar Terminal (NUEVO)
+        if (terminalContainer) {
+            if (selectedValue === 'tarjeta_entrega') {
+                terminalContainer.classList.remove('hidden');
+            } else {
+                terminalContainer.classList.add('hidden');
             }
         }
     }
@@ -122,6 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const msgProcess = form.getAttribute('data-msg-process') || 'Procesando...';
                 const msgConsentTitle = form.getAttribute('data-msg-consent-title') || 'Acción Requerida';
                 const msgConsentMsg = form.getAttribute('data-msg-consent') || 'Debes aceptar los términos.';
+                const msgTerminalTitle = form.getAttribute('data-msg-terminal-title') || 'Atención';
+                const msgTerminalReq = form.getAttribute('data-msg-terminal-req') || 'Ingresa los últimos 4 dígitos de tu tarjeta.';
+                
+
 
                 // VALIDACIÓN LEGAL
                 const consentCheckbox = document.getElementById('legal_consent');
@@ -148,6 +163,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 const selectedMethodEl = document.querySelector('input[name="metodo_pago"]:checked');
                 const selectedMethod = selectedMethodEl ? selectedMethodEl.value : 'efectivo';
                 
+                // ==========================================
+                // Validar 4 dígitos de Terminal (AHORA TRADUCIDO)
+                // ==========================================
+                if (selectedMethod === 'tarjeta_entrega') {
+                    const refInput = document.querySelector('input[name="referencia_tarjeta"]');
+                    if (refInput && refInput.value.length < 4) {
+                        // Usamos las variables traducidas
+                        window.showToast(msgTerminalTitle, msgTerminalReq, 'info');
+                        
+                        refInput.classList.add('border-red-500', 'ring-2', 'ring-red-500');
+                        setTimeout(() => refInput.classList.remove('border-red-500', 'ring-2', 'ring-red-500'), 2000);
+                        return; 
+                    }
+                }
+                // ==========================================
+
+                // AQUÍ ESTABA EL ERROR: Declaramos originalContent solo UNA vez
                 const originalContent = btnConfirmar.innerHTML;
                 btnConfirmar.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> ${msgProcess}`;
                 btnConfirmar.disabled = true;

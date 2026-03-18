@@ -15,7 +15,8 @@ class OrderController extends Controller
     {
         $orders = Order::whereDate('created_at', today())
                         ->where('status', '!=', 'cancelado')
-                        ->whereIn('tipo_servicio', ['comedor', 'para_llevar']) 
+                        // ¡CORRECCIÓN! Agregamos 'mesa' y 'llevar' a la búsqueda
+                        ->whereIn('tipo_servicio', ['comedor', 'para_llevar', 'mesa', 'llevar']) 
                         ->orderByRaw("FIELD(status, 'pagado') ASC") 
                         ->orderBy('created_at', 'desc')
                         ->get();
@@ -38,7 +39,9 @@ class OrderController extends Controller
         
         $datos['pagado'] = true;
         $datos['fecha_pago'] = now()->toDateTimeString();
-        $order->datos_entrega = $datos;
+        
+        // CORRECCIÓN: Siempre usar json_encode para no corromper la BD
+        $order->datos_entrega = json_encode($datos);
 
         if ($order->status == 'listo' || $order->status == 'en_camino') {
             $order->status = 'entregado';
@@ -63,18 +66,29 @@ class OrderController extends Controller
         }
     }
 
-    public function cancel($id)
+    public function cancel(Request $request, $id)
     {
         $order = Order::findOrFail($id);
 
-        if ($order->status == 'pagado') {
-            return back()->with('error', __('employee/delivery/messages.cannot_cancel_paid'));
-        }
+        // Validar el motivo
+        $request->validate([
+            'motivo' => 'required|string|max:255'
+        ]);
 
-        $order->status = 'cancelado';
+        // ELIMINAMOS el bloqueo de estado 'pagado' para que puedan pedir
+        // la cancelación a un gerente incluso si ya se cobró.
+
+        $datos = is_string($order->datos_entrega) ? json_decode($order->datos_entrega, true) : ($order->datos_entrega ?? []);
+        
+        $datos['solicita_cancelacion'] = true;
+        $datos['empleado_solicitante'] = auth()->user()->name;
+        $datos['motivo_cancelacion'] = $request->motivo; 
+        
+        // CORRECCIÓN VITAL: Forzamos a JSON para que el Admin pueda leerlo
+        $order->datos_entrega = json_encode($datos);
         $order->save();
 
-        return back()->with('success', __('employee/delivery/messages.cancel_success', ['id' => $id]));
+        return back()->with('success', __('employee/orders/index.cancel_request_sent'));
     }
 
     public function escanearCodigo(Request $request)
@@ -95,7 +109,9 @@ class OrderController extends Controller
         $datos['pagado'] = true;
         $datos['fecha_pago'] = now()->toDateTimeString();
         $datos['metodo_validacion'] = 'QR Escaneado';
-        $order->datos_entrega = $datos;
+        
+        // CORRECCIÓN: Siempre usar json_encode
+        $order->datos_entrega = json_encode($datos);
 
         $order->status = 'entregado';
         $order->save();
@@ -141,8 +157,13 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        if ($order->status !== 'listo') {
-            return response()->json(['success' => false, 'message' => __('employee/delivery/messages.order_taken_by_other')]);
+        // ¡CORRECCIÓN SEGURIDAD! (IDOR): Verificamos que sea 'listo' Y además que sea 'domicilio'.
+        // Así evitamos que un repartidor mañoso tome órdenes de comedor por consola.
+        if ($order->status !== 'listo' || $order->tipo_servicio !== 'domicilio') {
+            return response()->json([
+                'success' => false, 
+                'message' => __('employee/delivery/messages.order_taken_by_other')
+            ]);
         }
 
         $datos = is_string($order->datos_entrega) ? json_decode($order->datos_entrega, true) : ($order->datos_entrega ?? []);

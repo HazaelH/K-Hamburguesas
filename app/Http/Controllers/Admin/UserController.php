@@ -59,8 +59,8 @@ class UserController extends Controller
     {  
         // VALIDACIÓN ESTRICTA
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
+            'name' => ['required', 'string', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/'],
+            'email' => ['required', 'string', 'email:rfc,dns,filter', 'max:100', 'unique:users'],
             'password' => [
                 'required',
                 'confirmed',
@@ -74,6 +74,7 @@ class UserController extends Controller
             'foto_custom' => 'nullable|image|max:2048',
             'avatar_option' => 'nullable|string'
         ], [
+            'name.regex' => __('admin/users/messages.name_regex'),
             'email.unique' => __('auth/messages.email_unique'),
             'password.min' => __('auth/messages.password_min'),
             'password.mixed' => __('auth/messages.password_mixed'),
@@ -114,8 +115,8 @@ class UserController extends Controller
 
         // VALIDACIÓN ESTRICTA (Permitiendo campos nulos en password)
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email:rfc,dns', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'name' => ['required', 'string', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/'],
+            'email' => ['required', 'string', 'email:rfc,dns,filter', 'max:100', Rule::unique('users')->ignore($user->id)],
             'rol' => 'required|in:admin,cliente,mesero,cajero,cocinero,repartidor',
             'password' => [
                 'nullable', // Nullable porque si no la quiere cambiar, la deja en blanco
@@ -129,6 +130,7 @@ class UserController extends Controller
             'foto_custom' => 'nullable|image|max:2048',
             'avatar_option' => 'nullable|string'
         ], [
+            'name.regex' => __('admin/users/messages.name_regex'),
             'email.unique' => __('auth/messages.email_unique'),
             'password.min' => __('auth/messages.password_min'),
             'password.mixed' => __('auth/messages.password_mixed'),

@@ -41,7 +41,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}" class="space-y-5 relative z-10">
+            <form id="login-form" method="POST" action="{{ route('login') }}" class="space-y-5 relative z-10">
                 @csrf
 
                 <div class="space-y-2">
@@ -82,10 +82,11 @@
                     </div>
                 </div>
 
-                <button type="submit" 
+                {{-- Se añadió el ID login-btn --}}
+                <button type="submit" id="login-btn"
                         class="w-full bg-orange-700 hover:bg-orange-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-700/40 transform transition hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2 mt-4">
-                    <span>{{ __('auth/login.btn_login') }}</span>
-                    <i class="fas fa-arrow-right text-sm"></i>
+                    <span id="login-btn-text">{{ __('auth/login.btn_login') }}</span>
+                    <i id="login-btn-icon" class="fas fa-arrow-right text-sm"></i>
                 </button>
             </form>
 
@@ -113,5 +114,36 @@
             icon.classList.replace('fa-eye-slash', 'fa-eye');
         }
     }
+
+    // PROTECCIÓN ANTI-SPAM PARA LOGIN
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('login-form');
+        const btn = document.getElementById('login-btn');
+        const btnText = document.getElementById('login-btn-text');
+        const btnIcon = document.getElementById('login-btn-icon');
+        let isSubmitting = false;
+
+        if(form && btn) {
+            form.addEventListener('submit', function(e) {
+                if (isSubmitting) {
+                    e.preventDefault(); // Bloquea clics extra
+                    return;
+                }
+                
+                // Si el formulario es válido (HTML5), bloqueamos
+                if(form.checkValidity()) {
+                    isSubmitting = true;
+                    btn.disabled = true;
+                    btn.style.pointerEvents = 'none';
+                    btn.classList.add('opacity-75', 'cursor-not-allowed');
+                    btn.classList.remove('hover:-translate-y-0.5', 'hover:bg-orange-500', 'active:scale-95');
+                    
+                    // Feedback visual
+                    btnIcon.className = 'fas fa-spinner fa-spin text-sm';
+                    // (Opcional) Cambiar texto: btnText.innerText = 'Procesando...';
+                }
+            });
+        }
+    });
 </script>
 @endsection

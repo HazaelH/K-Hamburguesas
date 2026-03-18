@@ -6,11 +6,11 @@ export default defineConfig({
     plugins: [
         laravel({
             input: ['resources/css/app.css',
+                'resources/css/app.js',
                 'resources/css/auth.css',
                 'resources/css/kitchen.css',
                 'resources/css/layout.css',
                 'resources/js/layout.js', 
-                'resources/js/app.js',
                 'resources/js/profile.js',
                 'resources/css/profile.css', 
                 'resources/css/menu.css', 

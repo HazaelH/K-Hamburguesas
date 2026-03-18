@@ -188,21 +188,35 @@ class AdminController extends Controller
         $alertas = [];
 
         foreach($orders as $o) {
-            $datos = is_string($o->datos_entrega) ? json_decode($o->datos_entrega, true) : ($o->datos_entrega ?? []);
+            // DECODIFICACIÓN BLINDADA (Anti Doble-Encoding)
+            $datos = $o->datos_entrega;
+            if (is_string($datos)) {
+                $datos = json_decode($datos, true);
+                // Si tras decodificar sigue siendo un string, lo decodificamos de nuevo
+                if (is_string($datos)) { 
+                    $datos = json_decode($datos, true); 
+                }
+            }
+            $datos = $datos ?? [];
             
-            if(isset($datos['solicita_cancelacion']) && $datos['solicita_cancelacion'] === true) {
+            // Verificamos si existe la solicitud
+            if(isset($datos['solicita_cancelacion']) && ($datos['solicita_cancelacion'] === true || $datos['solicita_cancelacion'] === 'true')) {
+                
+                // Extraemos el motivo para que el Admin sepa por qué se quiere cancelar
+                $motivo = $datos['motivo_cancelacion'] ?? 'Sin motivo especificado';
+                
                 $alertas[] = [
                     'tipo' => 'cancelacion',
                     'id' => $o->id,
-                    'mensaje' => __('admin/messages.kitchen_cancel_req', ['id' => $o->id])
+                    'mensaje' => __('admin/messages.kitchen_cancel_req', ['id' => $o->id]) . ' - Motivo: "' . $motivo . '"'
                 ];
             }
 
-            if(isset($datos['alerta_repartidor']) && $datos['alerta_repartidor'] === true) {
+            if(isset($datos['alerta_repartidor']) && ($datos['alerta_repartidor'] === true || $datos['alerta_repartidor'] === 'true')) {
                 $alertas[] = [
                     'tipo' => 'sos_repartidor',
                     'id' => $o->id,
-                    'mensaje' => __('admin/messages.sos_driver', ['id' => $o->id, 'msg' => $datos['mensaje_repartidor']])
+                    'mensaje' => __('admin/messages.sos_driver', ['id' => $o->id, 'msg' => $datos['mensaje_repartidor'] ?? ''])
                 ];
             }
         }
@@ -226,7 +240,14 @@ class AdminController extends Controller
     public function resolverCancelacion(Request $request, $id)
     {
         $order = Order::findOrFail($id);
-        $datos = is_string($order->datos_entrega) ? json_decode($order->datos_entrega, true) : ($order->datos_entrega ?? []);
+        
+        // DECODIFICACIÓN BLINDADA
+        $datos = $order->datos_entrega;
+        if (is_string($datos)) {
+            $datos = json_decode($datos, true);
+            if (is_string($datos)) { $datos = json_decode($datos, true); }
+        }
+        $datos = $datos ?? [];
         
         $accionLog = __('admin/messages.action_rejected');
         $mensajeLog = __('admin/messages.log_cancel_req', ['id' => $id]);
@@ -248,7 +269,9 @@ class AdminController extends Controller
             'detalle' => $mensajeLog
         ]);
 
+        // Apagamos la alerta
         $datos['solicita_cancelacion'] = false;
+        
         $order->datos_entrega = json_encode($datos);
         $order->save();
 

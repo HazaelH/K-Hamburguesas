@@ -179,20 +179,27 @@
     </div>
 
     {{-- MODAL DE AUTORIZACIÓN ADMIN --}}
-    <div id="admin-auth-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm">
-        <div class="bg-slate-900 border border-slate-300 p-6 rounded-3xl shadow-2xl w-full max-w-sm transform scale-95 transition-all opacity-0" id="admin-auth-panel">
-            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-500/20 border border-red-500/50 mb-4">
+    <div id="admin-auth-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/80 backdrop-blur-sm px-4">
+        <div class="bg-slate-900 border border-slate-300 p-6 rounded-3xl shadow-2xl w-full max-w-sm transform scale-95 transition-all opacity-0 flex flex-col max-h-[90vh]" id="admin-auth-panel">
+            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-500/20 border border-red-500/50 mb-3 shrink-0">
                 <i class="fas fa-shield-alt text-red-500 text-2xl"></i>
             </div>
-            <h3 class="text-2xl font-black text-center text-white mb-2">{{ __('layouts/admin.kitchen_request') }}</h3>
-            <p class="text-sm text-center text-slate-400 mb-6">{{ __('layouts/admin.cook_requests_cancel') }} <span class="text-white font-bold" id="admin-auth-order">{{ __('layouts/admin.order_number') }}...</span>.</p>
+            <h3 class="text-xl font-black text-center text-white mb-1 tracking-tight">{{ __('layouts/admin.kitchen_request') }}</h3>
+            <p class="text-sm text-center text-slate-400 mb-4">{{ __('layouts/admin.cook_requests_cancel') }} <span class="text-white font-bold" id="admin-auth-order">{{ __('layouts/admin.order_number') }}...</span></p>
             
-            <input type="password" id="admin-pin-input" placeholder="••••" maxlength="4" autocomplete="off" class="w-full bg-slate-800 border-2 border-slate-300 text-white rounded-xl py-4 text-center text-3xl tracking-[1em] font-mono focus:outline-none focus:border-red-500 transition-all shadow-inner mb-2 placeholder:tracking-normal placeholder:text-slate-600">
-            <p id="admin-pin-error" class="text-red-500 text-xs text-center font-bold h-4 mb-4 hidden">{{ __('layouts/admin.incorrect_pin') }}</p>
+            {{-- NUEVO: CAJA PARA MOSTRAR EL MOTIVO --}}
+            <div class="bg-slate-800 p-4 rounded-xl border border-slate-300 mb-5 relative overflow-hidden shrink-0 hidden" id="admin-auth-motivo-box">
+                <div class="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
+                <p class="text-[10px] text-red-400 font-bold uppercase tracking-widest mb-1.5 flex items-center gap-1"><i class="fas fa-comment-dots"></i> Detalle / Motivo</p>
+                <p class="text-sm text-slate-200 italic font-medium leading-relaxed" id="admin-auth-mensaje">"..."</p>
+            </div>
             
-            <div class="flex gap-3">
-                <button onclick="resolverAlerta('rechazar')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 rounded-xl transition-all">{{ __('layouts/admin.reject') }}</button>
-                <button onclick="resolverAlerta('aprobar')" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-red-900/50 transition-all">{{ __('layouts/admin.approve') }}</button>
+            <input type="password" id="admin-pin-input" placeholder="••••" maxlength="4" autocomplete="off" class="w-full bg-slate-800 border-2 border-slate-300 text-white rounded-xl py-4 text-center text-3xl tracking-[1em] font-mono focus:outline-none focus:border-red-500 transition-all shadow-inner mb-2 placeholder:tracking-normal placeholder:text-slate-600 shrink-0">
+            <p id="admin-pin-error" class="text-red-500 text-xs text-center font-bold h-4 mb-4 hidden shrink-0">{{ __('layouts/admin.incorrect_pin') }}</p>
+            
+            <div class="flex gap-3 shrink-0">
+                <button onclick="resolverAlerta('rechazar')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 rounded-xl transition-all text-sm">{{ __('layouts/admin.reject') }}</button>
+                <button onclick="resolverAlerta('aprobar')" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-red-900/50 transition-all text-sm">{{ __('layouts/admin.approve') }}</button>
             </div>
         </div>
     </div>

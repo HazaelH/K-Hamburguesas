@@ -18,7 +18,7 @@
     <div class="bg-slate-800 p-8 rounded-3xl border border-slate-300 shadow-2xl relative overflow-hidden">
         <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <form action="{{ route('admin.offers.update', $offer->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6 relative z-10">
+        <form id="form-edit-offer" action="{{ route('admin.offers.update', $offer->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6 relative z-10">
             @csrf
             @method('PUT')
             
@@ -155,7 +155,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-xl transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] transform hover:-translate-y-0.5">
+            <button type="submit" id="btn-update-offer" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-xl transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] transform hover:-translate-y-0.5">
                 <i class="fas fa-save mr-2 pointer-events-none"></i> {{ __('admin/offers/offers.btn_save') }}
             </button>
         </form>

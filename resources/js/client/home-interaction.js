@@ -2,6 +2,7 @@ let currentHomeProduct = null;
 let currentHomeQuantity = 1;
 // Detectamos el idioma actual desde la variable global (si no existe, por defecto 'es')
 let currentLocale = window.MENU_LANG?.locale || 'es';
+let isAddingToCartHome = false;
 
 // ==========================================
 // ABRIR MODAL
@@ -154,21 +155,33 @@ window.actualizarCantidadVisualHome = function() {
 }
 
 // ==========================================
-// AGREGAR AL CARRITO (FETCH AJAX)
+// AGREGAR AL CARRITO (FETCH AJAX - BLINDADO)
 // ==========================================
 window.agregarAlCarritoHome = function() {
     if (!currentHomeProduct) return;
 
+    if (isAddingToCartHome) {
+        return;
+    }
+
+    isAddingToCartHome = true;
+
     const notas = document.getElementById('home-modal-notas').value.trim();
     const btnText = document.getElementById('home-btn-add-text');
     const originalText = btnText.innerHTML;
+
+    const addBtn = btnText.closest('button'); 
+    if (addBtn) {
+        addBtn.disabled = true;
+        addBtn.style.pointerEvents = 'none';
+        addBtn.classList.add('opacity-70');
+    }
 
     btnText.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${window.K_TRANSLATIONS.client.cart.saving}`;
 
     let modificaciones = [];
     const checkboxes = document.querySelectorAll('.home-opcion-checkbox:checked');
     checkboxes.forEach((chk) => {
-        // Guardamos el nombre en español (chk.value) para que la cocina no se confunda
         modificaciones.push({ grupo: 'Predefinido', valor: chk.value });
     });
 
@@ -206,7 +219,16 @@ window.agregarAlCarritoHome = function() {
         alert(window.K_TRANSLATIONS.client.cart.connection_error);
     })
     .finally(() => {
-        btnText.innerHTML = originalText;
+        setTimeout(() => {
+            isAddingToCartHome = false;
+            
+            btnText.innerHTML = originalText;
+            if (addBtn) {
+                addBtn.disabled = false;
+                addBtn.style.pointerEvents = 'auto';
+                addBtn.classList.remove('opacity-70');
+            }
+        }, 400);
     });
 };
 

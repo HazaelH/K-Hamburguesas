@@ -10,6 +10,7 @@ use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\DeleteAccountMail;
+use App\Models\UserAddress;
 
 class ProfileController extends Controller
 {
@@ -124,5 +125,83 @@ class ProfileController extends Controller
         }
 
         return redirect('/');
+    }
+
+    public function storeAddress(Request $request)
+    {
+        $request->validate([
+            'alias' => 'required|string|max:50',
+            'telefono' => 'required|string|max:20',
+            'calle' => 'required|string|max:100',
+            'numero' => 'required|string|max:20',
+            'codigo_postal' => 'required|string|max:10',
+            'colonia' => 'required|string|max:100',
+            'municipio' => 'required|string|max:100',
+            'estado' => 'required|string|max:100',
+            'referencias' => 'nullable|string|max:255',
+        ]);
+
+        $user = Auth::user();
+        
+        // Si es la primera dirección, se hace principal por defecto
+        $esPrimera = $user->addresses()->count() === 0;
+
+        $user->addresses()->create([
+            'alias' => $request->alias,
+            'codigo_pais' => '+52', // Puedes hacerlo dinámico si tienes selector de país
+            'telefono' => $request->telefono,
+            'calle' => $request->calle,
+            'numero' => $request->numero,
+            'codigo_postal' => $request->codigo_postal,
+            'colonia' => $request->colonia,
+            'municipio' => $request->municipio,
+            'estado' => $request->estado,
+            'referencias' => $request->referencias,
+            'is_default' => $esPrimera
+        ]);
+
+        return back()->with('success', __('profile/edit.address_added'));
+    }
+
+    public function destroyAddress($id)
+    {
+        $direccion = Auth::user()->addresses()->findOrFail($id);
+        $direccion->delete();
+
+        return back()->with('success', __('profile/edit.address_deleted'));
+    }
+
+    public function setDefaultAddress($id)
+    {
+        $user = Auth::user();
+        $nuevaPrincipal = $user->addresses()->findOrFail($id);
+
+        // Quitamos el default a todas las demás
+        $user->addresses()->update(['is_default' => false]);
+        
+        // Se lo ponemos a esta
+        $nuevaPrincipal->update(['is_default' => true]);
+
+        return back()->with('success', __('profile/edit.address_default'));
+    }
+    
+    public function updateAddress(Request $request, $id)
+    {
+        $request->validate([
+            'alias' => 'required|string|max:50',
+            'telefono' => 'required|string|max:20',
+            'calle' => 'required|string|max:100',
+            'numero' => 'required|string|max:20',
+            'codigo_postal' => 'required|string|max:10',
+            'colonia' => 'required|string|max:100',
+            'municipio' => 'required|string|max:100',
+            'estado' => 'required|string|max:100',
+            'referencias' => 'nullable|string|max:255',
+        ]);
+
+        $direccion = Auth::user()->addresses()->findOrFail($id);
+        $direccion->update($request->all());
+
+        return back()->with('success', __('profile/edit.address_updated', ['default' => 'Dirección actualizada correctamente.']));
     }
 }

@@ -7,12 +7,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const sonidoNotificacion = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
     const sonidoMensaje = new Audio('https://assets.mixkit.co/active_storage/sfx/238/238-preview.mp3'); 
 
-    // Función auxiliar para Toasts elegantes en móvil
+    // ¡CORRECCIÓN SEGURIDAD! (Anti-XSS): Usamos innerHTML solo para el ícono que controlamos, 
+    // y textContent para el mensaje que viene del backend.
     const showDeliveryToast = (iconHtml, message, isError = false) => {
         const bgClass = isError ? 'bg-red-600' : 'bg-emerald-600';
         const toast = document.createElement('div');
         toast.className = `fixed top-20 right-4 lg:right-8 ${bgClass} text-white px-6 py-4 rounded-xl font-bold shadow-2xl z-[300] flex items-center gap-3 transform transition-all duration-300 translate-x-full opacity-0 pointer-events-none`;
-        toast.innerHTML = `${iconHtml} <span class="text-sm">${message}</span>`;
+        
+        // Creamos la estructura
+        toast.innerHTML = `${iconHtml} <span class="text-sm toast-message-content"></span>`;
+        // Inyectamos el texto de forma segura
+        toast.querySelector('.toast-message-content').textContent = message;
         
         document.body.appendChild(toast);
         requestAnimationFrame(() => {
@@ -56,7 +61,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             idRespuestaActual = resp.id; 
                             
                             document.getElementById('respuesta-order-id').innerText = resp.id;
-                            document.getElementById('respuesta-mensaje').innerText = `"${resp.respuesta}"`;
+                            
+                            // ¡Anti-XSS también aquí!
+                            document.getElementById('respuesta-mensaje').textContent = `"${resp.respuesta}"`;
                             
                             const modal = document.getElementById('modal-respuesta-admin');
                             const panel = document.getElementById('panel-respuesta-admin');
@@ -75,7 +82,10 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${window.DELIVERY_LANG.assigning}`;
         btn.disabled = true;
 
-        fetch(window.APP_CONFIG.rutas.tomarPedido(id), {
+        // ¡CORRECCIÓN URL! Reemplazo dinámico del ID
+        const urlFetch = window.APP_CONFIG.rutas.tomarPedido.replace(':id', id);
+
+        fetch(urlFetch, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -125,7 +135,10 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => modal.classList.add('hidden'), 300);
 
         if (idRespuestaActual) {
-            fetch(window.APP_CONFIG.rutas.marcarLeido(idRespuestaActual), {
+            // ¡CORRECCIÓN URL! Reemplazo dinámico del ID
+            const urlFetch = window.APP_CONFIG.rutas.marcarLeido.replace(':id', idRespuestaActual);
+
+            fetch(urlFetch, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json', 
@@ -146,7 +159,10 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
         btn.disabled = true;
 
-        fetch(window.APP_CONFIG.rutas.enviarSOS(sosOrdenActual), {
+        // ¡CORRECCIÓN URL! Reemplazo dinámico del ID
+        const urlFetch = window.APP_CONFIG.rutas.enviarSOS.replace(':id', sosOrdenActual);
+
+        fetch(urlFetch, {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json', 
@@ -171,7 +187,10 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${window.DELIVERY_LANG.notifying}`;
         btn.disabled = true;
 
-        fetch(`/empleado/repartidor/orden/${id}/notificar-cliente`, {
+        // ¡CORRECCIÓN URL! Reemplazo dinámico del ID
+        const urlFetch = window.APP_CONFIG.rutas.notificarCliente.replace(':id', id);
+
+        fetch(urlFetch, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -86,12 +86,14 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255|unique:products,nombre',
             'nombre_en' => 'nullable|string|max:255',
+            'nombre_pt' => 'nullable|string|max:255',
             'precio' => 'required|numeric|min:0',
             'categoria' => 'required|string',
             'descripcion' => 'nullable|string',
             'descripcion_en' => 'nullable|string',
+            'descripcion_pt' => 'nullable|string',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
         ]);
 
@@ -140,14 +142,14 @@ class ProductController extends Controller
         $producto = Product::findOrFail($id);
 
         $request->validate([
-            'nombre' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255|unique:products,nombre,' . $id . ',id_producto',
             'nombre_en' => 'nullable|string|max:255',
             'nombre_pt' => 'nullable|string|max:255',
             'precio' => 'required|numeric|min:0',
             'categoria' => 'required|string',
             'descripcion' => 'nullable|string',
             'descripcion_en' => 'nullable|string',
-            'descripcion_pt' => 'nullable|string',            // ← nuevo
+            'descripcion_pt' => 'nullable|string',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
         ]);
 

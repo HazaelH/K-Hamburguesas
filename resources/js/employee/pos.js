@@ -1,6 +1,7 @@
 let cart = [];
 let currentProduct = null;
 let currentLocalePOS = window.MENU_LANG?.locale || 'es';
+let isProcessingOrder = false;
 
 const vibrate = () => { if (navigator.vibrate) navigator.vibrate(50); };
 
@@ -228,43 +229,40 @@ window.changeQty = function(uniqueId, change) {
 };
 
 window.clearCart = function() {
-    if(cart.length === 0) return;
+    if(cart.length === 0 || isProcessingOrder) return;
     vibrate();
 
-    if(document.getElementById('icono-mesa')) document.getElementById('icono-mesa').className = 'fas fa-shopping-bag text-orange-500';
+    const modal = document.getElementById('clear-cart-modal');
+    const panel = document.getElementById('clear-cart-panel');
     
-    const modalBg = document.createElement('div');
-    modalBg.className = "fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300 p-4";
-    modalBg.innerHTML = `
-        <div class="bg-slate-900 border border-slate-700 p-6 md:p-8 rounded-3xl shadow-2xl max-w-sm w-full transform scale-95 transition-transform duration-300 text-center">
-            <div class="w-20 h-20 bg-red-500/20 text-red-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-5 border border-red-500/30"><i class="fas fa-trash-alt"></i></div>
-            <h3 class="text-2xl font-black text-white mb-2 tracking-tight">${window.POS_LANG.clear_q}</h3>
-            <p class="text-slate-400 text-sm mb-8 leading-relaxed">${window.POS_LANG.clear_desc}</p>
-            <div class="flex gap-3">
-                <button id="btn-cancel-clear" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 rounded-xl transition-all">${window.POS_LANG.cancel}</button>
-                <button id="btn-confirm-clear" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all">${window.POS_LANG.yes_clear}</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(modalBg);
-
+    modal.classList.remove('hidden');
     requestAnimationFrame(() => {
-        modalBg.classList.remove('opacity-0');
-        modalBg.firstElementChild.classList.remove('scale-95');
-        modalBg.firstElementChild.classList.add('scale-100');
+        modal.classList.remove('opacity-0');
+        panel.classList.remove('scale-95');
+        panel.classList.add('scale-100');
     });
+};
 
-    const closeModal = () => {
-        modalBg.classList.add('opacity-0');
-        modalBg.firstElementChild.classList.remove('scale-100');
-        modalBg.firstElementChild.classList.add('scale-95');
-        setTimeout(() => modalBg.remove(), 300);
-    };
+window.closeClearModal = function() {
+    const modal = document.getElementById('clear-cart-modal');
+    const panel = document.getElementById('clear-cart-panel');
+    
+    modal.classList.add('opacity-0');
+    panel.classList.remove('scale-100');
+    panel.classList.add('scale-95');
+    setTimeout(() => modal.classList.add('hidden'), 300);
+};
 
-    document.getElementById('btn-cancel-clear').onclick = closeModal;
-    document.getElementById('btn-confirm-clear').onclick = () => {
-        cart = []; updateCartUI(); showToast(window.POS_LANG.account_cleared, 'info'); closeModal();
-    };
+window.confirmClearCart = function() {
+    cart = []; 
+    updateCartUI(); 
+    showToast(window.POS_LANG.account_cleared, 'info'); 
+    
+    if(document.getElementById('icono-mesa')) {
+        document.getElementById('icono-mesa').className = 'fas fa-shopping-bag text-orange-500';
+    }
+    
+    closeClearModal();
 };
 
 window.updateCartUI = function() {
@@ -325,14 +323,17 @@ window.updateCartUI = function() {
 };
 
 window.submitOrder = async function() {
+    // Si está vacío o ya se está procesando una orden, bloqueamos.
+    if (cart.length === 0 || isProcessingOrder) return;
+    
     vibrate();
+    isProcessingOrder = true; // ACTIVAMOS EL CANDADO
+
     const btn = document.getElementById('btn-pagar');
     const mesaEl = document.getElementById('pos-mesa'); 
     const clienteEl = document.getElementById('pos-cliente');
     const pagoEl = document.querySelector('input[name="metodo_pago_pos"]:checked');
     
-    if (cart.length === 0) return;
-
     const originalText = btn.innerHTML;
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin text-2xl"></i>';
@@ -341,11 +342,9 @@ window.submitOrder = async function() {
         id: item.originalId,           
         id_producto: item.originalId,  
         name: item.name,
-        price: item.price,             
-        precio: item.price,
+        // Mandamos las cosas, pero el backend las re-calculará
         qty: item.qty,                 
         cantidad: item.qty,
-        opciones: item.selections.map(s => ({ grupo: 'Extra POS', valor: s.name, precio: s.price })),
         modificaciones: item.selections.map(s => ({ grupo: 'Extra POS', valor: s.name, precio: s.price }))
     }));
 
@@ -357,8 +356,8 @@ window.submitOrder = async function() {
                 items: formattedCart,
                 mesa: mesaEl ? mesaEl.value : null,
                 cliente: clienteEl ? clienteEl.value : '', 
-                total: cart.reduce((acc, item) => acc + (item.price * item.qty), 0),
                 metodo_pago: pagoEl ? pagoEl.value : 'efectivo'
+                // NOTA: Quité la variable "total" de aquí para evitar que el profe la manipule.
             })
         });
 
@@ -380,7 +379,6 @@ window.submitOrder = async function() {
             if(clienteEl) clienteEl.value = ""; 
             if(document.getElementById('icono-mesa')) document.getElementById('icono-mesa').className = 'fas fa-shopping-bag text-orange-500';
             
-            // Cerrar el carrito deslizable en móvil después de cobrar
             const panel = document.getElementById('cart-panel');
             if (panel && !panel.classList.contains('translate-y-full')) {
                 window.toggleCartMobile(); 
@@ -395,6 +393,7 @@ window.submitOrder = async function() {
     } finally {
         btn.innerHTML = originalText;
         btn.disabled = cart.length === 0;
+        isProcessingOrder = false; // DESACTIVAMOS EL CANDADO
     }
 };
 

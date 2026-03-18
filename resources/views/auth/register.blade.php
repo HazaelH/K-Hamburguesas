@@ -38,7 +38,7 @@
                 <p class="text-slate-400">{{ __('auth/register.form_desc') }}</p>
             </div>
 
-            <form method="POST" action="{{ route('register') }}" class="space-y-4">
+            <form id="register-form" method="POST" action="{{ route('register') }}" class="space-y-4">
                 @csrf
 
                 <div>
@@ -112,9 +112,10 @@
                     </div>
                 @enderror
 
-                <button type="submit" 
+                <button type="submit" id="register-btn"
                         class="w-full bg-orange-700 hover:bg-orange-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-700/40 transform transition hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2 mt-6">
-                    <span>{{ __('auth/register.btn_register') }}</span>
+                    <span id="register-btn-text">{{ __('auth/register.btn_register') }}</span>
+                    <i id="register-btn-icon" class="fas fa-user-plus hidden"></i>
                 </button>
             </form>
 
@@ -143,5 +144,35 @@
             icon.classList.replace('fa-eye-slash', 'fa-eye');
         }
     }
+
+    // PROTECCIÓN ANTI-SPAM PARA REGISTRO
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('register-form');
+        const btn = document.getElementById('register-btn');
+        const btnIcon = document.getElementById('register-btn-icon');
+        let isSubmitting = false;
+
+        if(form && btn) {
+            form.addEventListener('submit', function(e) {
+                if (isSubmitting) {
+                    e.preventDefault(); // Bloquea clics extra
+                    return;
+                }
+                
+                // Si el formulario es válido, bloqueamos
+                if(form.checkValidity()) {
+                    isSubmitting = true;
+                    btn.disabled = true;
+                    btn.style.pointerEvents = 'none';
+                    btn.classList.add('opacity-75', 'cursor-not-allowed');
+                    btn.classList.remove('hover:-translate-y-0.5', 'hover:bg-orange-500', 'active:scale-95');
+                    
+                    // Mostramos el spinner
+                    btnIcon.classList.remove('hidden', 'fa-user-plus');
+                    btnIcon.classList.add('fa-spinner', 'fa-spin');
+                }
+            });
+        }
+    });
 </script>
 @endsection

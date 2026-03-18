@@ -16,7 +16,7 @@
     </div>
 
     <div class="bg-gray-800 rounded-2xl shadow-2xl border border-gray-300 p-8">
-        <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+        <form id="form-create-product" action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
             @csrf
 
             {{-- ZONA SUPERIOR: 2 COLUMNAS --}}
@@ -204,7 +204,7 @@
             </div>
 
             <div class="border-t border-gray-300 pt-6 mt-6">
-                <button type="submit" class="w-full bg-orange-700 hover:bg-orange-500 text-white font-black py-4 rounded-xl shadow-lg transform transition hover:scale-[1.01] text-lg">
+                <button type="submit" id="btn-submit-product" class="w-full bg-orange-700 hover:bg-orange-500 text-white font-black py-4 rounded-xl shadow-lg transform transition hover:scale-[1.01] text-lg">
                     <i class="fas fa-save mr-2"></i> {{ __('admin/products/products.btn_save') }}
                 </button>
             </div>

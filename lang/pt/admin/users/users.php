@@ -50,7 +50,7 @@ return [
     'role_repartidor' => 'Entregador',
     'role_admin' => 'Administrador',
     'label_password' => 'Senha',
-    'placeholder_password_create' => 'Mínimo 6 caracteres',
+    'placeholder_password_create' => 'Mínimo 8 caracteres',
     'placeholder_password_edit' => 'Deixe vazio para manter',
     'label_password_confirmation' => 'Confirmar Senha',
     'placeholder_password_confirm' => 'Repita a senha',

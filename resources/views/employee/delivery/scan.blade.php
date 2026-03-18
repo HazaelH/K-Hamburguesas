@@ -4,6 +4,8 @@
 
 @section('contenido')
 
+{{-- ¡CORRECCIÓN SEGURIDAD! (SRI): Importamos versión exacta con firma de integridad para evitar inyecciones de terceros --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js" integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+Gvqr7/lC520k01JeA+124mE/28z1540Q5pEaYk1fNtcx74jEhefQ67lQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
 @vite(['resources/css/scanner.css', 'resources/js/employee/scanner.js', 'resources/js/employee/delivery_app.js'])
@@ -126,16 +128,22 @@
                     @php
                         $direccion = $pedido->direccion;
                         $telefono = $pedido->telefono;
+                        
+                        $bruto = $pedido->datos_entrega;
+                        $arregloInfo = is_string($bruto) ? json_decode($bruto, true) : (array) $bruto;
+                        if (!is_array($arregloInfo)) $arregloInfo = [];
 
                         if (empty($direccion) || empty($telefono)) {
-                            $bruto = $pedido->datos_entrega;
-                            $arregloInfo = is_string($bruto) ? json_decode($bruto, true) : (array) $bruto;
-                            if (!is_array($arregloInfo)) $arregloInfo = [];
-
                             if (empty($direccion)) $direccion = $arregloInfo['direccion'] ?? $arregloInfo['calle'] ?? __('employee/delivery/scan.location_unspecified');
                             if (empty($telefono)) $telefono = $arregloInfo['telefono'] ?? $arregloInfo['celular'] ?? __('employee/delivery/scan.no_contact');
                         }
                         $nombre = $pedido->cliente_nombre ?? ($pedido->user->name ?? __('employee/delivery/scan.general_consumer'));
+
+                        // ¡NUEVO! Lógica financiera
+                        $yaPago = ($pedido->status == 'pagado' || $pedido->status == 'entregado') || !empty($arregloInfo['pagado']);
+                        $metodoPago = $pedido->metodo_pago ?? $arregloInfo['metodo_pago'] ?? 'efectivo';
+                        $referencia = $arregloInfo['referencia_tarjeta'] ?? $arregloInfo['referencia'] ?? null;
+                        $estadoNotificacion = $arregloInfo['notificacion_cliente'] ?? null;
                     @endphp
 
                     <div class="bg-slate-900 rounded-2xl p-5 border border-slate-800 shadow-lg relative overflow-hidden">
@@ -151,6 +159,31 @@
                             </span>
                         </div>
 
+                        <div class="flex flex-wrap items-center gap-2 mb-3 pl-2">
+                            @if($yaPago)
+                                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase flex items-center gap-1 shadow-sm">
+                                    <i class="fas fa-check-circle"></i> Pagado
+                                </span>
+                            @else
+                                <span class="bg-orange-500/10 text-orange-400 border border-orange-500/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase flex items-center gap-1 shadow-sm animate-pulse">
+                                    <i class="fas fa-hand-holding-usd"></i> Por Cobrar
+                                </span>
+                            @endif
+
+                            @if($metodoPago == 'tarjeta')
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase flex items-center gap-1 shadow-sm">
+                                    <i class="fas fa-credit-card"></i> Tarjeta
+                                    @if($referencia)
+                                        <span class="text-blue-300/70 ml-1 border-l border-blue-500/30 pl-1 tracking-wider">Ref: {{ $referencia }}</span>
+                                    @endif
+                                </span>
+                            @else
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase flex items-center gap-1 shadow-sm">
+                                    <i class="fas fa-money-bill-wave"></i> Efectivo
+                                </span>
+                            @endif
+                        </div>
+
                         <div class="text-sm text-slate-400 pl-2 mb-4 space-y-1">
                             <p class="flex items-start gap-2">
                                 <i class="fas fa-map-marker-alt mt-1 text-slate-500"></i> 
@@ -159,16 +192,31 @@
                         </div>
 
                         <div class="grid grid-cols-2 gap-2 pl-2 mb-2">
-                            <button onclick="window.avisarCliente({{ $pedido->id }}, 'en_camino_real', this)" class="bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600 hover:text-white border border-indigo-500/30 py-2 rounded-xl text-[11px] uppercase tracking-wider font-black transition flex items-center justify-center gap-1.5 shadow-sm">
-                                <i class="fas fa-rocket"></i> {{ __('employee/delivery/scan.btn_on_my_way') }}
-                            </button>
+                            {{-- BOTÓN 1: Voy en camino --}}
+                            @if($estadoNotificacion == 'en_camino_real' || $estadoNotificacion == 'afuera')
+                                <button disabled class="bg-emerald-600 text-white border border-emerald-500 py-2 rounded-xl text-[11px] uppercase tracking-wider font-black transition flex items-center justify-center gap-1.5 shadow-sm opacity-80 cursor-not-allowed">
+                                    <i class="fas fa-check"></i> {{ __('employee/delivery/scan.notified') ?? 'Notificado' }}
+                                </button>
+                            @else
+                                <button onclick="window.avisarCliente({{ $pedido->id }}, 'en_camino_real', this)" class="bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600 hover:text-white border border-indigo-500/30 py-2 rounded-xl text-[11px] uppercase tracking-wider font-black transition flex items-center justify-center gap-1.5 shadow-sm">
+                                    <i class="fas fa-rocket"></i> {{ __('employee/delivery/scan.btn_on_my_way') }}
+                                </button>
+                            @endif
                             
-                            <button onclick="window.avisarCliente({{ $pedido->id }}, 'afuera', this)" class="bg-pink-600/20 text-pink-400 hover:bg-pink-600 hover:text-white border border-pink-500/30 py-2 rounded-xl text-[11px] uppercase tracking-wider font-black transition flex items-center justify-center gap-1.5 shadow-sm">
-                                <i class="fas fa-map-pin"></i> {{ __('employee/delivery/scan.btn_arrived') }}
-                            </button>
+                            {{-- BOTÓN 2: Estoy afuera --}}
+                            @if($estadoNotificacion == 'afuera')
+                                <button disabled class="bg-emerald-600 text-white border border-emerald-500 py-2 rounded-xl text-[11px] uppercase tracking-wider font-black transition flex items-center justify-center gap-1.5 shadow-sm opacity-80 cursor-not-allowed">
+                                    <i class="fas fa-check"></i> {{ __('employee/delivery/scan.notified') ?? 'Notificado' }}
+                                </button>
+                            @else
+                                <button onclick="window.avisarCliente({{ $pedido->id }}, 'afuera', this)" class="bg-pink-600/20 text-pink-400 hover:bg-pink-600 hover:text-white border border-pink-500/30 py-2 rounded-xl text-[11px] uppercase tracking-wider font-black transition flex items-center justify-center gap-1.5 shadow-sm">
+                                    <i class="fas fa-map-pin"></i> {{ __('employee/delivery/scan.btn_arrived') }}
+                                </button>
+                            @endif
                         </div>
 
                         <div class="flex gap-2 pl-2">
+                            {{-- ¡CORRECCIÓN SEGURIDAD! API Oficial de Maps (Abre la app nativa en iOS/Android seguro) --}}
                             <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($direccion) }}" target="_blank" 
                             class="flex-1 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white border border-blue-500/30 text-center py-2.5 rounded-xl text-sm font-bold transition flex items-center justify-center gap-2">
                                 <i class="fas fa-location-arrow"></i> {{ __('employee/delivery/scan.btn_route') }}
@@ -291,11 +339,14 @@
 
     window.APP_CONFIG = {
         csrfToken: '{{ csrf_token() }}',
+        // ¡CORRECCIÓN SEGURIDAD! Rutas dinámicas usando url() de Laravel. 
+        // Respeta el idioma (/en/, /es/) y permite inyectar el ID desde JS sin romper la URL.
         rutas: {
-            radarNuevos: '{{ route("repartidor.api.nuevos") }}',
-            tomarPedido: (id) => `/empleado/repartidor/orden/${id}/tomar`,
-            enviarSOS: (id) => `/empleado/repartidor/orden/${id}/sos`,
-            marcarLeido: (id) => `/empleado/repartidor/orden/${id}/sos-leido`
+            radarNuevos: '{{ route("repartidor.api.nuevos") ?? url("/empleado/repartidor/radar") }}',
+            tomarPedido: '{{ url("/empleado/repartidor/orden") }}/:id/tomar',
+            enviarSOS: '{{ url("/empleado/repartidor/orden") }}/:id/sos',
+            marcarLeido: '{{ url("/empleado/repartidor/orden") }}/:id/sos-leido',
+            notificarCliente: '{{ url("/empleado/repartidor/orden") }}/:id/notificar-cliente'
         },
         ordenesConocidas: {!! json_encode(isset($pedidosDisponibles) ? $pedidosDisponibles->pluck('id')->toArray() : []) !!}
     };

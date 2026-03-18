@@ -11,6 +11,13 @@ return [
     'waiting_admin' => 'Esperando Admin',
     'req_block' => 'Solicitar Bloqueo',
     'req_activate' => 'Solicitar Activación',
+    'req_sent_out_of_stock' => 'Solicitud para AGOTAR enviada al gerente.',
+    'req_sent_activate' => 'Solicitud para ACTIVAR enviada al gerente.',
+
+    'filter_all' => 'Todos',
+    'filter_active' => 'Disponibles',
+    'filter_inactive' => 'Agotados',
+    'filter_pending' => 'Pendientes',
     
     'no_results' => 'No encontramos ese producto.',
 

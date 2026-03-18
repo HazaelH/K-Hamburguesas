@@ -139,7 +139,7 @@
                 <button type="button" onclick="cerrarModalCategoria()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 rounded-xl transition-all border border-slate-300">
                     {{ __('admin/categorias/index.btn_cancel') }}
                 </button>
-                <button type="submit" class="flex-1 bg-orange-700 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all flex justify-center items-center gap-2">
+                <button type="submit" id="btn-submit-categoria" class="flex-1 bg-orange-700 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all flex justify-center items-center gap-2">
                     <i class="fas fa-save"></i> {{ __('admin/categorias/index.btn_save') }}
                 </button>
             </div>
@@ -170,17 +170,31 @@
 </div>
 
 <script>
-    // --- Lógica del Modal de Creación/Edición ---
+    // =========================================================
+    // 1. LÓGICA DEL MODAL DE CREACIÓN/EDICIÓN
+    // =========================================================
     const modal = document.getElementById('modal-categoria');
     const panel = document.getElementById('modal-panel');
     const form = document.getElementById('form-categoria');
     const method = document.getElementById('form-method');
     const title = document.getElementById('modal-title');
+    const btnSubmitCat = document.getElementById('btn-submit-categoria');
     
     const textNew = `{{ __('admin/categorias/index.modal_new_title') }}`;
     const textEdit = `{{ __('admin/categorias/index.modal_edit_title') }}`;
 
+    let isSubmittingForm = false; // Candado para crear/editar
+
     function abrirModalCategoria(id = null, es = '', en = '', pt = '') {
+        // Reseteamos el candado visual si se reabre el modal
+        isSubmittingForm = false;
+        if(btnSubmitCat) {
+            btnSubmitCat.disabled = false;
+            btnSubmitCat.style.pointerEvents = 'auto';
+            btnSubmitCat.classList.remove('opacity-75', 'cursor-not-allowed');
+            btnSubmitCat.innerHTML = `<i class="fas fa-save"></i> {{ __('admin/categorias/index.btn_save') }}`;
+        }
+
         if (id) {
             title.innerText = textEdit;
             form.action = `/admin/categorias/${id}`;
@@ -212,10 +226,41 @@
         document.addEventListener('DOMContentLoaded', () => abrirModalCategoria());
     @endif
 
-    // --- Lógica del Modal de Borrado ---
+    // BLINDAJE DE FORMULARIO CREAR/EDITAR
+    if (form && btnSubmitCat) {
+        form.addEventListener('submit', function(e) {
+            if (isSubmittingForm) {
+                e.preventDefault();
+                return;
+            }
+
+            if (form.checkValidity()) {
+                isSubmittingForm = true;
+                btnSubmitCat.disabled = true;
+                btnSubmitCat.style.pointerEvents = 'none';
+                btnSubmitCat.classList.add('opacity-75', 'cursor-not-allowed');
+                btnSubmitCat.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Procesando...`;
+            }
+        });
+    }
+
+    // =========================================================
+    // 2. LÓGICA DEL MODAL DE BORRADO
+    // =========================================================
     let formToSubmit = null;
+    let isDeleting = false; // Candado para eliminar
+    const btnConfirmDelete = document.getElementById('btn-confirm-delete');
 
     function abrirModalBorrado(formId) {
+        // Reset del candado
+        isDeleting = false;
+        if(btnConfirmDelete) {
+            btnConfirmDelete.disabled = false;
+            btnConfirmDelete.style.pointerEvents = 'auto';
+            btnConfirmDelete.classList.remove('opacity-75', 'cursor-not-allowed');
+            btnConfirmDelete.innerHTML = `<i class="fas fa-trash-alt"></i> {{ __('admin/categorias/index.btn_delete') }}`;
+        }
+
         formToSubmit = formId;
         const deleteModal = document.getElementById('delete-modal');
         const deletePanel = document.getElementById('delete-modal-panel');
@@ -242,10 +287,21 @@
         }, 300);
     }
 
-    document.getElementById('btn-confirm-delete').addEventListener('click', function() {
-        if (formToSubmit) {
-            document.getElementById(formToSubmit).submit();
-        }
-    });
+    // BLINDAJE DEL BOTÓN CONFIRMAR ELIMINAR
+    if (btnConfirmDelete) {
+        btnConfirmDelete.addEventListener('click', function() {
+            if (isDeleting) return;
+
+            if (formToSubmit) {
+                isDeleting = true;
+                btnConfirmDelete.disabled = true;
+                btnConfirmDelete.style.pointerEvents = 'none';
+                btnConfirmDelete.classList.add('opacity-75', 'cursor-not-allowed');
+                btnConfirmDelete.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Eliminando...`;
+                
+                document.getElementById(formToSubmit).submit();
+            }
+        });
+    }
 </script>
 @endsection

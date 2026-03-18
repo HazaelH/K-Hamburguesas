@@ -108,9 +108,10 @@
                             <span class="block text-gray-400 text-sm font-bold uppercase tracking-wider">{{ __('client/cart.final_total') }}</span>
                             <span class="block text-xs text-gray-300 mt-1">{{ __('client/cart.taxes_included') }}</span>
                         </div>
-                        <span class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-700" id="cart-total">
-                            {{ formatCurrency($total) }}
+                        <span class="text-2xl font-black text-orange-500">
+                                {{ formatCurrency($total) }}
                         </span>
+                            
                     </div>
 
                     <a href="{{ route('checkout') }}" 

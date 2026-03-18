@@ -50,7 +50,7 @@ return [
     'role_repartidor' => 'Driver',
     'role_admin' => 'Administrator',
     'label_password' => 'Password',
-    'placeholder_password_create' => 'Min 6 characters',
+    'placeholder_password_create' => 'Min 8 characters',
     'placeholder_password_edit' => 'Leave blank to keep current',
     'label_password_confirmation' => 'Confirm Password',
     'placeholder_password_confirm' => 'Repeat password',

@@ -28,7 +28,7 @@ class OfferController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'titulo' => 'required|string|max:255',
+            'titulo' => 'required|string|max:255|unique:offers,titulo',
             'descripcion' => 'nullable|string',
             'tipo_aplicacion' => 'required|in:todo,categoria,producto',
             'porcentaje' => 'required|numeric|min:0|max:100',
@@ -36,6 +36,8 @@ class OfferController extends Controller
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240'
+        ], [
+            'titulo.unique' => __('admin/offers/messages.offer_exists'),
         ]);
 
         $data = $request->except('imagen', 'referencia_categoria', 'referencia_producto');
@@ -109,7 +111,7 @@ class OfferController extends Controller
         $offer = Offer::findOrFail($id);
 
         $request->validate([
-            'titulo' => 'required|string|max:255',
+            'titulo' => 'required|string|max:255|unique:offers,titulo,' . $id,
             'titulo_en' => 'nullable|string|max:255',
             'titulo_pt' => 'nullable|string|max:255',
             'descripcion' => 'nullable|string',
@@ -121,6 +123,8 @@ class OfferController extends Controller
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+        ], [
+            'titulo.unique' => __('admin/offers/messages.offer_exists'),
         ]);
 
         $data = $request->except('imagen', 'referencia_categoria', 'referencia_producto');

@@ -6,6 +6,7 @@ let currentLocaleMenu = window.MENU_LANG?.locale || 'es';
 let currentCategory = 'Todas';
 let currentSearchText = '';
 let currentSortMode = 'default';
+let isAddingToCart = false;
 
 document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
@@ -278,6 +279,13 @@ window.actualizarCantidadVisual = function() {
 window.agregarAlCarrito = function() {
     if (!currentProduct) return;
 
+    
+    if (isAddingToCart) {
+        return; 
+    }
+
+    isAddingToCart = true;
+
     const modalElement = document.getElementById('product-modal');
     
     // Leemos el mensaje de preparando y error del DOM (con fallbacks)
@@ -288,8 +296,16 @@ window.agregarAlCarrito = function() {
 
     const notas = document.getElementById('modal-notas').value.trim();
     const btnText = document.getElementById('btn-add-text');
-    const originalText = btnText.innerHTML;
+    
+    // Buscamos el botón padre para deshabilitarlo visualmente
+    const addBtn = btnText.closest('button'); 
+    if (addBtn) {
+        addBtn.disabled = true;
+        addBtn.style.pointerEvents = 'none';
+        addBtn.classList.add('opacity-70');
+    }
 
+    const originalText = btnText.innerHTML;
     btnText.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${msgPreparing}`;
 
     let modificaciones = [];
@@ -302,7 +318,10 @@ window.agregarAlCarrito = function() {
         modificaciones.push({ grupo: 'Nota', valor: notas });
     }
 
-    fetch('/carrito/agregar', {
+    const lang = window.MENU_LANG?.locale || 'es';
+    const fetchUrl = lang === 'es' ? '/carrito/agregar' : `/${lang}/carrito/agregar`;
+
+    fetch(fetchUrl, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -320,8 +339,9 @@ window.agregarAlCarrito = function() {
         if (data.status === 'ok') {
             actualizarIconoCarrito(data.total_items);
             
-            // LA MAGIA: Usamos data.mensaje que viene traducido desde ClientController
-            const descMensaje = data.mensaje ? `${currentQuantity}x ${data.mensaje}` : `${currentQuantity}x producto agregado.`;
+            // 2. Usamos el mensaje traducido del servidor, y si falla, usamos tu traducción global de JS
+            const fallbackMsg = window.K_TRANSLATIONS?.client?.cart?.js_success_desc || 'guardado.';
+            const descMensaje = data.mensaje ? `${currentQuantity}x ${data.mensaje}` : `${currentQuantity}x ${fallbackMsg}`;
 
             showToast(
                 msgSuccessTitle, 
@@ -338,7 +358,16 @@ window.agregarAlCarrito = function() {
         showToast('Fallo', msgError, 'error');
     })
     .finally(() => {
-        btnText.innerHTML = originalText;
+        setTimeout(() => {
+            isAddingToCart = false;
+            
+            btnText.innerHTML = originalText;
+            if (addBtn) {
+                addBtn.disabled = false;
+                addBtn.style.pointerEvents = 'auto';
+                addBtn.classList.remove('opacity-70');
+            }
+        }, 400); 
     });
 };
 

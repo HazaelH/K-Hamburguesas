@@ -45,4 +45,33 @@ return [
     'delete_modal_desc' => 'Esta acción desactivará tu cuenta y cerrará tu sesión permanentemente. Tus datos personales serán ocultados conforme a nuestra política de privacidad.',
     'delete_modal_cancel' => 'Mejor no',
     'delete_modal_confirm' => 'Sí, eliminar cuenta',
+
+    // --- LIBRETA DE DIRECCIONES ---
+    'my_addresses' => 'Mis Direcciones',
+    'add_address_btn' => 'Agregar Dirección',
+    'default_badge' => 'Principal',
+    'edit' => 'Editar',
+    'delete' => 'Eliminar',
+    'make_default' => 'Hacer Principal',
+    'no_addresses' => 'Sin direcciones guardadas',
+    'no_addresses_desc' => 'Agrega una dirección de entrega para pagar más rápido.',
+    'delete_confirm' => '¿Seguro que deseas eliminar esta dirección?',
+
+    // Modal de Dirección
+    'add_address_title' => 'Nueva Dirección de Entrega',
+    'alias' => 'Alias (Ej. Casa, Trabajo)',
+    'alias_placeholder' => 'Ej. Mi Casa',
+    'street' => 'Calle',
+    'ext_num' => 'Num. Ext.',
+    'zip_code' => 'Código Postal',
+    'neighborhood' => 'Colonia',
+    'municipality' => 'Municipio / Ciudad',
+    'state' => 'Estado',
+    'references' => 'Referencias (Opcional)',
+    'save_address' => 'Guardar Dirección',
+
+    // Mensajes del Controlador
+    'address_added' => 'Dirección agregada correctamente.',
+    'address_deleted' => 'Dirección eliminada.',
+    'address_default' => 'Dirección marcada como principal.',
 ];

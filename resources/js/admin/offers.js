@@ -8,6 +8,40 @@ const LANG = window.OFFERS_LANG || {
 document.addEventListener('DOMContentLoaded', () => {
 
     // =========================================================
+    // BLINDAJE ANTI-SPAM (Evitar múltiples submits y F5)
+    // =========================================================
+    
+    function blindarFormulario(formId, btnId, loadingText) {
+        const form = document.getElementById(formId);
+        const btn = document.getElementById(btnId);
+        let isSubmitting = false;
+
+        if (form && btn) {
+            form.addEventListener('submit', function(e) {
+                if (isSubmitting) {
+                    e.preventDefault();
+                    return;
+                }
+
+                if (form.checkValidity()) {
+                    isSubmitting = true;
+                    btn.disabled = true;
+                    btn.style.pointerEvents = 'none';
+                    btn.classList.add('opacity-75', 'cursor-not-allowed');
+                    btn.classList.remove('hover:-translate-y-0.5', 'hover:bg-orange-500', 'hover:bg-blue-500');
+                    btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> ${loadingText}`;
+                }
+            });
+        }
+    }
+
+    // Blindamos la vista de "Crear" (offers.blade.php)
+    blindarFormulario('form-create-offer', 'btn-submit-offer', 'Creando oferta...');
+    
+    // Blindamos la vista de "Editar" (edit.blade.php)
+    blindarFormulario('form-edit-offer', 'btn-update-offer', 'Guardando cambios...');
+
+    // =========================================================
     // 1. LÓGICA DEL FORMULARIO DINÁMICO (Ocultar/Mostrar campos)
     // =========================================================
     const selectorAplicacion = document.getElementById('tipo_aplicacion');
