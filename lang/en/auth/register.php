@@ -17,4 +17,6 @@ return [
     'btn_register' => 'Create my account',
     'already_member' => 'Already a member?',
     'login_here' => 'Log in here',
+    'google_btn' => 'Sign up with Google',
+    'or' => 'OR',
 ];

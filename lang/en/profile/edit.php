@@ -28,16 +28,9 @@ return [
     // Botones
     'btn_cancel' => 'Cancel',
     'btn_save' => 'Save Changes',
-    // Controlador
     'update_success' => 'Profile updated successfully.',
 
-    // ...
-    // Botones
-    'btn_cancel' => 'Cancel',
-    'btn_save' => 'Save Changes',
-    'update_success' => 'Profile updated successfully.',
-
-    // --- NUEVO: ZONA DE PELIGRO ---
+    // --- ZONA DE PELIGRO ---
     'danger_zone' => 'Danger Zone',
     'delete_account_title' => 'Delete Account',
     'delete_account_desc' => 'Once you delete your account, there is no going back. Please be certain.',
@@ -47,7 +40,7 @@ return [
     'delete_modal_cancel' => 'Keep my account',
     'delete_modal_confirm' => 'Yes, delete account',
 
-    // --- NUEVO: LIBRETA DE DIRECCIONES ---
+    // --- LIBRETA DE DIRECCIONES ---
     'my_addresses' => 'My Addresses',
     'add_address_btn' => 'Add Address',
     'default_badge' => 'Default',
@@ -75,4 +68,19 @@ return [
     'address_added' => 'Address added successfully.',
     'address_deleted' => 'Address deleted',
     'address_default' => 'Address marked as principal.',
+
+    // --- ORDER HISTORY ---
+    'order_history' => 'My Order History',
+    'order_num' => 'Order #',
+    'delivered' => 'Delivered',
+    'cancelled' => 'Cancelled',
+    'view_details' => 'View Details',
+    'download_ticket' => 'Download Ticket',
+    'no_orders' => 'No orders yet',
+    'no_orders_desc' => 'When you make your first purchase, your history and receipts will appear here.',
+    'go_to_menu' => 'Go to Menu',
+    'order_details_title' => 'Order Details',
+    'purchase_summary' => 'Purchase Summary',
+    'order_history' => 'Orders History',
+    'general' => 'General'
 ];

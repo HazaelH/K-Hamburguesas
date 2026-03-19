@@ -17,4 +17,8 @@ return [
     'user_not_found' => 'No pudimos encontrar un usuario con ese correo electrónico.',
     'password_reset_success' => '¡Tu contraseña ha sido restablecida exitosamente! Ya puedes iniciar sesión.',
     'invalid_token' => 'El enlace es inválido o ha expirado. Por favor solicita uno nuevo.',
+    'google_welcome' => '¡Bienvenido de nuevo con Google!',
+    'google_registered' => '¡Cuenta creada exitosamente con Google!',
+    'google_error' => 'Ocurrió un error al iniciar sesión con Google. Por favor, inténtalo de nuevo.',
+    'account_deleted' => 'Tu cuenta ha sido desactivada o eliminada. Por favor, contacta a soporte si crees que es un error.',
 ];

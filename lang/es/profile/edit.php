@@ -30,13 +30,7 @@ return [
     'btn_save' => 'Guardar Cambios',
     'update_success' => 'Perfil actualizado exitosamente.',
 
-    // ...
-    // Botones
-    'btn_cancel' => 'Cancelar',
-    'btn_save' => 'Guardar Cambios',
-    'update_success' => 'Perfil actualizado exitosamente.',
-
-    // --- NUEVO: ZONA DE PELIGRO ---
+    // --- ZONA DE PELIGRO ---
     'danger_zone' => 'Zona de Peligro',
     'delete_account_title' => 'Eliminar Cuenta',
     'delete_account_desc' => 'Una vez que elimines tu cuenta, no hay vuelta atrás. Por favor, asegúrate de estar seguro.',
@@ -74,4 +68,19 @@ return [
     'address_added' => 'Dirección agregada correctamente.',
     'address_deleted' => 'Dirección eliminada.',
     'address_default' => 'Dirección marcada como principal.',
+
+    // --- HISTORIAL DE PEDIDOS ---
+    'order_history' => 'Mi Historial de Pedidos',
+    'order_num' => 'Pedido #',
+    'delivered' => 'Entregado',
+    'cancelled' => 'Cancelado',
+    'view_details' => 'Ver Detalles',
+    'download_ticket' => 'Descargar Ticket',
+    'no_orders' => 'Aún no tienes pedidos',
+    'no_orders_desc' => 'Cuando realices tu primera compra, todo tu historial y comprobantes aparecerán aquí.',
+    'go_to_menu' => 'Ir al Menú',
+    'order_details_title' => 'Detalles del Pedido',
+    'purchase_summary' => 'Resumen de Compra',
+    'order_history' => 'Historial de pedidos',
+    'general' => 'General'
 ];

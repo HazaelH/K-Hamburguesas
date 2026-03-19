@@ -6,6 +6,8 @@ return [
     'terms_title' => 'Términos y Condiciones de Uso',
     'terms_sec1_title' => '1. Información General',
     'terms_sec1_p' => 'Bienvenido a <strong>K-Hamburguesas</strong>. Los presentes Términos y Condiciones regulan el acceso y uso de nuestro sitio web y plataforma de pedidos. Al acceder, navegar o realizar un pedido en esta plataforma, usted acepta estar sujeto a estos términos en su totalidad. Si no está de acuerdo, le rogamos no utilizar nuestros servicios.',
+    // NUEVA LÍNEA: Aclaración de Google
+    'terms_sec1_p2' => 'Al registrarse o iniciar sesión utilizando un servicio de terceros (como <strong>Google</strong>), usted nos autoriza a recopilar y utilizar su información de perfil básica (nombre y correo electrónico) para crear y gestionar su cuenta. Usted es responsable de mantener seguras las credenciales de su cuenta externa.',
     
     'terms_sec2_title' => '2. Disponibilidad de Productos y Servicio',
     'terms_sec2_li1' => 'Todos los pedidos están sujetos a la disponibilidad de los ingredientes y productos en la sucursal.',
@@ -43,6 +45,8 @@ return [
     'privacy_sec1_li3' => 'Número de teléfono (fijo o celular).',
     'privacy_sec1_li4' => 'Correo electrónico.',
     'privacy_sec1_li5' => 'Historial de pedidos y preferencias de consumo.',
+    // NUEVA LÍNEA: Aclaración de Google
+    'privacy_sec1_li6' => 'Información básica de perfil (nombre, correo electrónico y foto de perfil) si elige registrarse o iniciar sesión utilizando servicios de terceros como <strong>Google</strong>. Recalcamos que <strong>nunca</strong> tenemos acceso a su contraseña de estas cuentas externas.',
     'privacy_sec1_note' => '<strong>Nota sobre datos financieros:</strong> Para el procesamiento de pagos con tarjeta, utilizamos los servicios de <strong>Stripe Inc.</strong>. K-Hamburguesas NO almacena números de tarjetas de crédito, fechas de vencimiento ni códigos CVV en sus bases de datos.',
     
     'privacy_sec2_title' => '2. Finalidades del Tratamiento de Datos',

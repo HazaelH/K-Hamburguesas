@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Employee\PosController;
+use App\Http\Controllers\Auth\GoogleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,18 @@ Route::get('/api/cliente/tracker', function () {
 })->name('api.cliente.tracker');
 
 
+Route::middleware(['guest'])->group(function () {
+    // Ruta para el botón de Login
+    Route::get('login/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
+    
+    // Ruta para el botón de Registro (hace exactamente lo mismo, pero es semánticamente correcta)
+    Route::get('registro/google', [GoogleController::class, 'redirectToGoogle'])->name('google.register');
+    
+    // El Callback (Solo necesitamos uno, porque aquí el controlador decide si lo loguea o lo crea)
+    Route::get('login/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+});
+
+
 /*
 |==========================================================================
 | ZONA MULTI-IDIOMA (Afecta las URLs visibles del navegador)
@@ -65,7 +78,7 @@ Route::group([
 
     /*
     |--------------------------------------------------------------------------
-    | 1. AUTENTICACIÓN
+    | 1. AUTENTICACIÓN TRADICIONAL
     |--------------------------------------------------------------------------
     */
     Route::middleware(['guest'])->group(function () {

@@ -33,12 +33,12 @@
             
             <div class="absolute top-0 right-0 w-40 h-40 bg-blue-500/10 rounded-bl-full pointer-events-none blur-3xl"></div>
 
-            <div class="mb-6">
+            <div class="mb-6 relative z-10">
                 <h1 class="text-3xl font-bold text-white mb-2">{{ __('auth/register.form_title') }}</h1>
                 <p class="text-slate-400">{{ __('auth/register.form_desc') }}</p>
             </div>
 
-            <form id="register-form" method="POST" action="{{ route('register') }}" class="space-y-4">
+            <form id="register-form" method="POST" action="{{ route('register') }}" class="space-y-4 relative z-10">
                 @csrf
 
                 <div>
@@ -119,7 +119,23 @@
                 </button>
             </form>
 
-            <div class="mt-8 text-center border-t border-slate-800 pt-6">
+            {{-- DIVISOR Y BOTÓN DE GOOGLE --}}
+            <div class="relative my-6 z-10">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-slate-700"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-3 bg-slate-900 text-slate-400 font-bold uppercase tracking-wider text-xs">{{ __('auth/register.or') }}</span>
+                </div>
+            </div>
+
+            <a href="{{ route('google.register') }}" class="w-full flex items-center justify-center gap-3 bg-white text-slate-800 font-black py-3.5 rounded-xl border border-slate-300 shadow-md hover:bg-slate-100 transition-all relative z-10 active:scale-95 transform hover:-translate-y-0.5">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
+                {{ __('auth/register.google_btn') }}
+            </a>
+
+            {{-- CORRECCIÓN: TEXTO DE INICIAR SESIÓN NORMAL --}}
+            <div class="mt-6 text-center border-t border-slate-800 pt-6 relative z-10">
                 <p class="text-slate-400 text-sm">
                     {{ __('auth/register.already_member') }} 
                     <a href="{{ route('login') }}" class="text-orange-500 font-bold hover:text-orange-400 hover:underline transition">
@@ -145,7 +161,6 @@
         }
     }
 
-    // PROTECCIÓN ANTI-SPAM PARA REGISTRO
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('register-form');
         const btn = document.getElementById('register-btn');
@@ -155,11 +170,10 @@
         if(form && btn) {
             form.addEventListener('submit', function(e) {
                 if (isSubmitting) {
-                    e.preventDefault(); // Bloquea clics extra
+                    e.preventDefault();
                     return;
                 }
                 
-                // Si el formulario es válido, bloqueamos
                 if(form.checkValidity()) {
                     isSubmitting = true;
                     btn.disabled = true;
@@ -167,7 +181,6 @@
                     btn.classList.add('opacity-75', 'cursor-not-allowed');
                     btn.classList.remove('hover:-translate-y-0.5', 'hover:bg-orange-500', 'active:scale-95');
                     
-                    // Mostramos el spinner
                     btnIcon.classList.remove('hidden', 'fa-user-plus');
                     btnIcon.classList.add('fa-spinner', 'fa-spin');
                 }

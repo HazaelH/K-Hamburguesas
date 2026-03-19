@@ -48,18 +48,22 @@
             {{-- MENÚ DE PESTAÑAS --}}
             <div class="flex gap-6 border-b border-gray-200 dark:border-slate-700 mb-6 overflow-x-auto hide-scrollbar">
                 <button type="button" onclick="cambiarPestana('general')" id="tab-btn-general" class="pb-3 text-sm font-black border-b-2 transition-all border-orange-500 text-orange-600 dark:text-orange-500 whitespace-nowrap">
-                    <i class="fas fa-user-circle mr-1"></i> General
+                    <i class="fas fa-user-circle mr-1"></i> {{ __('profile/edit.general') ?? 'General' }}
                 </button>
                 
-                {{-- CONDICIONAL: Solo los clientes ven la pestaña de Direcciones --}}
+                {{-- CONDICIONAL: Solo los clientes ven Direcciones e Historial --}}
                 @if(Auth::user()->rol == 'cliente')
                     <button type="button" onclick="cambiarPestana('direcciones')" id="tab-btn-direcciones" class="pb-3 text-sm font-bold border-b-2 transition-all border-transparent text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 whitespace-nowrap">
                         <i class="fas fa-map-marker-alt mr-1"></i> {{ __('profile/edit.my_addresses') }}
                     </button>
+
+                    <button type="button" onclick="cambiarPestana('historial')" id="tab-btn-historial" class="pb-3 text-sm font-bold border-b-2 transition-all border-transparent text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 whitespace-nowrap">
+                        <i class="fas fa-receipt mr-1"></i> {{ __('profile/edit.order_history') }}
+                    </button>
                 @endif
 
                 <button type="button" onclick="cambiarPestana('seguridad')" id="tab-btn-seguridad" class="pb-3 text-sm font-bold border-b-2 transition-all border-transparent text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 whitespace-nowrap">
-                    <i class="fas fa-shield-alt mr-1"></i> Seguridad
+                    <i class="fas fa-shield-alt mr-1"></i> {{ __('profile/edit.security') }}
                 </button>
             </div>
 
@@ -80,7 +84,7 @@
             @endif
 
             {{-- FORMULARIO PRINCIPAL (Envuelve General y Seguridad) --}}
-            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="flex-1 flex flex-col">
+            <form id="form-profile" action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="flex-1 flex flex-col">
                 @csrf
                 @method('PUT')
 
@@ -129,7 +133,7 @@
 
                     <div class="mt-auto pt-6 border-t border-gray-100 dark:border-slate-800 flex justify-end gap-3">
                         <a href="{{ route('home') }}" class="px-6 py-3 text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">{{ __('profile/edit.btn_cancel') }}</a>
-                        <button type="submit" class="bg-orange-700 hover:bg-orange-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition active:scale-95 flex items-center gap-2"><i class="fas fa-save"></i> {{ __('profile/edit.btn_save') }}</button>
+                        <button type="submit" class="btn-submit bg-orange-700 hover:bg-orange-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition active:scale-95 flex items-center gap-2"><i class="fas fa-save"></i> {{ __('profile/edit.btn_save') }}</button>
                     </div>
                 </div>
 
@@ -150,7 +154,7 @@
                             </div>
                         </div>
                         <div class="mt-6 flex justify-end">
-                            <button type="submit" class="bg-orange-700 hover:bg-orange-500 text-white font-bold py-2.5 px-6 rounded-xl shadow-md transition active:scale-95 text-sm"><i class="fas fa-save mr-1"></i> Actualizar Contraseña</button>
+                            <button type="submit" class="btn-submit bg-orange-700 hover:bg-orange-500 text-white font-bold py-2.5 px-6 rounded-xl shadow-md transition active:scale-95 text-sm"><i class="fas fa-save mr-1"></i> Actualizar Contraseña</button>
                         </div>
                     </div>
 
@@ -172,8 +176,10 @@
                 </div>
             </form>
 
-            {{-- CONDICIONAL: PESTAÑA 2 SÓLO PARA CLIENTES --}}
+            {{-- CONDICIONAL: PESTAÑAS SÓLO PARA CLIENTES --}}
             @if(Auth::user()->rol == 'cliente')
+            
+            {{-- PESTAÑA: DIRECCIONES --}}
             <div id="tab-direcciones" class="hidden animate-fade-in flex-1">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-bold text-slate-800 dark:text-white">{{ __('profile/edit.my_addresses') }}</h3>
@@ -205,9 +211,9 @@
 
                                     @if(!$dir->is_default)
                                         <span class="text-gray-300 dark:text-slate-600">|</span>
-                                        <form action="{{ route('profile.address.default', $dir->id) }}" method="POST" class="inline ml-auto">
+                                        <form action="{{ route('profile.address.default', $dir->id) }}" method="POST" class="inline ml-auto form-blindado">
                                             @csrf @method('PATCH')
-                                            <button type="submit" class="text-xs text-orange-500 hover:text-orange-700 font-bold flex items-center gap-1 transition"><i class="fas fa-star"></i> {{ __('profile/edit.make_default') }}</button>
+                                            <button type="submit" class="btn-submit text-xs text-orange-500 hover:text-orange-700 font-bold flex items-center gap-1 transition"><i class="fas fa-star"></i> {{ __('profile/edit.make_default') }}</button>
                                         </form>
                                     @endif
                                 </div>
@@ -222,6 +228,184 @@
                     </div>
                 @endif
             </div>
+
+            {{-- PESTAÑA: HISTORIAL DE PEDIDOS --}}
+            <div id="tab-historial" class="hidden animate-fade-in flex-1">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-white">{{ __('profile/edit.order_history') }}</h3>
+                </div>
+
+                @php
+                    $pedidos = \App\Models\Order::with('items.product')
+                                ->where('user_id', Auth::id())
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+                                
+                    // =========================================================
+                    // LÓGICA DE REGIONALIZACIÓN (FECHAS Y MONEDAS)
+                    // =========================================================
+                    $locale = app()->getLocale();
+                    $dateFormat = $locale === 'en' ? 'm/d/Y h:i A' : 'd/m/Y h:i A';
+                    
+                    // Valores por defecto (MXN)
+                    $currencySymbol = '$';
+                    $currencyCode = 'MXN';
+                    $exchangeRate = 1.0; 
+
+                    // Adaptación según el idioma
+                    // Adaptación según el idioma
+                    if ($locale === 'en') {
+                        $currencyCode = 'USD';
+                        $currencySymbol = '$';
+                        // Si en USA usas ej. 20 pesos por Dólar:
+                        $exchangeRate = 1 / 20; 
+                    } elseif ($locale === 'pt') {
+                        $currencyCode = 'BRL';
+                        $currencySymbol = 'R$';
+                        // Igualamos la tasa exacta que usa tu ticket (3.5 MXN por cada BRL)
+                        $exchangeRate = 1 / 3.5; 
+                    }
+                @endphp
+
+                @if($pedidos->count() > 0)
+                    <div class="space-y-4 max-h-[600px] overflow-y-auto custom-scrollbar pr-2">
+                        @foreach($pedidos as $pedido)
+                            <div class="bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-5 relative transition hover:border-orange-500/50">
+                                
+                                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                                    <div>
+                                        <h4 class="font-black text-slate-800 dark:text-white text-lg">
+                                            {{ __('profile/edit.order_num') }}{{ str_pad($pedido->id, 5, '0', STR_PAD_LEFT) }}
+                                        </h4>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-2">
+                                            {{-- FECHA DINÁMICA SEGÚN IDIOMA --}}
+                                            <span><i class="far fa-calendar-alt"></i> {{ $pedido->created_at->format($dateFormat) }}</span>
+                                            @if($pedido->status == 'entregado')
+                                                <span class="text-green-500"><i class="fas fa-check-double"></i> {{ __('profile/edit.delivered') }}</span>
+                                            @endif
+                                        </p>
+                                    </div>
+                                    <div class="flex flex-col sm:items-end gap-1">
+                                        <span class="px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider w-fit
+                                            {{ $pedido->status == 'entregado' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
+                                               ($pedido->status == 'cancelado' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
+                                               'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400') }}">
+                                            {{ $pedido->status == 'entregado' ? __('profile/edit.delivered') : ($pedido->status == 'cancelado' ? __('profile/edit.cancelled') : ucfirst($pedido->status)) }}
+                                        </span>
+                                        {{-- MONEDA DINÁMICA --}}
+                                        <span class="font-black text-slate-800 dark:text-white text-lg">
+                                            {{ $currencySymbol }}{{ number_format($pedido->total * $exchangeRate, 2) }} 
+                                            <span class="text-[10px] font-bold text-slate-500 ml-1">{{ $currencyCode }}</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {{-- DATOS OCULTOS PARA EL MODAL CON PRECIOS Y TRADUCCIÓN --}}
+                                <div id="detalles-pedido-{{ $pedido->id }}" class="hidden">
+                                    @if($pedido->items->count() > 0)
+                                        <ul class="space-y-3">
+                                            @foreach($pedido->items as $item)
+                                                @php
+                                                    $opciones = is_string($item->opciones) ? json_decode($item->opciones, true) : ($item->opciones ?? []);
+                                                    
+                                                    // Traducción del Producto
+                                                    $nombreProd = 'Producto no disponible';
+                                                    if ($item->product) {
+                                                        $nombreProd = $item->product->nombre; 
+                                                        if ($locale === 'en' && !empty($item->product->nombre_en)) {
+                                                            $nombreProd = $item->product->nombre_en;
+                                                        } elseif ($locale === 'pt' && !empty($item->product->nombre_pt)) {
+                                                            $nombreProd = $item->product->nombre_pt;
+                                                        }
+                                                    }
+                                                @endphp
+                                                <li class="flex justify-between items-start gap-3 pb-3 border-b border-gray-100 dark:border-slate-700/50 last:border-0">
+                                                    <div class="flex items-start gap-3">
+                                                        <span class="font-black text-orange-500 bg-orange-100 dark:bg-orange-500/10 px-2 py-1 rounded-lg">{{ $item->cantidad }}x</span>
+                                                        <div>
+                                                            <span class="font-bold text-slate-800 dark:text-white block">
+                                                                {{ $nombreProd }}
+                                                            </span>
+                                                            
+                                                            @if(!empty($opciones) && is_array($opciones))
+                                                                <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 flex flex-wrap gap-1">
+                                                                    @foreach($opciones as $mod)
+                                                                        <span class="bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-700">
+                                                                            {{ $mod['valor'] ?? '' }} 
+                                                                            @if(isset($mod['precio']) && $mod['precio'] > 0)
+                                                                                {{-- Multiplicamos el precio extra del modificador --}}
+                                                                                <span class="text-orange-500 font-bold">
+                                                                                    (+{{ $currencySymbol }}{{ number_format($mod['precio'] * $exchangeRate, 2) }})
+                                                                                </span>
+                                                                            @endif
+                                                                        </span>
+                                                                    @endforeach
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    {{-- PRECIO TOTAL DEL ITEM CON MONEDA DINÁMICA --}}
+                                                    <div class="text-right whitespace-nowrap pl-4">
+                                                        <span class="font-black text-slate-700 dark:text-white block">
+                                                            {{ $currencySymbol }}{{ number_format(($item->subtotal ?? ($item->precio_unitario * $item->cantidad)) * $exchangeRate, 2) }}
+                                                        </span>
+                                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ $currencyCode }}</span>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        <div class="text-center py-4 text-slate-500 text-sm">
+                                            <i class="fas fa-ghost mb-2 text-2xl opacity-50 block"></i>
+                                            No se pudo cargar el desglose de este pedido.
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <div class="flex justify-end gap-3 border-t border-gray-200 dark:border-slate-700 pt-4 mt-4">
+                                    <button type="button" onclick="abrirModalPedido({{ $pedido->id }}, '{{ str_pad($pedido->id, 5, '0', STR_PAD_LEFT) }}')" class="text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white hover:border-orange-500 hover:text-orange-500 font-bold py-2.5 px-4 rounded-xl transition flex items-center gap-2 shadow-sm">
+                                        <i class="fas fa-eye"></i> {{ __('profile/edit.view_details') }}
+                                    </button>
+                                    <a href="{{ route('client.ticket', $pedido->id) }}" target="_blank" class="text-xs bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-white hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 font-bold py-2.5 px-4 rounded-xl transition flex items-center gap-2 shadow-sm">
+                                        <i class="fas fa-file-pdf text-red-500 group-hover:text-white"></i> {{ __('profile/edit.download_ticket') }}
+                                    </a>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="text-center py-16 bg-gray-50 dark:bg-slate-800/50 rounded-2xl border border-dashed border-gray-300 dark:border-slate-700">
+                        <div class="w-16 h-16 bg-gray-200 dark:bg-slate-700 text-gray-400 dark:text-slate-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4"><i class="fas fa-shopping-bag"></i></div>
+                        <h4 class="text-slate-700 dark:text-white font-black text-lg">{{ __('profile/edit.no_orders') }}</h4>
+                        <p class="text-sm text-slate-500 mt-2 max-w-sm mx-auto">{{ __('profile/edit.no_orders_desc') }}</p>
+                        <a href="{{ route('menu') }}" class="inline-block mt-6 bg-orange-600 hover:bg-orange-500 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg shadow-orange-500/30">{{ __('profile/edit.go_to_menu') }}</a>
+                    </div>
+                @endif
+            </div>
+
+            {{-- MODAL DETALLES DEL PEDIDO --}}
+            <div id="modal-order-details" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity">
+                <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-lg w-full p-8 border border-slate-200 dark:border-slate-700 relative overflow-hidden transform transition-all max-h-[85vh] flex flex-col">
+                    <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-200 dark:border-slate-700">
+                        <h3 class="text-xl font-black text-slate-800 dark:text-white flex items-center gap-2">
+                            <i class="fas fa-receipt text-orange-500"></i> {{ __('profile/edit.order_details_title') }} <span id="modal-order-id" class="text-orange-500"></span>
+                        </h3>
+                        <button onclick="document.getElementById('modal-order-details').classList.add('hidden')" class="text-slate-400 hover:text-red-500 transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"><i class="fas fa-times"></i></button>
+                    </div>
+                    
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">{{ __('profile/edit.purchase_summary') }}</p>
+                    
+                    <div id="modal-order-content" class="overflow-y-auto custom-scrollbar pr-2 flex-1">
+                        </div>
+                    
+                    <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700">
+                        <button type="button" onclick="document.getElementById('modal-order-details').classList.add('hidden')" class="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-white font-bold py-3 rounded-xl transition-colors">
+                            {{ __('profile/edit.btn_cancel') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             @endif
 
         </div>
@@ -235,10 +419,10 @@
         <div class="w-16 h-16 bg-red-100 dark:bg-red-900/30 text-red-600 mx-auto rounded-full flex items-center justify-center text-3xl mb-6 shadow-inner"><i class="fas fa-skull-crossbones"></i></div>
         <h3 class="text-2xl font-black text-slate-800 dark:text-white mb-2">{{ __('profile/edit.delete_modal_title') }}</h3>
         <p class="text-slate-500 dark:text-slate-400 text-sm mb-8 leading-relaxed">{{ __('profile/edit.delete_modal_desc') }}</p>
-        <form action="{{ route('profile.destroy') }}" method="POST" class="flex flex-col sm:flex-row gap-3">
+        <form id="form-delete-account" action="{{ route('profile.destroy') }}" method="POST" class="flex flex-col sm:flex-row gap-3">
             @csrf @method('DELETE')
             <button type="button" onclick="document.getElementById('modal-delete-account').classList.add('hidden')" class="w-full sm:w-1/2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-white font-bold py-3 rounded-xl transition-colors">{{ __('profile/edit.delete_modal_cancel') }}</button>
-            <button type="submit" class="w-full sm:w-1/2 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition-colors shadow-lg shadow-red-600/30">{{ __('profile/edit.delete_modal_confirm') }}</button>
+            <button type="submit" class="btn-submit w-full sm:w-1/2 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition-colors shadow-lg shadow-red-600/30">{{ __('profile/edit.delete_modal_confirm') }}</button>
         </form>
     </div>
 </div>
@@ -253,8 +437,7 @@
                 <button onclick="document.getElementById('modal-nueva-direccion').classList.add('hidden')" class="text-slate-400 hover:text-red-500 transition-colors"><i class="fas fa-times text-xl"></i></button>
             </div>
             <div class="overflow-y-auto custom-scrollbar pr-2 flex-1">
-                {{-- Agregamos el ID "form-nueva-direccion" para blindarlo --}}
-                <form id="form-nueva-direccion" action="{{ route('profile.address.store') }}" method="POST" class="space-y-4">
+                <form id="form-nueva-direccion" action="{{ route('profile.address.store') }}" method="POST" class="space-y-4 form-blindado">
                     @csrf
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
@@ -304,7 +487,7 @@
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">{{ __('profile/edit.references') }}</label>
                         <textarea name="referencias" rows="2" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none resize-none"></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-orange-700 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg mt-4">{{ __('profile/edit.save_address') }}</button>
+                    <button type="submit" class="btn-submit w-full bg-orange-700 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg mt-4">{{ __('profile/edit.save_address') }}</button>
                 </form>
             </div>
         </div>
@@ -318,7 +501,7 @@
                 <button onclick="document.getElementById('modal-edit-direccion').classList.add('hidden')" class="text-slate-400 hover:text-red-500 transition-colors"><i class="fas fa-times text-xl"></i></button>
             </div>
             <div class="overflow-y-auto custom-scrollbar pr-2 flex-1">
-                <form id="form-edit-address" action="" method="POST" class="space-y-4">
+                <form id="form-edit-address" action="" method="POST" class="space-y-4 form-blindado">
                     @csrf @method('PUT')
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
@@ -368,7 +551,7 @@
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">{{ __('profile/edit.references') }}</label>
                         <textarea name="referencias" id="edit_referencias" rows="2" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 outline-none resize-none"></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-orange-700 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg mt-4">Guardar Cambios</button>
+                    <button type="submit" class="btn-submit w-full bg-orange-700 hover:bg-orange-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg mt-4">Guardar Cambios</button>
                 </form>
             </div>
         </div>
@@ -382,9 +565,9 @@
             </div>
             <h3 class="text-xl font-black text-slate-800 dark:text-white mb-2">{{ __('profile/edit.delete_confirm') }}</h3>
             <p class="text-slate-500 text-sm mb-6">Esta acción no se puede deshacer.</p>
-            <form id="form-delete-address" action="" method="POST" class="flex flex-col gap-3">
+            <form id="form-delete-address" action="" method="POST" class="flex flex-col gap-3 form-blindado">
                 @csrf @method('DELETE')
-                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition-colors shadow-lg shadow-red-600/30">Sí, eliminar</button>
+                <button type="submit" class="btn-submit w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition-colors shadow-lg shadow-red-600/30">Sí, eliminar</button>
                 <button type="button" onclick="document.getElementById('modal-delete-address').classList.add('hidden')" class="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-white font-bold py-3 rounded-xl transition-colors">Cancelar</button>
             </form>
         </div>
@@ -410,9 +593,14 @@
         const tabDirecciones = document.getElementById('tab-direcciones');
         if(tabDirecciones) tabDirecciones.classList.add('hidden');
 
+        // NUEVO: Ocultar pestaña historial
+        const tabHistorial = document.getElementById('tab-historial');
+        if(tabHistorial) tabHistorial.classList.add('hidden');
+
         // Resetear estilos botones
         const btns = ['general', 'seguridad'];
         if(document.getElementById('tab-btn-direcciones')) btns.push('direcciones');
+        if(document.getElementById('tab-btn-historial')) btns.push('historial'); // NUEVO
         
         btns.forEach(b => {
             const btn = document.getElementById('tab-btn-' + b);
@@ -508,37 +696,62 @@
     }
 
     // FUNCIÓN PARA PREVENIR DOBLE CLIC (BLINDAJE DE FORMULARIOS)
-    function blindarFormularioDireccion(formId) {
-        const form = document.getElementById(formId);
-        if (!form) return;
-        
-        form.addEventListener('submit', function(e) {
-            const btn = this.querySelector('button[type="submit"]');
+    function blindarTodosLosFormularios() {
+        const formsToBind = [
+            document.getElementById('form-profile'),
+            document.getElementById('form-delete-account'),
+            ...document.querySelectorAll('.form-blindado')
+        ];
+
+        formsToBind.forEach(form => {
+            if (!form) return;
             
-            // Si el formulario cumple con las validaciones (required, etc.)
-            if (this.checkValidity()) {
-                // Si ya lo estamos procesando, bloqueamos el evento
-                if (btn.dataset.submitting === 'true') {
-                    e.preventDefault();
-                    return;
+            form.addEventListener('submit', function(e) {
+                const btn = e.submitter || this.querySelector('button[type="submit"]');
+                if (!btn) return;
+
+                if (this.checkValidity()) {
+                    if (btn.dataset.submitting === 'true') {
+                        e.preventDefault();
+                        return;
+                    }
+                    
+                    btn.dataset.submitting = 'true';
+                    btn.disabled = true;
+                    btn.style.pointerEvents = 'none'; 
+                    btn.classList.add('opacity-75', 'cursor-not-allowed');
+                    btn.classList.remove('hover:bg-orange-500', 'hover:bg-red-700'); 
+                    
+                    const originalWidth = btn.offsetWidth;
+                    btn.style.width = originalWidth + 'px';
+                    
+                    if (btn.innerHTML.includes('fa-star')) {
+                         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    } else {
+                        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Procesando...';
+                    }
                 }
-                
-                // Marcamos como procesando y cambiamos la apariencia
-                btn.dataset.submitting = 'true';
-                btn.disabled = true;
-                btn.classList.add('opacity-75', 'cursor-not-allowed');
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Procesando...';
-            }
+            });
         });
+    }
+
+    // ABRIR MODAL DETALLES DE PEDIDO
+    function abrirModalPedido(idPedido, folio) {
+        // Obtenemos el contenedor oculto con los detalles de ese pedido específico
+        const contenidoHTML = document.getElementById('detalles-pedido-' + idPedido).innerHTML;
+        
+        // Inyectamos el número de folio y el contenido en el modal
+        document.getElementById('modal-order-id').innerText = '#' + folio;
+        document.getElementById('modal-order-content').innerHTML = contenidoHTML;
+        
+        // Mostramos el modal
+        document.getElementById('modal-order-details').classList.remove('hidden');
     }
 
     document.addEventListener('DOMContentLoaded', function() {
         iniciarApiCP('add');
         iniciarApiCP('edit');
-        
-        // Aplicamos el blindaje a los formularios de direcciones
-        blindarFormularioDireccion('form-nueva-direccion');
-        blindarFormularioDireccion('form-edit-address');
+        blindarTodosLosFormularios();
     });
 </script>
 

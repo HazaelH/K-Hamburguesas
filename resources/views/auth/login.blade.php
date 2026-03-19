@@ -36,7 +36,7 @@
             </div>
 
             @if (session('status'))
-                <div class="mb-4 bg-green-500/20 border border-green-500 text-green-400 px-4 py-3 rounded-xl text-sm">
+                <div class="mb-4 bg-green-500/20 border border-green-500 text-green-400 px-4 py-3 rounded-xl text-sm relative z-10">
                     {{ session('status') }}
                 </div>
             @endif
@@ -82,13 +82,27 @@
                     </div>
                 </div>
 
-                {{-- Se añadió el ID login-btn --}}
                 <button type="submit" id="login-btn"
                         class="w-full bg-orange-700 hover:bg-orange-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-700/40 transform transition hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2 mt-4">
                     <span id="login-btn-text">{{ __('auth/login.btn_login') }}</span>
                     <i id="login-btn-icon" class="fas fa-arrow-right text-sm"></i>
                 </button>
             </form>
+            
+            {{-- DIVISOR Y BOTÓN DE GOOGLE --}}
+            <div class="relative my-6 z-10">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-slate-700"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-3 bg-slate-900 text-slate-400 font-bold uppercase tracking-wider text-xs">{{ __('auth/login.or') }}</span>
+                </div>
+            </div>
+
+            <a href="{{ route('google.login') }}" class="w-full flex items-center justify-center gap-3 bg-white text-slate-800 font-black py-3.5 rounded-xl border border-slate-300 shadow-md hover:bg-slate-100 transition-all relative z-10 active:scale-95 transform hover:-translate-y-0.5">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
+                {{ __('auth/login.google_btn') }}
+            </a>
 
             <div class="mt-8 text-center border-t border-slate-800 pt-6 relative z-10">
                 <p class="text-slate-400 text-sm">
@@ -115,22 +129,19 @@
         }
     }
 
-    // PROTECCIÓN ANTI-SPAM PARA LOGIN
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('login-form');
         const btn = document.getElementById('login-btn');
-        const btnText = document.getElementById('login-btn-text');
         const btnIcon = document.getElementById('login-btn-icon');
         let isSubmitting = false;
 
         if(form && btn) {
             form.addEventListener('submit', function(e) {
                 if (isSubmitting) {
-                    e.preventDefault(); // Bloquea clics extra
+                    e.preventDefault();
                     return;
                 }
                 
-                // Si el formulario es válido (HTML5), bloqueamos
                 if(form.checkValidity()) {
                     isSubmitting = true;
                     btn.disabled = true;
@@ -138,9 +149,7 @@
                     btn.classList.add('opacity-75', 'cursor-not-allowed');
                     btn.classList.remove('hover:-translate-y-0.5', 'hover:bg-orange-500', 'active:scale-95');
                     
-                    // Feedback visual
                     btnIcon.className = 'fas fa-spinner fa-spin text-sm';
-                    // (Opcional) Cambiar texto: btnText.innerText = 'Procesando...';
                 }
             });
         }

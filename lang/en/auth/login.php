@@ -13,4 +13,6 @@ return [
     'no_account' => 'Don\'t have an account yet?',
     'register_free' => 'Register for free',
     'forgot_password' => 'Forgot it?',
+    'google_btn' => 'Continue with Google',
+    'or' => 'OR',
 ];

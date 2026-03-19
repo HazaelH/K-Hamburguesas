@@ -17,6 +17,8 @@
                 <section>
                     <h2 class="text-xl font-bold text-white mb-3 flex items-center gap-2"><i class="fas fa-file-contract text-orange-500"></i> {!! __('client/legal.terms_sec1_title') !!}</h2>
                     <p>{!! __('client/legal.terms_sec1_p') !!}</p>
+                    {{-- AQUÍ INSERTAMOS LA ACLARACIÓN DE GOOGLE --}}
+                    <p class="mt-4 text-sm text-slate-400 bg-slate-900 p-4 rounded-xl border border-slate-700">{!! __('client/legal.terms_sec1_p2') !!}</p>
                 </section>
 
                 <section>

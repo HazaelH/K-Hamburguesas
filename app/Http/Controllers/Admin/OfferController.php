@@ -7,19 +7,15 @@ use Illuminate\Http\Request;
 use App\Models\Offer;
 use App\Models\Product; 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\RateLimiter; // <-- 1. IMPORTANTE: Importamos el RateLimiter
+use Illuminate\Validation\ValidationException; // <-- Para lanzar el error de bloqueo
 
 class OfferController extends Controller
 {
     public function index()
     {
-        // Traemos las ofertas ordenadas
         $offers = Offer::orderBy('created_at', 'desc')->get();
-        
-        // Traemos las categorías (ya las traducimos en la vista con el modelo Categoria)
         $categorias = Product::select('categoria')->distinct()->pluck('categoria');
-        
-        // CORRECCIÓN AQUÍ: Quitamos el select() estricto para que traiga los campos _en y _pt
-        // y los accesores de traducción de Product.php puedan funcionar.
         $productos = Product::where('is_active', true)->get();
 
         return view('admin.offers.index', compact('offers', 'categorias', 'productos'));
@@ -27,6 +23,22 @@ class OfferController extends Controller
 
     public function store(Request $request)
     {
+        // ===============================================================
+        // 2. BLOQUEO ANTI-SPAM (Rate Limiting)
+        // Permite máximo 5 creaciones por minuto por usuario.
+        // ===============================================================
+        $llaveBloqueo = 'crear-oferta:' . auth()->id();
+        
+        if (RateLimiter::tooManyAttempts($llaveBloqueo, 5)) {
+            $segundosRestantes = RateLimiter::availableIn($llaveBloqueo);
+            // Redirige de vuelta con un mensaje de error usando la variable de sesión
+            return redirect()->back()->with('error', "Has superado el límite de creación de ofertas. Por favor, espera {$segundosRestantes} segundos antes de intentar de nuevo.");
+        }
+        
+        // Si no está bloqueado, registramos este intento
+        RateLimiter::hit($llaveBloqueo, 60); // 60 segundos de penalización si se pasa de 5
+        // ===============================================================
+
         $request->validate([
             'titulo' => 'required|string|max:255|unique:offers,titulo',
             'descripcion' => 'nullable|string',
@@ -42,13 +54,12 @@ class OfferController extends Controller
 
         $data = $request->except('imagen', 'referencia_categoria', 'referencia_producto');
 
-        // Lógica para guardar la referencia dependiendo de lo que eligió el Admin
         if ($request->tipo_aplicacion === 'categoria') {
             $data['referencia'] = $request->referencia_categoria;
         } elseif ($request->tipo_aplicacion === 'producto') {
             $data['referencia'] = $request->referencia_producto;
         } else {
-            $data['referencia'] = null; // Si es a "todo", no hay referencia
+            $data['referencia'] = null; 
         }
 
         if ($request->hasFile('imagen')) {
@@ -73,7 +84,6 @@ class OfferController extends Controller
         return redirect()->back()->with('success', __('admin/offers/messages.delete_success'));
     }
     
-    // Lo convertimos para que responda a peticiones AJAX (como en productos)
     public function toggle($id)
     {
         $offer = Offer::findOrFail($id);
@@ -89,14 +99,9 @@ class OfferController extends Controller
     public function edit($id)
     {
         $offer = Offer::findOrFail($id);
-        
-        // Traemos catálogos para el formulario
         $categorias = Product::select('categoria')->distinct()->pluck('categoria');
-        
-        // CORRECCIÓN AQUÍ TAMBIÉN
         $productos = Product::where('is_active', true)->get();
 
-        // Si la oferta era para un producto específico, traemos su nombre para mostrarlo
         $productoSeleccionado = null;
         if ($offer->tipo_aplicacion === 'producto') {
             $productoSeleccionado = Product::find($offer->referencia);
@@ -105,9 +110,21 @@ class OfferController extends Controller
         return view('admin.offers.edit', compact('offer', 'categorias', 'productos', 'productoSeleccionado'));
     }
 
-    // GUARDAR LOS CAMBIOS EN LA BASE DE DATOS
     public function update(Request $request, $id)
     {
+        // ===============================================================
+        // 3. BLOQUEO ANTI-SPAM (Rate Limiting) PARA ACTUALIZACIÓN
+        // ===============================================================
+        $llaveBloqueo = 'editar-oferta:' . auth()->id();
+        
+        if (RateLimiter::tooManyAttempts($llaveBloqueo, 5)) {
+            $segundosRestantes = RateLimiter::availableIn($llaveBloqueo);
+            return redirect()->back()->with('error', "Has superado el límite de edición de ofertas. Por favor, espera {$segundosRestantes} segundos antes de intentar de nuevo.");
+        }
+        
+        RateLimiter::hit($llaveBloqueo, 60);
+        // ===============================================================
+
         $offer = Offer::findOrFail($id);
 
         $request->validate([
@@ -129,7 +146,6 @@ class OfferController extends Controller
 
         $data = $request->except('imagen', 'referencia_categoria', 'referencia_producto');
 
-        // Asignamos la referencia correcta
         if ($request->tipo_aplicacion === 'categoria') {
             $data['referencia'] = $request->referencia_categoria;
         } elseif ($request->tipo_aplicacion === 'producto') {
@@ -138,7 +154,6 @@ class OfferController extends Controller
             $data['referencia'] = null;
         }
 
-        // Si subió una foto nueva, borramos la vieja y guardamos la nueva
         if ($request->hasFile('imagen')) {
             if ($offer->imagen_url) {
                 Storage::disk('public')->delete($offer->imagen_url);

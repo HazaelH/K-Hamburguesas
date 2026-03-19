@@ -6,6 +6,8 @@ return [
     'terms_title' => 'Terms and Conditions of Use',
     'terms_sec1_title' => '1. General Information',
     'terms_sec1_p' => 'Welcome to <strong>K-Hamburguesas</strong>. These Terms and Conditions govern the access and use of our website and ordering platform. By accessing, browsing, or placing an order on this platform, you agree to be fully bound by these terms. If you do not agree, please do not use our services.',
+    // NUEVA LÍNEA PARA TÉRMINOS
+    'terms_sec1_p2' => 'By registering or logging in using a third-party service (like <strong>Google</strong>), you authorize us to collect and use your basic profile information (name and email) to create and manage your account. You are responsible for keeping your external account credentials secure.',
     
     'terms_sec2_title' => '2. Product Availability and Service',
     'terms_sec2_li1' => 'All orders are subject to the availability of ingredients and products at the branch.',
@@ -43,6 +45,8 @@ return [
     'privacy_sec1_li3' => 'Phone number (landline or mobile).',
     'privacy_sec1_li4' => 'Email address.',
     'privacy_sec1_li5' => 'Order history and consumption preferences.',
+    // NUEVA LÍNEA PARA PRIVACIDAD
+    'privacy_sec1_li6' => 'Basic profile information (name, email, and profile picture) if you choose to register or log in using third-party services like <strong>Google</strong>. We emphasize that we <strong>never</strong> have access to your password for these external accounts.',
     'privacy_sec1_note' => '<strong>Note on financial data:</strong> For processing card payments, we use the services of <strong>Stripe Inc.</strong> K-Hamburguesas DOES NOT store credit card numbers, expiration dates, or CVV codes in its databases.',
     
     'privacy_sec2_title' => '2. Purposes of Data Processing',

@@ -17,4 +17,6 @@ return [
     'btn_register' => 'Crear mi cuenta',
     'already_member' => '¿Ya eres miembro?',
     'login_here' => 'Inicia sesión aquí',
+    'google_btn' => 'Registrarse con Google',
+    'or' => 'O',
 ];

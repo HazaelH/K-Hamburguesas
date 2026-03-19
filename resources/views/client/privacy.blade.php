@@ -27,8 +27,10 @@
                         <li>{!! __('client/legal.privacy_sec1_li3') !!}</li>
                         <li>{!! __('client/legal.privacy_sec1_li4') !!}</li>
                         <li>{!! __('client/legal.privacy_sec1_li5') !!}</li>
+                        {{-- AQUÍ INSERTAMOS LA ACLARACIÓN DE GOOGLE --}}
+                        <li>{!! __('client/legal.privacy_sec1_li6') !!}</li>
                     </ul>
-                    <p class="mt-2 text-sm text-orange-400 bg-orange-500/10 p-3 rounded-lg border border-orange-500/20">
+                    <p class="mt-4 text-sm text-orange-400 bg-orange-500/10 p-3 rounded-lg border border-orange-500/20">
                         {!! __('client/legal.privacy_sec1_note') !!}
                     </p>
                 </section>
