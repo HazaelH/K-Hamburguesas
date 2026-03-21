@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+<<<<<<< HEAD
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,21 +15,56 @@ class User extends Authenticatable implements MustVerifyEmail
     // <-- 2. AGREGAR SoftDeletes AQUÍ
     use HasFactory, Notifiable, SoftDeletes; 
 
+=======
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+class User extends Authenticatable
+{
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+>>>>>>> 433b97d2585cb68ef73e2952cfbbe7259e4eeed7
     protected $fillable = [
         'name',
         'email',
         'password',
+<<<<<<< HEAD
         'rol',
         'telefono',
         'avatar',
         'is_active',
     ];
 
+=======
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var list<string>
+     */
+>>>>>>> 433b97d2585cb68ef73e2952cfbbe7259e4eeed7
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
+<<<<<<< HEAD
+=======
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+>>>>>>> 433b97d2585cb68ef73e2952cfbbe7259e4eeed7
     protected function casts(): array
     {
         return [
@@ -36,6 +72,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+<<<<<<< HEAD
 
     protected function avatarUrl(): Attribute
     {
@@ -78,3 +115,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(UserAddress::class);
     }
 }  
+=======
+}
+>>>>>>> 433b97d2585cb68ef73e2952cfbbe7259e4eeed7

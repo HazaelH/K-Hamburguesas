@@ -10,6 +10,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+<<<<<<< HEAD
     ->withMiddleware(function (Middleware $middleware) {
         
         // 1. TODOS LOS ALIAS EN UN SOLO LUGAR
@@ -32,3 +33,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
+=======
+    ->withMiddleware(function (Middleware $middleware): void {
+        //
+    })
+    ->withExceptions(function (Exceptions $exceptions): void {
+        //
+    })->create();
+>>>>>>> 433b97d2585cb68ef73e2952cfbbe7259e4eeed7

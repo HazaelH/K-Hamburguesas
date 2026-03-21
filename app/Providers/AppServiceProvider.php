@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+<<<<<<< HEAD
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Notifications\Messages\MailMessage; 
@@ -10,11 +11,20 @@ use Illuminate\Support\Facades\Lang;
 
 class AppServiceProvider extends ServiceProvider
 {
+=======
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+>>>>>>> 433b97d2585cb68ef73e2952cfbbe7259e4eeed7
     public function register(): void
     {
         //
     }
 
+<<<<<<< HEAD
     public function boot(): void
     {
         // 1. Personalización del Correo de Verificación de Cuenta Nueva
@@ -54,3 +64,13 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 }
+=======
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        //
+    }
+}
+>>>>>>> 433b97d2585cb68ef73e2952cfbbe7259e4eeed7

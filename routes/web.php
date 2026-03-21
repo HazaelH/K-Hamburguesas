@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+<<<<<<< HEAD
 use Illuminate\Foundation\Auth\EmailVerificationRequest; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schedule;
@@ -242,3 +243,9 @@ Route::group([
     Schedule::command('currency:update')->dailyAt('03:00');
 
 }); // CIERRE DEL GRUPO DE IDIOMAS
+=======
+
+Route::get('/', function () {
+    return view('welcome');
+});
+>>>>>>> 433b97d2585cb68ef73e2952cfbbe7259e4eeed7

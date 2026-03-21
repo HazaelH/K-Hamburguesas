@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
     plugins: [
         laravel({
+<<<<<<< HEAD
             input: ['resources/css/app.css',
                 'resources/css/auth.css',
                 'resources/css/kitchen.css',
@@ -43,6 +44,9 @@ export default defineConfig({
                 'resources/js/admin/notifications.js',
                 'resources/js/admin/delete-users.js',
             ],
+=======
+            input: ['resources/css/app.css', 'resources/js/app.js'],
+>>>>>>> 433b97d2585cb68ef73e2952cfbbe7259e4eeed7
             refresh: true,
         }),
         tailwindcss(),

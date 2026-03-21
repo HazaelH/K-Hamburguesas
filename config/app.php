@@ -65,7 +65,11 @@ return [
     |
     */
 
+<<<<<<< HEAD
     'timezone' => 'America/Mexico_City',
+=======
+    'timezone' => 'UTC',
+>>>>>>> 433b97d2585cb68ef73e2952cfbbe7259e4eeed7
 
     /*
     |--------------------------------------------------------------------------
@@ -78,6 +82,7 @@ return [
     |
     */
 
+<<<<<<< HEAD
     'locale' => env('APP_LOCALE', 'es'),
 
     'fallback_locale' => 'en',
@@ -85,6 +90,13 @@ return [
     'supported_locales' => ['es', 'en'], 
 
     'faker_locale' => 'es_MX',
+=======
+    'locale' => env('APP_LOCALE', 'en'),
+
+    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
+
+    'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
+>>>>>>> 433b97d2585cb68ef73e2952cfbbe7259e4eeed7
 
     /*
     |--------------------------------------------------------------------------
