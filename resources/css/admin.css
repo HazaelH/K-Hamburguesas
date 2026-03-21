@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- ESTILOS GLOBALES ADMIN --- */
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0f172a; /* Slate 900 */
+    color: #e2e8f0; /* Slate 200 */
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* Transición suave para el Sidebar */
+.sidebar-transition {
+    transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+/* Efecto Glassmorphism (opcional si lo usas en otros lados) */
+.glass {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}

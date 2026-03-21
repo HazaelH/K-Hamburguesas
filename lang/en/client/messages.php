@@ -1,0 +1,33 @@
+<?php
+return [
+    'welcome_guest' => 'Welcome to K-Hamburguesas. Get ready for a feast.',
+    'welcome_back' => 'Great to see you again, :name!',
+    'order_again' => ' Would you like to order the same as last time?',
+    'special_selection' => 'Special selection for you, :name',
+    'featured_promos' => 'Featured Promotions:',
+    'item_added' => ':product was added to your order.',
+    'free_shipping_congrats' => 'Congratulations! Shipping is on us',
+    'free_shipping_missing' => 'Add $:amount to your cart to get FREE shipping',
+    'card_declined' => 'The bank declined the card: :error',
+    'no_reference' => 'No reference',
+    'access_denied_order' => 'Access denied to this order.',
+    'access_denied_ticket' => 'Access denied to this receipt.',
+    // Para JavaScript
+    'js_success_title' => 'Success!',
+    'js_success_desc' => 'saved.', // Se usa así: "2x Burger saved."
+    'js_saving' => 'Saving...',
+    'js_preparing' => 'Preparing...',
+    'js_denied' => 'Operation denied.',
+    'js_connection_error' => 'Error connecting to the server.',
+    'js_db_error' => 'Error communicating with the database.',
+    'order_email_subject' => 'Your order :code is being prepared - K-Hamburguesas',
+    'order_email_greeting' => 'Hi, :name!',
+    'order_email_received' => 'We have received your order and started preparing it. Here is your purchase receipt:',
+    'order_email_code' => 'Order Code',
+    'order_email_address' => 'Delivery Address',
+    'order_email_details' => 'Order Details',
+    'order_email_item' => 'Item',
+    'order_email_qty' => 'Qty',
+    'order_email_price' => 'Subtotal',
+    'order_email_track' => 'View Digital Ticket',
+];

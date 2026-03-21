@@ -1,0 +1,20 @@
+/* ==========================================================================
+   ESTILOS ESPECÍFICOS PARA EL CHECKOUT
+   ========================================================================== */
+
+/* Animación de brillo (shimmer) para el botón de pago */
+@keyframes shimmer {
+    100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+    animation: shimmer 1.5s infinite;
+}
+
+/* Ajustes para ocultar la flecha por defecto en el select y poner la nuestra */
+.custom-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none;
+}

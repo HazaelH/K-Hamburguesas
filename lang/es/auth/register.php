@@ -1,0 +1,20 @@
+<?php
+return [
+    'title' => 'Crear Cuenta',
+    'club_title' => 'Únete al<br>Club.',
+    'club_desc' => 'Acumula puntos, obtén descuentos y pide más rápido.',
+    'happy_foodies' => '+2k Foodies felices',
+    'form_title' => 'Crear Cuenta',
+    'form_desc' => 'Completa tus datos para comenzar.',
+    'fullname' => 'Nombre Completo',
+    'fullname_placeholder' => 'Tu nombre',
+    'email' => 'Correo Electrónico',
+    'email_placeholder' => 'tu@email.com',
+    'password' => 'Contraseña',
+    'password_placeholder' => '••••••',
+    'confirm_password' => 'Confirmar',
+    'password_help' => 'Mínimo 8 caracteres, debe incluir letras, números y símbolos.',
+    'btn_register' => 'Crear mi cuenta',
+    'already_member' => '¿Ya eres miembro?',
+    'login_here' => 'Inicia sesión aquí',
+];
