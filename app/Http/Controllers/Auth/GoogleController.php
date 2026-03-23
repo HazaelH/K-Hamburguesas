@@ -58,9 +58,15 @@ class GoogleController extends Controller
                     'name' => $googleUser->name,
                     'email' => $googleUser->email,
                     'google_id' => $googleUser->id,
-                    'password' => null, 
+                    
+                    // SOLUCIÓN 1: Le damos una contraseña aleatoria indescifrable
+                    'password' => bcrypt(\Illuminate\Support\Str::random(24)), 
+                    
                     'rol' => 'cliente',
-                    'avatar' => $googleUser->avatar
+                    'avatar' => $googleUser->avatar,
+                    
+                    // SOLUCIÓN 2: Verificamos su correo automáticamente (¡Google ya lo hizo por nosotros!)
+                    'email_verified_at' => now(),
                 ]);
                 
                 Auth::login($newUser);
